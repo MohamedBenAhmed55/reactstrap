@@ -10,7 +10,7 @@ class FormAjoutCompany extends Component{
              company:{
                "name": "",
                "city": "",
-               "postalcode": "s",
+               "postalcode": "",
                "email": "",
                "logo": "",
                "matriculeFiscale": "",
