@@ -10,11 +10,19 @@ class Users extends Component {
         this.state = { users: []};
     }
 
+    componentDidMount() {
+        this.getUsers();
+        
+    }
+
     getUsers() {
-        axios.get(`http://localhost:8000/api/companies`).then(response => {
+        axios.get(`http://localhost:8000/api/users`).then(response => {
             this.setState({ users: response.data['hydra:member']})
+            // console.log(response.data['hydra:member']);
         })
-     }       
+     }
+     
+     
     
     render() {
        
@@ -22,7 +30,7 @@ class Users extends Component {
             <div>
                 <section className="row-section">
                 
-                    <div className="container">
+                    
                    
                         {
                             <div className={'row'}>
@@ -31,25 +39,39 @@ class Users extends Component {
                                              <table class="table table-hover">
                                                <thead>
                                                   <tr>                                                
-                                                  <th scope="col">Image</th>
-                                                  <th scope="col">Name</th>
-                                                  <th scope="col">Description</th>
+                                                  <th scope="col">Nom</th>
+                                                  <th scope="col">Prenom</th>
+                                                  <th scope="col">Matricule</th>
+                                                  <th scope="col">Cin</th>
+                                                  <th scope="col">Date Embauche</th>
+                                                  <th scope="col">Présence</th>
+                                                  <th scope="col">Salaire</th>
+                                                  <th scope="col">numéro</th>
+                                                  <th scope="col">Pays</th>
+                                                  <th scope="col">Email</th>
                                                   <th scope="col"></th>
                                                   <th scope="col"></th>
                                                  </tr>
                                                  </thead>
-                                                 { this.state.users.map(user =>
+                                                 
                                                  <tbody>
+                                                 { this.state.users.map(user =>
                                                     <tr class="table-light" >
-                                                      <td><img className="rounded-circle"
-                                                             src={user.imageURL} alt="avatar"/></td>
-                                                      <td>{user.name}</td>
-                                                      <td>{user.description}</td>
+                                                      <td>{user.nom}</td>
+                                                      <td>{user.prenom}</td>
+                                                      <td>{user.matricule}</td>
+                                                      <td>{user.cin}</td>
+                                                      <td>{user.dateEmbauche.substr(0,10)}</td>
+                                                      <td>{user.etatPresence}</td>
+                                                      <td>{user.Salaire}</td>
+                                                      <td>{user.Fax}</td>
+                                                      <td>{user.Pays}</td>
+                                                      <td>{user.email}</td>
                                                       <td><Button>Modify</Button></td>
                                                       <td><Button>Delete</Button></td>
-                                                    </tr>
+                                                    </tr>)} 
    
-                                                 </tbody>        )}                                         
+                                                 </tbody>                                                
                                              </table>                                        
                                     </div>
                                
@@ -58,7 +80,7 @@ class Users extends Component {
                             </div>
                         }
                        
-                    </div>
+                    
                 </section>
                 <div className="container">
                 <div className={'row'}>

@@ -5,25 +5,35 @@ import FormAjoutCompany from '../Forms/FormAjoutCompany'
 
 import axios from 'axios';
 
-class Company extends Component{
+class Salles extends Component{
+    
     constructor() {
         super();
-        this.state = { companies: [] };
+        this.state = { Salles: [] };
+        this.handleOnModifyClick=this.handleOnModifyClick.bind(this);
        
     }
 
     componentDidMount() {
-        this.getCompanies();
-        
+        this.getSalles();       
     }
 
 
-
-     getCompanies() {
-        axios.get(`http://localhost:8000/api/companies`).then(response => {
-            this.setState({ companies: response.data['hydra:member']})
+     getSalles() {
+        axios.get(`http://localhost:8000/api/salles`).then(response => {
+            this.setState({ Salles: response.data['hydra:member']})
         })
      }  
+
+     handleOnModifyClick(id){
+         console.log(id);
+     }
+
+     deleteSalle(id){
+         axios.delete(`http://localhost:8000/api/salles/{id}`).then(response =>{
+             alert("Row deleted");
+         })
+     }
 
     
       
@@ -43,31 +53,19 @@ class Company extends Component{
                                              <table class="table table-hover">
                                                <thead>
                                                   <tr>                                                
-                                                  <th scope="col">Name</th>
-                                                  <th scope="col">City</th>
-                                                  <th scope="col">postal code</th>
-                                                  <th scope="col">email</th>
-                                                  <th scope="col">logo</th>
-                                                  <th scope="col">matriculeFiscale</th>
-                                                  <th scope="col">secteurActivite</th>
-                                                  <th scope="col">phone</th>
+                                                  <th scope="col">Nom</th>
+                                                  <th scope="col">Etage</th>                                        
                                                   <th scope="col"></th>
                                                   <th scope="col"></th>
                                                  </tr>
                                                  </thead>
                                                  
                                                  <tbody>
-                                                 { this.state.companies.map(company =>
-                                                    <tr class="table-light" key={company.id} >
-                                                      <td>{company.name}</td>
-                                                      <td>{company.city}</td>
-                                                      <td>{company.postalcode}</td>
-                                                      <td>{company.email}</td>
-                                                      <td>{company.logo}</td>
-                                                      <td>{company.matriculeFiscale}</td>
-                                                      <td>{company.secteurActivite}</td>
-                                                      <td>{company.phone}</td>
-                                                      <td><Button>Modify</Button></td>
+                                                 { this.state.Salles.map(Salle =>
+                                                    <tr class="table-light" key={Salle.id}>
+                                                      <td>{Salle.nom}</td>
+                                                      <td>{Salle.Etage}</td>
+                                                      <td><Button onClick={this.handleOnModifyClick(Salle.id)}>Modify</Button></td>
                                                       <td><Button>Delete</Button></td>
                                                     </tr>)} 
    
@@ -96,4 +94,4 @@ class Company extends Component{
     }
 }
 
-export default Company;
+export default Salles;

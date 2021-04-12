@@ -12,6 +12,17 @@ import FormAjoutEvenement from './Forms/FormAjoutEvenement';
 import Dropdown from 'react-bootstrap/Dropdown'
 import logo from './images/cosap logo.png';
 import Company from './Tables/company';
+import FormAjoutCompany from './Forms/FormAjoutCompany';
+import GlobalCalendar from './Calendar/GlobalCalendar';
+import HeuresTravail from './Tables/HeuresTravail';
+import Profile from './Profile';
+import Salles from './Tables/Salles';
+import Postes from './Tables/Postes';
+import Groupes from './Tables/Groupes';
+import ChefGroupe from './Tables/ChefGroupe';
+import FormAjoutPoste from './Forms/FormAjoutPoste';
+
+
 
 class Navbar extends Component{
     render(){
@@ -26,8 +37,17 @@ class Navbar extends Component{
         <div class="collapse navbar-collapse" id="navbarColor03">
           <ul class="navbar-nav mr-auto">
           <ul className="navbar-nav mr-auto">
+                           
+                            <li className="nav-item">
+                               <Link className={"nav-link"} to={"/Profile"}> Profile </Link>
+                           </li>
+
                            <li className="nav-item">
                                <Link className={"nav-link"} to={"/forms"}> Forms </Link>
+                           </li>
+
+                           <li className="nav-item">
+                               <Link className={"nav-link"} to={"/globalCalendar"}> Calendrier Global </Link>
                            </li>
     
                            {/* <li className="nav-item">
@@ -66,20 +86,32 @@ class Navbar extends Component{
                                <Link className={"nav-link"} to={"/company"}> Company </Link>
                            </li>
 
+                           <li className="nav-item">
+                               <Link className={"nav-link"} to={"/Ajout_poste"}> Ajout Poste </Link>
+                           </li>
+                           <li className="nav-item">
+                               <Link className={"nav-link"} to={"/form"}> Form </Link>
+                           </li>
+
 
                        </ul>
             <li class="nav-item dropdown">
             <Dropdown>
-                <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                 Dropdown Button
+                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                 Configuration du companie
                 </Dropdown.Toggle>
 
               <Dropdown.Menu>
-              <Dropdown.Item ><Link className={"nav-link"} to={"/Jours-Feries"}> JoursF </Link></Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+              <Dropdown.Item> <Link className={"nav-link"} to={"/Jours-Feries"}> JoursF </Link></Dropdown.Item>
+              <Dropdown.Item> <Link className={"nav-link"} to={"/addCompany"}> AjoutCompany </Link></Dropdown.Item>
+              <Dropdown.Item> <Link className={"nav-link"} to={"/heures-travail"}> Heures Travail </Link></Dropdown.Item>
+              <Dropdown.Item> <Link className={"nav-link"} to={"/Salles"}> Salles </Link></Dropdown.Item>
+              <Dropdown.Item> <Link className={"nav-link"} to={"/Postes"}> Postes </Link></Dropdown.Item>
+              <Dropdown.Item> <Link className={"nav-link"} to={"/Groupes"}> Groupes </Link></Dropdown.Item>
+              <Dropdown.Item> <Link className={"nav-link"} to={"/ChefGroup"}> Chefs Group </Link></Dropdown.Item>
              </Dropdown.Menu>
             </Dropdown>
+
             </li>
           </ul>
           
@@ -98,6 +130,15 @@ class Navbar extends Component{
                    {/* <Route path="/login" component={Login} /> */}
                    <Route path="/Ajout-evt" component={FormAjoutEvenement} />
                    <Route path="/company" component={Company} />
+                   <Route path="/addCompany" component={FormAjoutCompany} />
+                   <Route path="/globalCalendar" component={GlobalCalendar} />
+                   <Route path="/heures-travail" component={HeuresTravail} />
+                   <Route path="/Profile" component={Profile} />
+                   <Route path="/Salles" component={Salles} />
+                   <Route path="/Postes" component={Postes} />
+                   <Route path="/Groupes" component={Groupes} />
+                   <Route path="/ChefGroup" component={ChefGroupe} />
+                   <Route path="/Ajout_poste" component={FormAjoutPoste} />
                   </Switch>
                </div>)
     }

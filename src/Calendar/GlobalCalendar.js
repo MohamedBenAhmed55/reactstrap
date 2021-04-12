@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import './GlobalCalendar.css'
 
 class GlobalCalendar extends Component{
 
@@ -13,20 +14,18 @@ class GlobalCalendar extends Component{
             <table class="table table-hover">
               <thead>
                <tr>
-             <th scope="col">Utilisateur</th>
-             
-             <th scope="col">jour</th>
-            
-
-            
+             <th scope="col">Utilisateur</th>            
+             <th scope="col">jour 1</th>
+             <th scope="col">jour 2</th>
+             <th scope="col">jour 3</th>                      
              </tr>
            </thead>
           <tbody>
             <tr class="table-light">
-              <th scope="row">Light</th>
-              <td>+</td>
-              <td>+</td>
-              <td>+</td>
+              <th scope="row">img</th>
+              <td scope="row">+</td>
+              <td scope="row">+</td>
+              <td scope="row">+</td>
            </tr>
     
   </tbody>
@@ -35,3 +34,5 @@ class GlobalCalendar extends Component{
         )
     }
 }
+
+export default GlobalCalendar;

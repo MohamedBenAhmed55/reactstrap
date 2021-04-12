@@ -1,52 +1,44 @@
-import React, {Component} from 'react';
+import React ,{Component} from 'react';
+import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import Popup from "reactjs-popup";
-import Forms from '../Forms/FormAjoutUtilisateur'
-import axios from 'axios';
+import Forms from '../Forms/FormAjoutPoste'
 
+class Postes extends Component{
 
-class JourFerie extends Component{
     constructor() {
         super();
-        this.state = { jours: []
-        //     {'id' : 1,
-        //     'titre' : 'Fete independance',
-        //     'date' : '20-03-2021'
-        //     }
-        // ,
-        
-        //     {'id' : 2,
-        //     'titre' : 'Fete de travail',
-        //     'date' : '01-05-2021'}
-        // ,
-        
-        //     {'id' : 3,
-        //     'titre' : 'Fete de martyrs',
-        //     'date' : '09-04-2021'}
-        
-      
-    };
+        this.state = { Postes: []};
+
+        this.handleDelete=this.handleDelete.bind(this);
     }
 
     componentDidMount() {
-        this.getJoursFeries();
+        this.getPostes();
         
     }
 
 
-
-    getJoursFeries() {
-        axios.get(`http://localhost:8000/api/jours_feries`).then(response => {
-            this.setState({ jours: response.data['hydra:member']})
-    //    console.log(response.data['hydra:member']) 
+    getPostes() {
+        axios.get(`http://localhost:8000/api/postes`).then(response => {
+            this.setState({ Postes: response.data['hydra:member']})
+            // console.log(response.data['hydra:member']);
         })
      }
-    
-    
-    
+     
+    handleDelete(poste){
+        axios.delete(`http://localhost:8000/api/postes`, {
+            id:poste.id,
+        }).then( 
+            console.log("deleted")
+        )
+    } 
+
     render(){
+
         return(
-               <div>
+
+            <div>
                 <section className="row-section">
                 
                     <div className="container">
@@ -58,25 +50,24 @@ class JourFerie extends Component{
                                              <table class="table table-hover">
                                                <thead>
                                                   <tr>                                                
-
-                                                  <th scope="col">Titre</th>
-                                                  <th scope="col">Date</th>
+                                                  <th scope="col">Name</th>
+                                                  <th scope="col">Company</th>
                                                   <th scope="col"></th>
                                                   <th scope="col"></th>
                                                  </tr>
                                                  </thead>
                                                  
                                                  <tbody>
-                                                 { this.state.jours.map(jour =>
-                                                    <tr class="table-light" key={jour.id}>
-
-                                                      <td>{jour.titre}</td>
-                                                      <td>{jour.date.substr(0,10)}</td>
+                                                 { this.state.Postes.map(poste =>
+                                                    <tr class="table-light" key={poste.id} >
+                                                      
+                                                      <td>{poste.name}</td>
+                                                      <td>{poste.company}</td>
                                                       <td><Button>Modify</Button></td>
-                                                      <td><Button>Delete</Button></td>
-                                                    </tr> )} 
+                                                      <td><Button onClick={this.handleDelete(poste)}>Delete</Button></td>
+                                                    </tr>)} 
    
-                                                 </tbody>                                               
+                                                 </tbody>                                                
                                              </table>                                        
                                     </div>
                                
@@ -90,7 +81,7 @@ class JourFerie extends Component{
                 <div className="container">
                 <div className={'row'}>
                 <div className="col-md-10 offset-md-1 row-block" >
-                <Popup trigger={<Button> Add Jour ferie</Button>} position="right center">
+                <Popup trigger={<Button > Ajouter Poste</Button>} position="right center">
                      <Forms />
                 </Popup>
                 </div>
@@ -98,8 +89,7 @@ class JourFerie extends Component{
                 </div>
             </div>
         )
-        
     }
 }
 
-export default JourFerie;
+export default Postes;
