@@ -2,8 +2,9 @@ import './App.css';
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import Forms from './Forms';
-import NavBar from './NavBar';
+
 import { BrowserRouter as Router } from 'react-router-dom';
+import FinalPage from './Finalpage';
 
 // function App() {
 //   return (
@@ -25,8 +26,10 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // }
 
 function App(){
+   
   return(
-    <Router> <NavBar /> </Router>
+    <Router> <FinalPage />  </Router>
+
   )
 }
 

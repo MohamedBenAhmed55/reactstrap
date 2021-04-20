@@ -22,6 +22,14 @@ class Groupes extends Component{
             this.setState({ Groupes: response.data['hydra:member']})
         })
      } 
+     deleteGroup(id){
+        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        
+     }
+ 
+     modifyGroup(id){
+         axios.put(`http://localhost:8000/api/companies/${id}`);
+     }
 
     render(){
 
@@ -51,8 +59,8 @@ class Groupes extends Component{
                                                     <tr class="table-light" >
                                                       <td>{groupe.name}</td>
                                                       <td>{groupe.chef}</td>
-                                                      <td><Button>Modify</Button></td>
-                                                      <td><Button>Delete</Button></td>
+                                                      <td><Button onClick={ () => this.deleteGroup(groupe.id) } >Modify</Button></td>
+                                                      <td><Button onClick={ () => this.modifyGroup(groupe.id) } >Remove</Button></td>
                                                     </tr>)} 
    
                                                  </tbody>                                                

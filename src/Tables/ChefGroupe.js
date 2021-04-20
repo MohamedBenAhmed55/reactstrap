@@ -21,6 +21,15 @@ class ChefGroupe extends Component{
         })
      } 
 
+     deleteChef(id){
+        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        
+     }
+ 
+     modifyChef(id){
+         axios.put(`http://localhost:8000/api/companies/${id}`);
+     }
+
     render(){
 
         return(
@@ -52,8 +61,8 @@ class ChefGroupe extends Component{
                                                       <td>{chef.dateDeb.substr(0,10)}</td>
                                                       <td>{chef.dateFin.substr(0,10)}</td>
                                                       <td>{chef.groupes[0]}</td>
-                                                      <td><Button>Modify</Button></td>
-                                                      <td><Button>Delete</Button></td>
+                                                      <td><Button onClick={ () => this.modifyChef(chef.id) } >Modify</Button></td>
+                                                      <td><Button onClick={ () => this.deleteChef(chef.id) } >Remove</Button></td>
                                                     </tr>)} 
    
                                                  </tbody>                                                

@@ -21,6 +21,15 @@ class Users extends Component {
             // console.log(response.data['hydra:member']);
         })
      }
+
+     deleteUser(id){
+        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        
+     }
+ 
+     modifyUser(id){
+         axios.put(`http://localhost:8000/api/companies/${id}`);
+     }
      
      
     
@@ -67,8 +76,8 @@ class Users extends Component {
                                                       <td>{user.Fax}</td>
                                                       <td>{user.Pays}</td>
                                                       <td>{user.email}</td>
-                                                      <td><Button>Modify</Button></td>
-                                                      <td><Button>Delete</Button></td>
+                                                      <td><Button onClick={ () => this.modifyUser(user.id) } >Modify</Button></td>
+                                                      <td><Button onClick={ () => this.deleteUser(user.id) } >Remove</Button></td>
                                                     </tr>)} 
    
                                                  </tbody>                                                

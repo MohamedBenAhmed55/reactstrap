@@ -41,7 +41,14 @@ class JourFerie extends Component{
     //    console.log(response.data['hydra:member']) 
         })
      }
-    
+     deleteJour(id){
+        axios.delete(`http://localhost:8000/api/jours_feries/${id}`);
+        
+     }
+ 
+     modifyJour(id){
+         axios.put(`http://localhost:8000/api/jours_feries/${id}`);
+     }
     
     
     render(){
@@ -72,8 +79,8 @@ class JourFerie extends Component{
 
                                                       <td>{jour.titre}</td>
                                                       <td>{jour.date.substr(0,10)}</td>
-                                                      <td><Button>Modify</Button></td>
-                                                      <td><Button>Delete</Button></td>
+                                                      <td><Button onClick={ () => this.modifyJour(jour.id) } >Modify</Button></td>
+                                                      <td><Button onClick={ () => this.deleteJour(jour.id) } >Remove</Button></td>
                                                     </tr> )} 
    
                                                  </tbody>                                               

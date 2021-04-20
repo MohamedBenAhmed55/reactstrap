@@ -1,21 +1,35 @@
 import React, {Component} from 'react';
-import { Button } from 'react-bootstrap';
+
 import Popup from "reactjs-popup";
 import FormAjoutCompany from '../Forms/FormAjoutCompany'
+import { Row , Col, Button, Form, Modal } from 'react-bootstrap';
 
 import axios from 'axios';
 
 class Company extends Component{
     constructor() {
         super();
-        this.state = { companies: [] };
-       
+        this.state = { companies: [] ,
+            show: false,
+            setShow: false,};
+            this.handleClose=this.handleClose.bind(this);
+            this.handleShow=this.handleShow.bind(this);
+            this.refreshPage=this.refreshPage.bind(this);
     }
+
+   handleClose = () =>{
+       this.setState({setShow: false});
+       this.refreshPage();
+    };
+   handleShow = () => this.setState({setShow: true});
 
     componentDidMount() {
         this.getCompanies();
         
     }
+     refreshPage = ()=>{
+        window.location.reload();
+     }
 
 
 
@@ -25,7 +39,15 @@ class Company extends Component{
         })
      }  
 
-    
+    deleteCompany(id){
+       axios.delete(`http://localhost:8000/api/companies/${id}`);
+       this.refreshPage();
+       
+    }
+
+    modifyCompany(id){
+        axios.put(`http://localhost:8000/api/companies/${id}`);
+    }
       
     render(){
 
@@ -67,27 +89,42 @@ class Company extends Component{
                                                       <td>{company.matriculeFiscale}</td>
                                                       <td>{company.secteurActivite}</td>
                                                       <td>{company.phone}</td>
-                                                      <td><Button>Modify</Button></td>
-                                                      <td><Button>Delete</Button></td>
+                                                      <td><Button onClick={ () => this.modifyCompany(company.id) } >Modify</Button></td>
+                                                      <td><Button onClick={ () => this.deleteCompany(company.id) } >Remove</Button></td>
                                                     </tr>)} 
    
                                                  </tbody>                                                
                                              </table>                                        
                                     </div>
-                               
-                       
-                               
-                            
+                                                        
                         }
                        
                     </div>
                 </section>
                 <div className="container">
+                 <Button variant="primary" onClick={this.handleShow}>
+                     Ajouter Companie
+                 </Button>
                 
-                
-                <Popup trigger={<Button> Add Company</Button>} position="right center">
-                     <FormAjoutCompany/>
-                </Popup>
+                <Modal
+        show={this.state.setShow}
+        onHide={this.handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Ajouter Companie</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <FormAjoutCompany />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={this.handleClose}>
+            Close
+          </Button>
+          <Button variant="primary">Understood</Button>
+        </Modal.Footer>
+      </Modal>
                 
                 
                 </div>

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import Popup from "reactjs-popup";
-import Forms from '../Forms/FormAjoutUtilisateur'
+import Forms from '../Forms/FormAjoutHrTravail'
 import axios from 'axios';
+import 'reactjs-popup/dist/index.css';
 
 class HeuresTravail extends Component{
     
@@ -24,11 +25,13 @@ class HeuresTravail extends Component{
         })
      }  
 
-     deleteHeures() {
-        axios.get(`http://localhost:8000/api/heures_travails/`).then(response => {
-            this.setState({ Heures: response.data['hydra:member']})
-            // console.log(response.data['hydra:member']);
-        })
+     deleteHeure(id){
+        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        
+     }
+ 
+     modifyHeure(id){
+         axios.put(`http://localhost:8000/api/companies/${id}`);
      }
 
 
@@ -68,13 +71,13 @@ class HeuresTravail extends Component{
                                                       <td>{heure.heureDebPause.substr(11,8)}</td>
                                                       <td>{heure.heureFinPause.substr(11,8)}</td>
                                                       <td>{ heure.isSeanceUnique ? "Oui" : "Non"}</td>
-                                                      <td><Button>Modify</Button></td>
-                                                      <td><Button>Delete</Button></td>
+                                                      <td><Button onClick={ () => this.modifyHeure(heure.id) } >Modify</Button></td>
+                                                      <td><Button onClick={ () => this.deleteHeure(heure.id) } >Remove</Button></td>
                                                     </tr>)}    
                                                  </tbody>                                             
                                              </table>                                        
                                     </div>
-                               
+                                 
                        
                                
                             </div>

@@ -21,6 +21,7 @@ import Postes from './Tables/Postes';
 import Groupes from './Tables/Groupes';
 import ChefGroupe from './Tables/ChefGroupe';
 import FormAjoutPoste from './Forms/FormAjoutPoste';
+import Test from './ModalEntity';
 
 
 
@@ -93,6 +94,10 @@ class Navbar extends Component{
                                <Link className={"nav-link"} to={"/form"}> Form </Link>
                            </li>
 
+                           <li className="nav-item">
+                               <Link className={"nav-link"} to={"/modal"}> Modal </Link>
+                           </li>
+
 
                        </ul>
             <li class="nav-item dropdown">
@@ -139,6 +144,7 @@ class Navbar extends Component{
                    <Route path="/Groupes" component={Groupes} />
                    <Route path="/ChefGroup" component={ChefGroupe} />
                    <Route path="/Ajout_poste" component={FormAjoutPoste} />
+                   <Route path="/modal" component={Test} />
                   </Switch>
                </div>)
     }

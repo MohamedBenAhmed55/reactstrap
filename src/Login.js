@@ -1,26 +1,63 @@
 import React, { Component } from 'react';
 import './Login.css';
+import axios from 'axios';
 
 class Login extends Component{
+    
+    constructor(props) {
+        super(props);
+        this.state = { 
+             
+               "username": "",
+               "password": "",
+               "token":""
+               
+        };
+        this.handleUsernameChange=this.handleUsernameChange.bind(this);
+        this.handlePasswordChange=this.handlePasswordChange.bind(this);
+        this.Login=this.Login.bind(this);
+    }
+
+    Login(){
+        axios.post(`http://localhost:8000/api/login_check`,{
+       
+               "username": this.state.username,
+               "password": this.state.password,
+                
+        }).then(response =>{
+            console.log(response.data);
+            this.setState({token: response.data});
+            console.log(this.state.token);
+        });
+    }
+
+    handleUsernameChange(event) {
+        this.setState({username: event.target.value})
+      }
+  
+      handlePasswordChange(event) {
+          this.setState({password: event.target.value});       
+        }
+
     render(){
         return(
-            <div class="container">
-               <div class="card card-container">
+            <div className="container">
+               <div className="card card-container">
             
-              <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
-            <p id="profile-name" class="profile-name-card"></p>
-            <form class="form-signin">
-                <span id="reauth-email" class="reauth-email"></span>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus />
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required />
-                <div id="remember" class="checkbox">
+              <img id="profile-img" className="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+            <p id="profile-name" className="profile-name-card"></p>
+            <form className="form-signin" onSubmit={this.Login}>
+                <span id="reauth-email" className="reauth-email"></span>
+                <input type="text" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus value={this.state.username} onChange={this.handleUsernameChange}/>
+                <input type="password" id="inputPassword" className="form-control" placeholder="Password" required value={this.state.password} onChange={this.handlePasswordChange}/>
+                <div id="remember" className="checkbox">
                     <label>
                         <input type="checkbox" value="remember-me" /> Remember me
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+                <button className="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
             </form>
-            <a href="#" class="forgot-password">
+            <a href="#" className="forgot-password">
                 Forgot the password?
             </a>
         </div>

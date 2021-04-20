@@ -16,6 +16,7 @@ class FormAjoutCompany extends Component{
                "matriculeFiscale": "",
                "secteurActivite": "",
                "phone": "",
+               "number": 0,
         };
         this.handleEmailChange=this.handleEmailChange.bind(this);
         this.handleNameChange=this.handleNameChange.bind(this);
@@ -105,6 +106,7 @@ class FormAjoutCompany extends Component{
             "secteurActivite": this.state.secteurActivite,
             "phone": this.state.phone,    });
           })
+          this.setState({number: this.state.number +1})
       }
 
 

@@ -26,13 +26,14 @@ class Postes extends Component{
         })
      }
      
-    handleDelete(poste){
-        axios.delete(`http://localhost:8000/api/postes`, {
-            id:poste.id,
-        }).then( 
-            console.log("deleted")
-        )
-    } 
+     deletePoste(id){
+        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        
+     }
+ 
+     modifyPoste(id){
+         axios.put(`http://localhost:8000/api/companies/${id}`);
+     }
 
     render(){
 
@@ -63,8 +64,8 @@ class Postes extends Component{
                                                       
                                                       <td>{poste.name}</td>
                                                       <td>{poste.company}</td>
-                                                      <td><Button>Modify</Button></td>
-                                                      <td><Button onClick={this.handleDelete(poste)}>Delete</Button></td>
+                                                      <td><Button onClick={ () => this.modifyPoste(poste.id) } >Modify</Button></td>
+                                                      <td><Button onClick={ () => this.deletePoste(poste.id) } >Remove</Button></td>
                                                     </tr>)} 
    
                                                  </tbody>                                                

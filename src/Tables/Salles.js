@@ -25,14 +25,13 @@ class Salles extends Component{
         })
      }  
 
-     handleOnModifyClick(id){
-         console.log(id);
-     }
-
      deleteSalle(id){
-         axios.delete(`http://localhost:8000/api/salles/{id}`).then(response =>{
-             alert("Row deleted");
-         })
+        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        
+     }
+ 
+     modifySalle(id){
+         axios.put(`http://localhost:8000/api/companies/${id}`);
      }
 
     
@@ -65,8 +64,8 @@ class Salles extends Component{
                                                     <tr class="table-light" key={Salle.id}>
                                                       <td>{Salle.nom}</td>
                                                       <td>{Salle.Etage}</td>
-                                                      <td><Button onClick={this.handleOnModifyClick(Salle.id)}>Modify</Button></td>
-                                                      <td><Button>Delete</Button></td>
+                                                      <td><Button onClick={ () => this.modifySalle(Salle.id) } >Modify</Button></td>
+                                                      <td><Button onClick={ () => this.deleteSalle(Salle.id) } >Remove</Button></td>
                                                     </tr>)} 
    
                                                  </tbody>                                                

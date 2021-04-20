@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import './GlobalCalendar.css'
 
 class GlobalCalendar extends Component{
 
-    construcor(){
-        this.state=[];
+  constructor(props){
+      super(props); 
+      this.state=[];
     }
 
     render(){
