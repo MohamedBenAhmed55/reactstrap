@@ -5,94 +5,94 @@ import Forms from '../Forms/FormAjoutHrTravail'
 import axios from 'axios';
 import 'reactjs-popup/dist/index.css';
 
-class HeuresTravail extends Component{
-    
+class HeuresTravail extends Component {
+
     constructor() {
         super();
         this.state = { Heures: [] };
-       
+
     }
 
     componentDidMount() {
         this.getHeures();
-        
+
     }
 
     getHeures() {
         axios.get(`http://localhost:8000/api/heures_travails/`).then(response => {
-            this.setState({ Heures: response.data['hydra:member']})
+            this.setState({ Heures: response.data['hydra:member'] })
             // console.log(response.data['hydra:member']);
         })
-     }  
+    }
 
-     deleteHeure(id){
+    deleteHeure(id) {
         axios.delete(`http://localhost:8000/api/companies/${id}`);
-        
-     }
- 
-     modifyHeure(id){
-         axios.put(`http://localhost:8000/api/companies/${id}`);
-     }
+
+    }
+
+    modifyHeure(id) {
+        axios.put(`http://localhost:8000/api/companies/${id}`);
+    }
 
 
-    render(){
-        return(
+    render() {
+        return (
             <div>
                 <section className="row-section">
-                
+
                     <div className="container">
-                   
+
                         {
                             <div className={'row'}>
-                                
-                                    <div className="col-md-10 offset-md-1 row-block" >                                      
-                                             <table class="table table-hover">
-                                               <thead>
-                                                  <tr>                                                
 
-                                                  
-                                                  <th scope="col">Heure_deb</th>
-                                                  <th scope="col">Heure_fin</th>
-                                                  <th scope="col">Heure_deb_pause</th>
-                                                  <th scope="col">Heure_fin_pause</th>
-                                                  <th scope="col">Seance Unique</th>
-                                                  <th scope="col"></th>
-                                                  <th scope="col"></th>
-                                                 </tr>
-                                                 </thead>
-                                                 
-                                                 <tbody>
-                                                 { this.state.Heures.map(heure =>
-                                                    <tr class="table-light" key={heure.id}>
+                                <div className="col-md-10 offset-md-1 row-block" >
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
 
-                                                      
-                                                      <td>{heure.heureDeb.substr(11,8)}</td>
-                                                      <td>{heure.heureFin.substr(11,8)}</td>
-                                                      <td>{heure.heureDebPause.substr(11,8)}</td>
-                                                      <td>{heure.heureFinPause.substr(11,8)}</td>
-                                                      <td>{ heure.isSeanceUnique ? "Oui" : "Non"}</td>
-                                                      <td><Button onClick={ () => this.modifyHeure(heure.id) } >Modify</Button></td>
-                                                      <td><Button onClick={ () => this.deleteHeure(heure.id) } >Remove</Button></td>
-                                                    </tr>)}    
-                                                 </tbody>                                             
-                                             </table>                                        
-                                    </div>
-                                 
-                       
-                               
+
+                                                <th scope="col">Heure_deb</th>
+                                                <th scope="col">Heure_fin</th>
+                                                <th scope="col">Heure_deb_pause</th>
+                                                <th scope="col">Heure_fin_pause</th>
+                                                <th scope="col">Seance Unique</th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {this.state.Heures.map(heure =>
+                                                <tr class="table-light" key={heure.id}>
+
+
+                                                    <td>{heure.heureDeb.substr(11, 8)}</td>
+                                                    <td>{heure.heureFin.substr(11, 8)}</td>
+                                                    <td>{heure.heureDebPause.substr(11, 8)}</td>
+                                                    <td>{heure.heureFinPause.substr(11, 8)}</td>
+                                                    <td>{heure.isSeanceUnique ? "Oui" : "Non"}</td>
+                                                    <td><Button onClick={() => this.modifyHeure(heure.id)} >Modify</Button></td>
+                                                    <td><Button onClick={() => this.deleteHeure(heure.id)} >Remove</Button></td>
+                                                </tr>)}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+
                             </div>
                         }
-                       
+
                     </div>
                 </section>
                 <div className="container">
-                <div className={'row'}>
-                <div className="col-md-10 offset-md-1 row-block" >
-                <Popup trigger={<Button> Add Jour ferie</Button>} position="right center">
-                     <Forms />
-                </Popup>
-                </div>
-                </div>
+                    <div className={'row'}>
+                        <div className="col-md-10 offset-md-1 row-block" >
+                            <Popup trigger={<Button> Add Jour ferie</Button>} position="right center">
+                                <Forms />
+                            </Popup>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

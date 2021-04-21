@@ -13,8 +13,7 @@ class FormAjoutGroupe extends Component{
                "company_id": "",
         };
 
-        this.handleChefChange=this.handleChefChange.bind(this);
-        this.handleNameChange=this.handleNameChange.bind(this); 
+        this.onChange=this.onChange.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
     }
 
@@ -27,13 +26,9 @@ class FormAjoutGroupe extends Component{
         
     }
     
-    handleChefChange(event) {
-      this.setState({chef: event.target.value})
-    }
-
-    handleNameChange(event) {
-        this.setState({name: event.target.value});       
-      }
+    onChange(e){
+      this.setState({[e.target.name]:e.target.value});
+     }
 
 
       
@@ -62,14 +57,14 @@ handleSubmit(e) {
           <Col md>
             <Form.Group controlId="formGroupName">
               <Form.Label>Nom du groupe</Form.Label>
-              <Form.Control type="text" value={this.state.name} onChange={this.handleNameChange}/>
+              <Form.Control type="text" value={this.state.name} name ="name" onChange={this.onChange}/>
             </Form.Group>
           </Col>
 
             <Col md>
           <Form.Group controlId="formChef">
             <Form.Label>Nom du chef</Form.Label>
-            <Form.Control type="text" value={this.state.chef} onChange={this.handleChefChange}  />
+            <Form.Control type="text" value={this.state.chef} name="chef" onChange={this.onChange}  />
           </Form.Group>
 
             </Col>   

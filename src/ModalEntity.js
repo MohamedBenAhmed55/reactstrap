@@ -8,14 +8,26 @@ class ModalEntity extends Component {
    { 
     show: false,
     setShow: false,
+    title: props.title,
+    Buttontitle: props.Buttontitle,
+    body: props.body,
+
   }
 
   this.handleClose=this.handleClose.bind(this);
   this.handleShow=this.handleShow.bind(this);
+  this.refreshPage=this.refreshPage.bind(this);
   } 
 
-   handleClose = () =>this.setState({show: false});
-   handleShow = () => this.setState({show: true});
+  handleClose = () =>{
+    this.setState({setShow: false});
+    this.refreshPage();
+ };
+
+ refreshPage = ()=>{
+  window.location.reload();
+}
+   handleShow = () => this.setState({setShow: true});
 
 
 
@@ -23,7 +35,7 @@ class ModalEntity extends Component {
   return (
     <div>
       <Button variant="primary" onClick={this.handleShow}>
-        Launch static backdrop modal
+        {this.state.Buttontitle}
       </Button>
 
       <Modal
@@ -33,11 +45,10 @@ class ModalEntity extends Component {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>{this.state.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          I will not close if you click outside me. Don't even try to press
-          escape key.
+          {this.state.body}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={this.handleClose}>
