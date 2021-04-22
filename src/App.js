@@ -2,6 +2,7 @@ import './App.css';
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import Forms from './Forms';
+import UserProfile from './UserProfile'
 
 import { BrowserRouter as Router } from 'react-router-dom';
 import FinalPage from './Finalpage';
@@ -28,7 +29,7 @@ import FinalPage from './Finalpage';
 function App(){
    
   return(
-    <Router> <FinalPage />  </Router>
+    <Router> <UserProfile />  </Router>
 
   )
 }

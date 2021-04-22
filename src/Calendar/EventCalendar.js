@@ -40,24 +40,7 @@ this.refreshPage=this.refreshPage.bind(this);
     //     })
     //  }
     
-    
-    // componentDidMount() {
-    //     this.getEvents();
-        
-    // }
 
-    // makeTable(){
-    //     this.state.Events.map(Event=>
-    //         this.state.Table.Title = Event.title,
-    //         this.state.Table.date=Event.date_deb
-    //         )
-    // }
-    
-    // addevenement=() =>{ this.state.Events.map(event =>
-    //    FullCalendar.addevent )
-
-    // }
-    
     render(){
         return(
             <div>

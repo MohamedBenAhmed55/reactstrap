@@ -10,7 +10,7 @@ import Table from './Tables/Table';
 import JourFerie from './Tables/JoursFerie';
 import FormAjoutEvenement from './Forms/FormAjoutEvenement';
 import Dropdown from 'react-bootstrap/Dropdown'
-import logo from './images/cosap logo.png';
+import logo from './images/LogoCosap.png';
 import Company from './Tables/company';
 import FormAjoutCompany from './Forms/FormAjoutCompany';
 import GlobalCalendar from './Calendar/GlobalCalendar';
