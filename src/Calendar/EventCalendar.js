@@ -2,7 +2,10 @@ import FullCalendar from '@fullcalendar/react';
 import React,{Component} from 'react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import './calendar.css';
+import ModalEntity from '../ModalEntity';
 import axios from 'axios';
+import Forms from '../Forms/FormAjoutEvenement';
+import interactionPlugin from "@fullcalendar/interaction";
 
 import { Button, Modal } from 'react-bootstrap';
 
@@ -23,6 +26,7 @@ class EventCalendar extends Component{
 this.handleClose=this.handleClose.bind(this);
 this.handleShow=this.handleShow.bind(this);
 this.refreshPage=this.refreshPage.bind(this);
+this.handleClose=this.handleClose.bind(this);
     }
     handleClose = () =>{
         this.setState({setShow: false});
@@ -39,7 +43,9 @@ this.refreshPage=this.refreshPage.bind(this);
            
     //     })
     //  }
-    
+    handleDateClick = (arg) => { 
+      window.alert(arg.dateStr)
+    }
 
     render(){
         return(
@@ -50,36 +56,13 @@ this.refreshPage=this.refreshPage.bind(this);
                 <FullCalendar
             plugins={[ dayGridPlugin ]}
             initialView="dayGridMonth"
-            
+            dateClick={this.handleDateClick}
             events={this.state.Events}
           />
             </div>
             <div className="container">
-                 <Button variant="primary" onClick={this.handleShow}>
-                     Launch static backdrop modal
-                 </Button>
-                
-                <Modal
-        show={this.state.setShow}
-        onHide={this.handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Ajouter Companie</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h1>Test</h1>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={this.handleClose}>
-            Close
-          </Button>
-          <Button variant="primary">Understood</Button>
-        </Modal.Footer>
-      </Modal>
-                
-                
+            <ModalEntity Buttontitle="Add Event" title="Ajouter evenement" body={<Forms />} />
+
                 </div>
             </div>
         )

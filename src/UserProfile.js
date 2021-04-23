@@ -1,15 +1,30 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 
 class UserProfile extends Component {
+
+    constructor() {
+        super();
+        this.state = { user: [] };
+    }
+
+    componentDidMount() {
+        this.getUser(13);
+    }
+
+    getUser(id) {
+        axios.get(`http://localhost:8000/api/getsingleuser/${id}`).then(response => {
+            console.log(response);
+            this.setState({ user: response.data });
+            console.log(this.state.user);
+
+        })
+    }
 
     render() {
         return (
             <div class="container">
                 <div class="main-body">
-
-
-
-
                     <div class="row gutters-sm">
                         <div class="col-md-4 mb-3">
                             <div class="card">
@@ -17,9 +32,9 @@ class UserProfile extends Component {
                                     <div class="d-flex flex-column align-items-center text-center">
                                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150" />
                                         <div class="mt-3">
-                                            <h4>John Doe</h4>
+                                            <h4>{this.state.user.name} {this.state.user.lastname}</h4>
                                             <p class="text-secondary mb-1">Full Stack Developer</p>
-                                            <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                                            <p class="text-muted font-size-sm">{this.state.user.adresse}</p>
                                             <button class="btn btn-primary">Follow</button>
                                             <button class="btn btn-outline-primary">Message</button>
                                         </div>
@@ -36,8 +51,8 @@ class UserProfile extends Component {
                                             <h6 class="mb-0">Full Name</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            Kenneth Valdez
-                    </div>
+                                            {this.state.user.name} {this.state.user.lastname}
+                                        </div>
                                     </div>
                                     <hr />
                                     <div class="row">
@@ -45,8 +60,8 @@ class UserProfile extends Component {
                                             <h6 class="mb-0">Email</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            fip@jukmuh.al
-                    </div>
+                                            {this.state.user.email}
+                                        </div>
                                     </div>
                                     <hr />
                                     <div class="row">
@@ -54,17 +69,17 @@ class UserProfile extends Component {
                                             <h6 class="mb-0">Phone</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            (239) 816-9029
-                    </div>
+                                            {this.state.user.phone}
+                                        </div>
                                     </div>
                                     <hr />
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Mobile</h6>
+                                            <h6 class="mb-0">Fax</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            (320) 380-4539
-                    </div>
+                                            {this.state.user.fax}
+                                        </div>
                                     </div>
                                     <hr />
                                     <div class="row">
@@ -72,12 +87,12 @@ class UserProfile extends Component {
                                             <h6 class="mb-0">Address</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            Bay Area, San Francisco, CA
-                    </div>
+                                            {this.state.user.adresse}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>

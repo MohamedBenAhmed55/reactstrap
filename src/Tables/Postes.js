@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import Popup from "reactjs-popup";
 import Forms from '../Forms/FormAjoutPoste'
 import ModalEntity from '../ModalEntity'
 

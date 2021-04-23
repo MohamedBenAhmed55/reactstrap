@@ -52,9 +52,7 @@ class Company extends Component{
                     <div className="container">
                    
                         {
-                            <div className={'row'}>
-                                
-                                                                         
+                            <div className={'row'}>                                                                             
                                              <table class="table table-hover">
                                                <thead>
                                                   <tr>                                                

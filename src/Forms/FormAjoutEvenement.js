@@ -1,7 +1,29 @@
 import React, { Component } from 'react';
 import { Row , Col , Button , Form, Container} from 'react-bootstrap';
+import axios from 'axios';
 
 class FormAjoutEvenement extends Component{
+
+  constructor() {
+    super();
+    this.state = { sallesNames: [] };
+}
+
+
+
+  componentDidMount(){
+    this.getSallesNames();
+
+  }
+
+  getSallesNames() {
+    axios.get(`http://localhost:8000/api/salles_Names`).then(response => {
+        this.setState({ sallesNames: response.data['data'] })
+        
+    })
+}
+
+
 
     render(){
 
@@ -57,11 +79,9 @@ class FormAjoutEvenement extends Component{
             <Form.Group as={Col} controlId="formSalleId">
               <Form.Label>Salle</Form.Label>
                <Form.Control as="select" defaultValue="01">
-                 <option>01</option>
-                 <option>02</option>
-                 <option>03</option>
-                 <option>04</option>
-                 <option>05</option>
+                 { this.state.sallesNames.map(salle=>
+                 <option>{salle.name}</option>)
+                }
                </Form.Control>
              </Form.Group> 
           

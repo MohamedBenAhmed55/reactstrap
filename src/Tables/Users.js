@@ -40,8 +40,6 @@ class Users extends Component {
             <div>
                 <section className="row-section">
 
-
-
                     {
                         <div className={'row'}>
 
