@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import ModalEntity from './ModalEntity';
 import Forms from './Forms/ChangePassword';
+import jwt_decode from "jwt-decode";
+
 class UserProfile extends Component {
 
     constructor() {
@@ -9,15 +11,31 @@ class UserProfile extends Component {
         this.state = {
             user: [],
             'datenais': "",
-            'dateemb': ""
+            'dateemb': "",
+            'token':"",
+            'id':"",
         };
     }
 
     componentDidMount() {
-        this.getUser(13);
+
+        // console.log(jwt_decode(localStorage.getItem('token')).UserId);
+        // this.setState({token: jwt_decode(localStorage.getItem('token'))});
+        // this.setState({id: this.state.token.UserId});
+        // console.log(this.state.id);
+        this.TokenHandle();
+        this.getUser(this.state.id);
+        
+    }
+
+    TokenHandle(){
+        let token = localStorage.getItem('token');
+        // console.log(jwt_decode(token).UserId);
+        this.state.id=jwt_decode(token).UserId;
     }
 
     getUser(id) {
+        
         axios.get(`http://localhost:8000/api/getsingleuser/${id}`).then(response => {
             console.log(response);
             this.setState({ user: response.data });
@@ -29,12 +47,7 @@ class UserProfile extends Component {
     }
 
     
-    // getUser(id) {
-    //     axios.get(`http://localhost:8000/api/users/${id}`).then(response => {
-    //         this.setState({ users: response.data })
-    //         console.log(response.data);
-    //     })
-    // }
+
 
     render() {
         return (
@@ -84,6 +97,7 @@ class UserProfile extends Component {
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             {this.state.user.email}
+                                            
                                         </div>
                                     </div>
                                     <hr />

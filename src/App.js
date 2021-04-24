@@ -29,7 +29,7 @@ import FinalPage from './Finalpage';
 function App(){
    
   return(
-    <Router> <UserProfile />  </Router>
+    <Router> <FinalPage />  </Router>
 
   )
 }

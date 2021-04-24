@@ -15,7 +15,7 @@ import Company from './Tables/company';
 import FormAjoutCompany from './Forms/FormAjoutCompany';
 import GlobalCalendar from './Calendar/GlobalCalendar';
 import HeuresTravail from './Tables/HeuresTravail';
-import Profile from './Profile';
+import Profile from './UserProfile';
 import Salles from './Tables/Salles';
 import Postes from './Tables/Postes';
 import Groupes from './Tables/Groupes';

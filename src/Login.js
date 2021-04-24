@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Login.css';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 class Login extends Component {
 
@@ -21,6 +22,11 @@ class Login extends Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+
+    // componentDidMount(){
+    //     this.Login();
+    // }
+
     Login() {
         axios.post(`http://localhost:8000/api/login_check`, {
 
@@ -29,8 +35,11 @@ class Login extends Component {
 
         }).then(response => {
             console.log(response.data);
-            this.setState({ token: response.data });
+            this.setState({ token: response.data.token });
             console.log(this.state.token);
+            console.log(jwtDecode(this.state.token));
+            localStorage.setItem('token',this.state.token );
+            console.log(localStorage.getItem('token'));
         });
     }
 
