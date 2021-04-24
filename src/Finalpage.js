@@ -3,25 +3,28 @@ import NavBar from './NavBar';
 import Login from './Login';
 import jwt_decode from "jwt-decode";
 
+// import Login from './test/logintest'
+
 class FinalPage extends Component{
 
     constructor(props){
         super(props);
         this.state = {
-          UserAuthenticated: false,
+          UserAuthenticated: true,
         };
       }
 
     componentDidMount(){
-      this.HandleAuthentif();
+      // this.HandleAuthentif();
     }
 
-    HandleAuthentif(){
-      let token = localStorage.getItem('token');
-      if (token !=""){
-        this.setState({UserAuthenticated: true})
-      }
-    }
+    // HandleAuthentif(){
+    //   let token = localStorage.getItem('token');
+    //   if (token){
+    //     this.setState({UserAuthenticated: false})
+    //   }
+    //   console.log(token);
+    // }
 
 
       render(){

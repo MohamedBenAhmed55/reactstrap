@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Login from '../Login';
+import { Row, Col, Button, Form } from 'react-bootstrap';
 
 class logintest extends Component{
 
@@ -16,12 +16,17 @@ class logintest extends Component{
         this.handleUsernameChange=this.handleUsernameChange.bind(this);
         this.handlePasswordChange=this.handlePasswordChange.bind(this);
         this.Login=this.Login.bind(this);
+        this.onChange=this.onChange.bind(this);
     }
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+      }
   
 
     componentDidMount(){
         this.Login();
     }
+
     Login(){
         axios.post(`http://localhost:8000/api/login_check`,{
        
@@ -29,8 +34,7 @@ class logintest extends Component{
                "password": "0000",
                 
         }).then(response =>{
-            this.setState({token: response.data.token});
-            console.log(response);
+            console.log(response.data.token);
            
         });
     }
@@ -47,13 +51,26 @@ class logintest extends Component{
 
         return(
             <div>
-            <form onSubmit={this.Login}>
-                <input type="text" placeholder="username" value={this.state.username} onChange={this.handleUsernameChange}/>
-                <input type="password" placeholder="password" value={this.state.password} onChange={this.handlePasswordChange}/>
-                <button type="submit">Login</button>
-            </form>
-            { (this.state.token) ? <h1>Hello</h1> : null }
-            </div>
+            <Form onSubmit={this.handleSubmit}>
+            <Row>
+              <Col md>
+                <Form.Group controlId="formUsername">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control type="text" value={this.state.username} name="username" onChange={this.onChange}  />
+                </Form.Group>
+              </Col>
+    
+              <Col md>
+                <Form.Group controlId="formPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control type="password" value={this.state.password} name="password" onChange={this.onChange} />
+                </Form.Group>   
+              </Col>
+            </Row>
+    
+            <Button variant="secondary" type="submit" >Login</Button>
+          </Form>
+          </div>
         )
     }
 }

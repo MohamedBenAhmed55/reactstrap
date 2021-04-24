@@ -8,14 +8,12 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
             "username": "",
             "password": "",
-            "token": ""
-
+            "token": "",
         };
         this.onChange = this.onChange.bind(this);
-        this.Login = this.Login.bind(this);
+        this.Login=this.Login.bind(this);
     }
 
     onChange(e) {
@@ -23,23 +21,30 @@ class Login extends Component {
     }
 
 
-    // componentDidMount(){
+    // componentDidMount() {
     //     this.Login();
     // }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.Login();
+    }
 
     Login() {
         axios.post(`http://localhost:8000/api/login_check`, {
 
             "username": this.state.username,
-            "password": this.state.password,
+            "password": this.state.username,
 
         }).then(response => {
             console.log(response.data);
             this.setState({ token: response.data.token });
             console.log(this.state.token);
             console.log(jwtDecode(this.state.token));
-            localStorage.setItem('token',this.state.token );
+            localStorage.setItem('token', this.state.token);
             console.log(localStorage.getItem('token'));
+            console.log(this.state.username);
+            console.log(this.state.password)
         });
     }
 
@@ -56,24 +61,26 @@ class Login extends Component {
             <div className="container">
                 <div className="card card-container">
 
-                    <img id="profile-img" className="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                    <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                     <p id="profile-name" className="profile-name-card"></p>
-                    <form className="form-signin" onSubmit={this.Login}>
+                    <form className="form-signin" >
                         <span id="reauth-email" className="reauth-email"></span>
-                        <input type="text" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus value={this.state.username} name="username" onChange={this.onChange} />
-                        <input type="password" id="inputPassword" className="form-control" placeholder="Password" required value={this.state.password} name="password" onChange={this.onChange} />
-                        <div id="remember" className="checkbox">
+                        <input type="text" id="inputEmail" className="form-control" placeholder="Username"   value={this.state.username} name="username" onChange={this.onChange} />
+                        <input type="password" id="inputPassword" className="form-control" placeholder="Password"  value={this.state.password} name="password" onChange={this.onChange} />
+                        {/* <div id="remember" className="checkbox">
                             <label>
                                 <input type="checkbox" value="remember-me" /> Remember me
-                    </label>
-                        </div>
-                        <button className="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+                            </label>
+                        </div> */}
+                        <button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.handleSubmit}>Login</button>
                     </form>
                     <a href="#" className="forgot-password">
                         Forgot the password?
             </a>
                 </div>
+
             </div>
+
         )
     }
 }

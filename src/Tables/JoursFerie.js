@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
-import Forms from '../Forms/FormAjoutCompany'
+import Forms from '../Forms/FormAjoutJrFer'
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
 
@@ -27,6 +27,7 @@ class JourFerie extends Component {
 
     deleteJour(id) {
         axios.delete(`http://localhost:8000/api/jours_feries/${id}`);
+        this.getJoursFeries();
     }
 
     modifyJour(id) {
@@ -80,7 +81,7 @@ class JourFerie extends Component {
                 <div className="container">
                     <div className={'row'}>
                         <div className="col-md-10 offset-md-1 row-block" >
-                            <ModalEntity Buttontitle="Add Jour Ferie" title="test" body={<Forms />} />
+                            <ModalEntity Buttontitle="Add Jour Ferie" title="Ajouter jour ferie" body={<Forms />} />
                         </div>
                     </div>
                 </div>
