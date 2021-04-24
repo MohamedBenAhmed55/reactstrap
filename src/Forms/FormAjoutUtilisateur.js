@@ -90,7 +90,7 @@ class FormAjoutUtilisateur extends Component {
         <Row>
           <Col md>
             <Form.Group controlId="formName">
-              <Form.Label>Preom</Form.Label>
+              <Form.Label>Prenom</Form.Label>
               <Form.Control type="text" placeholder="Prenom" />
             </Form.Group>
 
