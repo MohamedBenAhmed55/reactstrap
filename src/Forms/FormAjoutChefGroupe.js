@@ -10,10 +10,11 @@ class FormAjoutChefGroupe extends Component{
          
            "datedeb": "",
            "dateemb":"",
+           "usersnames": []
     };
 
     this.onChange=this.onChange.bind(this);
-    this.handleSubmit=this.handleSubmit.bind(this);
+
 }
 
 addChef(){
@@ -24,6 +25,19 @@ addChef(){
     
 }
 
+
+getUserNames() {
+  axios.get(`http://localhost:8000/api/users_Names`).then(response => {
+      this.setState({ usersnames: response.data['data'] })
+      
+  })
+}
+
+componentDidMount(){
+  this.getUserNames();
+
+}
+
 onChange(e){
   this.setState({[e.target.name]:e.target.value});
  }
@@ -32,10 +46,22 @@ onChange(e){
         return(
             <Form onSubmit={this.handleSubmit}>
           <Row>
+
+          <Col md>
+            <Form.Group as={Col} controlId="formSalleId">
+              <Form.Label>User</Form.Label>
+               <Form.Control as="select" defaultValue="01">
+                 { this.state.usersnames.map(user=>
+                 <option>{user.name}</option>)
+                }
+               </Form.Control>
+             </Form.Group> 
+          
+            </Col>
             
             <Col md>
             <Form.Group controlId="formDateDeb">
-          <Form.Label>Date de Naissance</Form.Label>
+          <Form.Label>Date début</Form.Label>
             <Form.Control type="date" value={this.state.dateDeb} name ="name" onChange={this.onChange}  />
           </Form.Group>
           
@@ -43,7 +69,7 @@ onChange(e){
 
             <Col md>
             <Form.Group controlId="formDateFin">
-          <Form.Label>Date embauche</Form.Label>
+          <Form.Label>Date Fin</Form.Label>
             <Form.Control type="date" value={this.state.dateemb} name ="name" onChange={this.onChange} />
           </Form.Group>
           

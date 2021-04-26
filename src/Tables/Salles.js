@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import Popup from "reactjs-popup";
-import FormAjoutCompany from '../Forms/FormAjoutCompany'
+import Forms from '../Forms/FormAjoutSalle'
+import ModalEntity from '../ModalEntity'
 
 import axios from 'axios';
 
@@ -10,7 +11,6 @@ class Salles extends Component {
     constructor() {
         super();
         this.state = { Salles: [] };
-        this.handleOnModifyClick = this.handleOnModifyClick.bind(this);
 
     }
 
@@ -27,6 +27,7 @@ class Salles extends Component {
 
     deleteSalle(id) {
         axios.delete(`http://localhost:8000/api/companies/${id}`);
+        this.refreshPage();
 
     }
 
@@ -81,10 +82,7 @@ class Salles extends Component {
                 </section>
                 <div className="container">
 
-
-                    <Popup trigger={<Button> Add Company</Button>} position="right center">
-                        <FormAjoutCompany />
-                    </Popup>
+                    <ModalEntity Buttontitle="Ajouter Salle" title="Ajouter Salle" body={<Forms />} />
 
 
                 </div>

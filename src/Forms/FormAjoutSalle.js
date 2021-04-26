@@ -79,7 +79,7 @@ class FormAjoutSalle extends Component {
                     </Col>
                 </Row>
 
-                <Button variant="secondary" type="submit" >Ajouter Company</Button>
+                <Button variant="secondary" type="submit" >Ajouter une salle</Button>
             </Form>
         )
     }

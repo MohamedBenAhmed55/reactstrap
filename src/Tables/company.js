@@ -96,7 +96,7 @@ class Company extends Component {
                     </div>
                 </section>
                 <div className="container">
-                    <ModalEntity Buttontitle="Add Company" title="Ajoter Comapany" body={<FormAjoutCompany />} />
+                    <ModalEntity Buttontitle="Add Company" title="Ajouter Comapany" body={<FormAjoutCompany />} />
 
                 </div>
             </div>

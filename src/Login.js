@@ -33,8 +33,8 @@ class Login extends Component {
     Login() {
         axios.post(`http://localhost:8000/api/login_check`, {
 
-            "username": this.state.username,
-            "password": this.state.username,
+            "username": "admin",
+            "password": "0000",
 
         }).then(response => {
             console.log(response.data);

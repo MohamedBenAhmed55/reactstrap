@@ -2,7 +2,8 @@ import React ,{Component} from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import Popup from "reactjs-popup";
-import Forms from '../Forms/FormAjoutUtilisateur'
+import Forms from '../Forms/FormAjoutChefGroupe';
+import ModalEntity from '../ModalEntity';
 
 class ChefGroupe extends Component{
 
@@ -79,9 +80,7 @@ class ChefGroupe extends Component{
                 <div className="container">
                 <div className={'row'}>
                 <div className="col-md-10 offset-md-1 row-block" >
-                <Popup trigger={<Button > Ajouter chef</Button>} position="right center">
-                     <Forms />
-                </Popup>
+                <ModalEntity Buttontitle="Ajouter un chef de groupe" title="Ajouter Chef" body={<Forms />} />
                 </div>
                 </div>
                 </div>
