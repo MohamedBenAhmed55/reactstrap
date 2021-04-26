@@ -27,12 +27,12 @@ class Postes extends Component {
     }
 
     deletePoste(id) {
-        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        axios.delete(`http://localhost:8000/api/postes/${id}`);
 
     }
 
     modifyPoste(id) {
-        axios.put(`http://localhost:8000/api/companies/${id}`);
+        axios.put(`http://localhost:8000/api/postes/${id}`);
     }
 
     render() {
@@ -64,7 +64,7 @@ class Postes extends Component {
 
                                                     <td>{poste.name}</td>
                                                     <td>{poste.company}</td>
-                                                    <td><Button onClick={() => this.modifyPoste(poste.id)} >Modify</Button></td>
+                                                    <td><ModalEntity Buttontitle="Modify" title="Modifier poste" body={<Forms modify={poste.id} data={poste} />} /></td>
                                                     <td><Button onClick={() => this.deletePoste(poste.id)} >Remove</Button></td>
                                                 </tr>)}
 

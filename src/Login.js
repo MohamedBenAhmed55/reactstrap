@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import './Login.css';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import { Redirect } from 'react-router';
+// import NavBar from './NavBar';
 
 class Login extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            "username": "",
+            "username": "admin",
             "password": "",
             "token": "",
         };
         this.onChange = this.onChange.bind(this);
-        this.Login=this.Login.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     onChange(e) {
@@ -25,54 +27,66 @@ class Login extends Component {
     //     this.Login();
     // }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        this.Login();
-    }
+    // componentDidMount(){
+    //     let token = JSON.parse(jwtDecode(localStorage.getItem('token')));
+    //     if (token){
+    //         <Redirect to= "/home"/>
+    //     }
+    // }
 
-    Login() {
+    handleSubmit(event) {
+        console.log('login', {
+
+            "username": this.state.username,
+            "password": this.state.password,
+
+        });
         axios.post(`http://localhost:8000/api/login_check`, {
 
-            "username": "admin",
-            "password": "0000",
+            "username": this.state.username,
+            "password": this.state.password,
 
         }).then(response => {
-            console.log(response.data);
-            this.setState({ token: response.data.token });
-            console.log(this.state.token);
-            console.log(jwtDecode(this.state.token));
-            localStorage.setItem('token', this.state.token);
-            console.log(localStorage.getItem('token'));
-            console.log(this.state.username);
-            console.log(this.state.password)
+            // console.log(response.data);
+            if (response.data.token) {
+                this.setState({ token: response.data.token });
+                console.log(this.state.token);
+                console.log(jwtDecode(this.state.token));
+                localStorage.setItem('token', this.state.token);
+                // console.log(localStorage.getItem('token'));
+
+                // <Redirect to= "/" component ={NavBar}/>
+            }
         });
+
+        event.preventDefault();
     }
 
-    handleUsernameChange(event) {
-        this.setState({ username: event.target.value })
-    }
+    // handleUsernameChange(event) {
+    //     this.setState({ username: event.target.value })
+    // }
 
-    handlePasswordChange(event) {
-        this.setState({ password: event.target.value });
-    }
+    // handlePasswordChange(event) {
+    //     this.setState({ password: event.target.value });
+    // }
 
     render() {
         return (
             <div className="container">
                 <div className="card card-container">
 
-                    <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                    <img id="profile-img" className="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                     <p id="profile-name" className="profile-name-card"></p>
-                    <form className="form-signin" >
+                    <form className="form-signin" method="post" onSubmit={this.handleSubmit} >
                         <span id="reauth-email" className="reauth-email"></span>
-                        <input type="text" id="inputEmail" className="form-control" placeholder="Username"   value={this.state.username} name="username" onChange={this.onChange} />
-                        <input type="password" id="inputPassword" className="form-control" placeholder="Password"  value={this.state.password} name="password" onChange={this.onChange} />
+                        <input type="text" id="inputEmail" className="form-control" placeholder="Username" value={this.state.username} name="username" onChange={this.onChange} />
+                        <input type="password" id="inputPassword" className="form-control" placeholder="Password" value={this.state.password} name="password" onChange={this.onChange} />
                         {/* <div id="remember" className="checkbox">
                             <label>
                                 <input type="checkbox" value="remember-me" /> Remember me
                             </label>
                         </div> */}
-                        <button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.handleSubmit}>Login</button>
+                        <button type="submit" className="btn btn-lg btn-primary btn-block btn-signin" >Login</button>
                     </form>
                     <a href="#" className="forgot-password">
                         Forgot the password?

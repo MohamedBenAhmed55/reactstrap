@@ -52,61 +52,48 @@ class FormAjoutUtilisateur extends Component {
 
     axios.post(`http://localhost:8000/api/users`, {
 
-      "username": "string",
-      "roles": [
-        "string"
-      ],
-      "password": "string",
-      "email": "string",
-      "cin": "string",
-      "nom": "string",
-      "prenom": "string",
-      "dateNai": "2021-04-24T20:41:18.259Z",
-      "dateEmbauche": "2021-04-24T20:41:18.259Z",
-      "Genre": "string",
-      "Adresse": "string",
-      "Salaire": 0,
-      "phone": "string",
-      "Fax": "string",
-      "Pays": "string",
-      "image": "string",
-      "etatPresence": "string",
-      "matricule": "string",
-      "company": "string",
-      "groupe": "string",
+      "username": this.state.username,
+      "roles": this.state.roles,
+      "password": this.state.password,
+      "email": this.state.email,
+      "cin": this.state.cin,
+      "nom": this.state.nom,
+      "prenom": this.state.prenom,
+      "dateNai": this.state.dateNai,
+      "dateEmbauche": this.state.dateEmbauche,
+      "Genre": this.state.Genre,
+      "Adresse": this.state.Adresse,
+      "Salaire": this.state.Salaire,
+      "phone": this.state.phone,
+      "Fax": this.state.Fax,
+      "Pays": this.state.Pays,
+      "image": this.state.image,
+      "etatPresence": this.state.etatPresence,
+      "matricule": this.state.matricule,
+      "company": this.state.company,
+      "groupe": this.state.groupe,
 
     })
       .then(res => {
         console.log({
-
-          "username": "string",
-          "roles": [
-            "string"
-          ],
-          "password": "string",
-          "email": "string",
-          "cin": "string",
-          "nom": "string",
-          "prenom": "string",
-          "dateNai": "2021-04-24T20:41:18.259Z",
-          "dateEmbauche": "2021-04-24T20:41:18.259Z",
-          "Genre": "string",
-          "Adresse": "string",
-          "Salaire": 0,
-          "phone": "string",
-          "Fax": "string",
-          "Pays": "string",
-          "image": "string",
-          "etatPresence": "string",
-          "matricule": "string",
-          "company": "string",
-          "groupe": "string",
+          res
         }
         );
       })
-    this.setState({ number: this.state.number + 1 })
   }
 
+  updateUtilisateur(id){
+    axios.put(`http://localhost:8000/api/users/${id}`, {
+      "name": this.state.name,
+      "company_id": this.state.company_id,
+    })
+      .then(res => {
+        console.log({
+          "name": this.state.name,
+          "company_id": this.state.company_id,
+        });
+      })
+  }
 
   render() {
     return (

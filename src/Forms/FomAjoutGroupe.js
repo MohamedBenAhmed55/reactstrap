@@ -47,7 +47,18 @@ handleSubmit(e) {
       })
   }
    
-
+  updateGroup(id){
+    axios.put(`http://localhost:8000/api/postes/${id}`, {
+      "name": this.state.name,
+      "company_id": this.state.company_id,
+    })
+      .then(res => {
+        console.log({
+          "name": this.state.name,
+          "company_id": this.state.company_id,
+        });
+      })
+  }
 
     render(){
 

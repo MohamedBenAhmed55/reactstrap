@@ -10,11 +10,25 @@ class FormAjoutPoste extends Component {
 
       "name": "",
       "company_id": "",
+      "id": props.modify,
+
     };
 
 
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.updatePost = this.updatePost.bind(this)
+  }
+
+  componentDidMount() {
+    this.setFields();
+  }
+
+  setFields() {
+    if (this.props.data) {
+      this.setState({ "name": this.props.data.name, "company_id": this.props.data.company_id, });
+
+    }
   }
 
   onChange(e) {
@@ -24,18 +38,54 @@ class FormAjoutPoste extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    axios.post(`http://localhost:8000/api/postes`, {
-      "name": this.state.name,
-      "company_id": this.state.company_id,
-    })
-      .then(res => {
-        console.log({
-          "name": this.state.name,
-          "company_id": this.state.company_id,
-        });
+    if (this.state.id) {
+      this.updatePost(this.state.id);
+    }
+    else {
+      axios.post(`http://localhost:8000/api/postes`, {
+        "name": this.state.name,
+        "company_id": this.state.company_id,
       })
+        .then(res => {
+          console.log({
+            "name": this.state.name,
+            "company_id": this.state.company_id,
+          });
+        })
+    }
   }
 
+  // updatePost(id){
+  //   let config = {
+  //     headers: {
+  //       header1: "application/merge-patch+json",
+  //     }
+  //   }
+  //   axios.patch(`http://localhost:8000/api/postes/${id}`, config,{
+  //     "name": this.state.name,
+  //     "company_id": this.state.company_id,
+  //   })
+  //     .then(res => {
+  //       console.log({
+  //         "name": this.state.name,
+  //         "company_id": this.state.company_id,
+  //       });
+  //     })
+  // }
+
+  updatePost(id) {
+    axios({
+      method: 'patch', //you can set what request you want to be
+      url: `http://localhost:8000/api/postes/${id}`,
+      data: {
+        "name": this.state.name,
+        "company_id": this.state.company_id,
+      },
+      headers: {
+        "Content-Type": 'application/merge-patch+json'
+      }
+    })
+  }
 
 
   render() {

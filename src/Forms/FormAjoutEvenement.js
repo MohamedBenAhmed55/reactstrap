@@ -23,6 +23,19 @@ class FormAjoutEvenement extends Component{
     })
 }
 
+updateEvent(id){
+  axios.put(`http://localhost:8000/api/postes/${id}`, {
+    "name": this.state.name,
+    "company_id": this.state.company_id,
+  })
+    .then(res => {
+      console.log({
+        "name": this.state.name,
+        "company_id": this.state.company_id,
+      });
+    })
+}
+
 
 
     render(){
@@ -37,7 +50,18 @@ class FormAjoutEvenement extends Component{
             <Form.Control type="text" placeholder="Titre de votre evenement" />           
           </Form.Group>
 
+          <Col md>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+                 <Form.Label>Description</Form.Label>
+                 <Form.Control as="textarea" rows={3} />
+              </Form.Group>        
             </Col>
+
+            </Col>
+           
+            </Row>
+
+            <Row>
             <Col md>
           <Form.Group controlId="formDatedebut">
             <Form.Label>Date de début</Form.Label>
@@ -68,12 +92,7 @@ class FormAjoutEvenement extends Component{
              </Form.Group>          
             </Col>
 
-            <Col md>
-              <Form.Group controlId="exampleForm.ControlTextarea1">
-                 <Form.Label>Description</Form.Label>
-                 <Form.Control as="textarea" rows={3} />
-              </Form.Group>        
-            </Col>
+            
 
             <Col md>
             <Form.Group as={Col} controlId="formSalleId">
@@ -87,6 +106,9 @@ class FormAjoutEvenement extends Component{
           
             </Col>
 
+            
+            </Row>
+            <Row>
             <Col md>
             <Form>
         {['checkbox'].map((type) => (
@@ -111,7 +133,7 @@ class FormAjoutEvenement extends Component{
             </Col>
             </Row>
                       
-          <Button variant="secondary" type="submit">Ajouter Utilisateur</Button>
+          <Button variant="secondary" type="submit">Ajouter Evenement</Button>
         </Form>
         </Container>
         )

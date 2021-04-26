@@ -36,6 +36,19 @@ class FormAjoutCompany extends Component {
     })
   }
 
+  updateCompany(id){
+    axios.put(`http://localhost:8000/api/postes/${id}`, {
+      "name": this.state.name,
+      "company_id": this.state.company_id,
+    })
+      .then(res => {
+        console.log({
+          "name": this.state.name,
+          "company_id": this.state.company_id,
+        });
+      })
+  }
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }

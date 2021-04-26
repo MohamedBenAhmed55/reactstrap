@@ -10,18 +10,18 @@ class FinalPage extends Component{
     constructor(props){
         super(props);
         this.state = {
-          UserAuthenticated: true,
+          UserAuthenticated: false,
         };
       }
 
-    componentDidMount(){
-      // this.HandleAuthentif();
-    }
+    // componentDidMount(){
+    //   this.HandleAuthentif();
+    // }
 
     // HandleAuthentif(){
-    //   let token = localStorage.getItem('token');
+    //   let token = JSON.parse(jwt_decode(localStorage.getItem('token')));;
     //   if (token){
-    //     this.setState({UserAuthenticated: false})
+    //     this.setState({UserAuthenticated: true})
     //   }
     //   console.log(token);
     // }
