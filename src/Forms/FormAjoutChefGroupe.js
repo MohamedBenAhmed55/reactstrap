@@ -119,8 +119,8 @@ class FormAjoutChefGroupe extends Component {
             </Form.Group>
 
           </Col>
-          </Row>
-          <Row>
+        </Row>
+        <Row>
 
           <Col md>
             <Form.Group controlId="formDateDeb">

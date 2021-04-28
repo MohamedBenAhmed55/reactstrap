@@ -25,13 +25,13 @@ class FormAjoutUtilisateur extends Component {
       "image": "",
       "etatPresence": "",
       "matricule": "",
-      "company": "",
-      "groupe": "",
-      "poste": "",
+      "company": "/api/companies/1",
+      "groupe": "/api/groupes/2",
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onRoleschange = this.onRoleschange.bind(this);
+    this.setFields = this.setFields.bind(this);
   }
 
 
@@ -69,42 +69,43 @@ class FormAjoutUtilisateur extends Component {
     if (this.state.id) {
       this.updateUser(this.state.id);
     }
-    else{
-    axios.post(`http://localhost:8000/api/users`, {
+    else {
+      axios.post(`http://localhost:8000/api/users`, {
 
-      "username": this.state.username,
-      "roles": this.state.roles,
-      "password": this.state.password,
-      "email": this.state.email,
-      "cin": this.state.cin,
-      "nom": this.state.nom,
-      "prenom": this.state.prenom,
-      "dateNai": this.state.dateNai,
-      "dateEmbauche": this.state.dateEmbauche,
-      "Genre": this.state.Genre,
-      "Adresse": this.state.Adresse,
-      "Salaire": this.state.Salaire,
-      "phone": this.state.phone,
-      "Fax": this.state.Fax,
-      "Pays": this.state.Pays,
-      "image": this.state.image,
-      "etatPresence": this.state.etatPresence,
-      "matricule": this.state.matricule,
-      "company": this.state.company,
-      "groupe": this.state.groupe,
-    })
-      .then(res => {
-        console.log({
-          res
-        }
-        );
-      })}
+        "username": this.state.username,
+        // "roles": this.state.roles,
+        "password": this.state.password,
+        "email": this.state.email,
+        "cin": this.state.cin,
+        "nom": this.state.nom,
+        "prenom": this.state.prenom,
+        "dateNai": this.state.dateNai,
+        "dateEmbauche": this.state.dateEmbauche,
+        "Genre": this.state.Genre,
+        "Adresse": this.state.Adresse,
+        "Salaire": this.state.Salaire,
+        "phone": this.state.phone,
+        "Fax": this.state.Fax,
+        "Pays": this.state.Pays,
+        "image": this.state.image,
+        "etatPresence": this.state.etatPresence,
+        "matricule": this.state.matricule,
+        "company": this.state.company,
+        "groupe": this.state.groupe,
+      })
+        .then(res => {
+          console.log({
+            res
+          }
+          );
+        })
+    }
   }
 
   updateUtilisateur(id) {
     axios.put(`http://localhost:8000/api/users/${id}`, {
       "username": this.state.username,
-      "roles": this.state.roles,
+      // "roles": this.state.roles,
       "password": this.state.password,
       "email": this.state.email,
       "cin": this.state.cin,
@@ -123,6 +124,7 @@ class FormAjoutUtilisateur extends Component {
       "matricule": this.state.matricule,
       "company": this.state.company,
       "groupe": this.state.groupe,
+
     })
       .then(res => {
         console.log({
@@ -132,9 +134,38 @@ class FormAjoutUtilisateur extends Component {
       })
   }
 
+  setFields() {
+    if (this.props.data) {
+      this.setState({
+        "username": this.props.data.username,
+        "password": this.props.data.password,
+        "email": this.props.data.email,
+        "cin": this.props.data.cin,
+        "nom": this.props.data.nom,
+        "prenom": this.props.data.prenom,
+        "dateNai": this.props.data.dateNai,
+        "dateEmbauche": this.props.data.dateEmbauche,
+        "Genre": this.props.data.Genre,
+        "Adresse": this.props.data.Adresse,
+        "Salaire": this.props.data.Salaire,
+        "phone": this.props.data.phone,
+        "Fax": this.props.data.Fax,
+        "Pays": this.props.data.Pays,
+        "image": this.props.data.image,
+        "etatPresence": this.props.data.etatPresence,
+        "matricule": this.props.data.matricule,
+      });
+
+    }
+  }
+
+  componentDidMount(){
+    this.setFields();
+  }
+
   render() {
     return (
-      <Form>
+      <Form onSubmit={this.handleSubmit}>
         <Row>
           <Col md>
             <Form.Group controlId="formUsername">
@@ -151,10 +182,10 @@ class FormAjoutUtilisateur extends Component {
 
           </Col>
 
-         
+
         </Row>
         <Row>
-        
+
           <Col md>
             <Form.Group controlId="formName">
               <Form.Label>Prenom</Form.Label>
@@ -170,13 +201,13 @@ class FormAjoutUtilisateur extends Component {
             </Form.Group>
 
           </Col>
-          </Row>
+        </Row>
 
-          <Row>
+        <Row>
           <Col md>
             <Form.Group controlId="formCin">
               <Form.Label>Cin</Form.Label>
-              <Form.Control type="number" placeholder="Cin" name="cin"  size ="8" value={this.state.cin} onChange={this.onChange} />
+              <Form.Control type="number" placeholder="Cin" name="cin" size="8" value={this.state.cin} onChange={this.onChange} />
             </Form.Group>
 
           </Col>
@@ -184,23 +215,23 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formNumero">
               <Form.Label>N°Tel</Form.Label>
-              <Form.Control type="phone" placeholder="Numero" name="Fax"   value={this.state.Fax} onChange={this.onChange} />
+              <Form.Control type="phone" placeholder="Numero" name="Fax" value={this.state.Fax} onChange={this.onChange} />
             </Form.Group>
 
           </Col>
 
-          </Row>
-          <Row>
-            
-            <Col md>
+        </Row>
+        <Row>
+
+          <Col md>
             <Form.Group controlId="formEmail">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Email "  name="email" value={this.state.email} onChange={this.onChange} />
+              <Form.Control type="email" placeholder="Email " name="email" value={this.state.email} onChange={this.onChange} />
             </Form.Group>
 
           </Col>
-          </Row>
-          <Row>
+        </Row>
+        <Row>
 
           <Col md>
             <Form.Group controlId="formDateNais">
@@ -217,8 +248,8 @@ class FormAjoutUtilisateur extends Component {
             </Form.Group>
 
           </Col>
-          </Row>
-          <Row>
+        </Row>
+        <Row>
           <Col md>
             <Form.Group controlId="formMatricule">
               <Form.Label>Matricule</Form.Label>
@@ -229,12 +260,12 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formPays">
               <Form.Label>Pays</Form.Label>
-              <Form.Control type="text" placeholder="pays" name="pays" value={this.state.Pays} onChange={this.onChange} />
+              <Form.Control type="text" placeholder="Pays" name="Pays" value={this.state.Pays} onChange={this.onChange} />
             </Form.Group>
           </Col>
-          
-          </Row>
-          <Row>
+
+        </Row>
+        {/* <Row>
           <Form.Group as={Col} controlId="my_multiselect_field">
             <Form.Label>Roles</Form.Label>
             <Form.Control as="select" value={this.state.roles} onChange={this.onRoleschange}>
@@ -242,7 +273,7 @@ class FormAjoutUtilisateur extends Component {
               <option value="field2">ROLE_ADMIN</option>
             </Form.Control>
           </Form.Group>
-        </Row>
+        </Row> */}
 
         <Button variant="secondary" type="submit">Ajouter Utilisateur</Button>
       </Form>

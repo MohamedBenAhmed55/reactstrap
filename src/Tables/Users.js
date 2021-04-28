@@ -75,7 +75,7 @@ class Users extends Component {
                                                 <td>{user.Fax}</td>
                                                 <td>{user.Pays}</td>
                                                 <td>{user.email}</td>
-                                                <td><Button onClick={() => this.modifyUser(user.id)} >Modify</Button></td>
+                                                <td><ModalEntity Buttontitle="Modifier" title="Modifier utilisateur" body={<Forms />} data={user} modify={user.id} /></td>
                                                 <td><Button onClick={() => this.deleteUser(user.id)} >Remove</Button></td>
                                             </tr>)}
 

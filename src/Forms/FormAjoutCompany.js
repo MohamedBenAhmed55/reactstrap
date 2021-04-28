@@ -17,9 +17,11 @@ class FormAjoutCompany extends Component {
       "secteurActivite": "",
       "phone": "",
       "number": 0,
+      "id": this.props.modify,
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setFields =this.setFields.bind(this);
   }
 
   addCompany() {
@@ -36,7 +38,7 @@ class FormAjoutCompany extends Component {
     })
   }
 
- 
+
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -45,18 +47,9 @@ class FormAjoutCompany extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
-    const data = {
-
-      "name": this.state.name,
-      "city": this.state.city,
-      "postalcode": this.state.postalcode,
-      "email": this.state.email,
-      "logo": this.state.logo,
-      "matriculeFiscale": this.state.matriculeFiscale,
-      "secteurActivite": this.state.secteurActivite,
-      "phone": this.state.phone,
-    };
+    if (this.props.data) {
+      this.UpdateCompany(this.state.id);
+    }
 
     axios.post(`http://localhost:8000/api/companies`, {
       "name": this.state.name,
@@ -68,27 +61,56 @@ class FormAjoutCompany extends Component {
       "secteurActivite": this.state.secteurActivite,
       "phone": this.state.phone,
     })
-      .then(res => {
-        console.log({
-          "name": this.state.name,
-          "city": this.state.city,
-          "postalcode": this.state.postalcode,
-          "email": this.state.email,
-          "logo": this.state.logo,
-          "matriculeFiscale": this.state.matriculeFiscale,
-          "secteurActivite": this.state.secteurActivite,
-          "phone": this.state.phone,
-        });
-      })
-    this.setState({ number: this.state.number + 1 })
+    // .then(res => {
+    //   console.log({
+    //     "name": this.state.name,
+    //     "city": this.state.city,
+    //     "postalcode": this.state.postalcode,
+    //     "email": this.state.email,
+    //     "logo": this.state.logo,
+    //     "matriculeFiscale": this.state.matriculeFiscale,
+    //     "secteurActivite": this.state.secteurActivite,
+    //     "phone": this.state.phone,
+    //   });
+    // })
   }
 
-  updatepassword(id) {
+  setFields() {
+    if (this.props.data) {
+      this.setState({
+        "name": this.props.data.name,
+        "city": this.props.data.city,
+        "postalcode": this.props.data.postalcode,
+        "email": this.props.data.email,
+        "logo": this.props.data.logo,
+        "matriculeFiscale": this.props.data.matriculeFiscale,
+        "secteurActivite": this.props.data.secteurActivite,
+        "phone": this.props.data.phone,
+      });
+
+    }
+  }
+
+  componentDidMount(){
+    console.log(this.props.data);
+    if(this.props.data){
+      this.setFields();
+    }
+  }
+
+  UpdateCompany(id) {
     axios({
       method: 'patch',
       url: `http://localhost:8000/api/users/${id}`,
       data: {
-        "password": this.state.password,
+        "name": this.state.name,
+        "city": this.state.city,
+        "postalcode": this.state.postalcode,
+        "email": this.state.email,
+        "logo": this.state.logo,
+        "matriculeFiscale": this.state.matriculeFiscale,
+        "secteurActivite": this.state.secteurActivite,
+        "phone": this.state.phone,
       },
       headers: {
         "Content-Type": 'application/merge-patch+json'
@@ -103,21 +125,22 @@ class FormAjoutCompany extends Component {
         <Row>
           <Col md>
             <Form.Group controlId="formCompanyName">
-              <Form.Label>Nom du companie</Form.Label>
+              <Form.Label>Nom du société</Form.Label>
               <Form.Control type="text" value={this.state.name} name="name" onChange={this.onChange} />
             </Form.Group>
           </Col>
 
           <Col md>
             <Form.Group controlId="formEmail">
-              <Form.Label>Email Address</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control type="email" value={this.state.email} name="email" onChange={this.onChange} />
             </Form.Group>
 
 
           </Col>
+        </Row>
 
-
+        <Row>
           <Col md>
             <Form.Group controlId="formVille">
               <Form.Label>ville</Form.Label>
@@ -125,8 +148,6 @@ class FormAjoutCompany extends Component {
             </Form.Group>
 
           </Col>
-        </Row>
-        <Row>
           <Col md>
             <Form.Group controlId="formPostalCode">
               <Form.Label>code postal</Form.Label>
@@ -134,6 +155,9 @@ class FormAjoutCompany extends Component {
             </Form.Group>
 
           </Col>
+        </Row>
+        <Row>
+
 
           <Col md>
             <Form.Group controlId="formMatriculeFisc">
@@ -150,6 +174,9 @@ class FormAjoutCompany extends Component {
             </Form.Group>
 
           </Col>
+        </Row>
+
+        <Row>
 
           <Col md>
             <Form.Group controlId="formPhone">
@@ -158,6 +185,8 @@ class FormAjoutCompany extends Component {
             </Form.Group>
 
           </Col>
+        </Row>
+        <Row>
 
           <Col md>
             <Form.Group controlId="formLogo">

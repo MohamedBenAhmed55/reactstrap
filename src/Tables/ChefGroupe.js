@@ -1,7 +1,6 @@
 import React ,{Component} from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import Popup from "reactjs-popup";
 import Forms from '../Forms/FormAjoutChefGroupe';
 import ModalEntity from '../ModalEntity';
 import { Redirect } from 'react-router-dom';
@@ -26,12 +25,13 @@ class ChefGroupe extends Component{
      } 
 
      deleteChef(id){
-        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        axios.delete(`http://localhost:8000/api/chef_groupes/${id}`);
+        this.getChefGroupe();
         
      }
  
      modifyChef(id){
-         axios.put(`http://localhost:8000/api/companies/${id}`);
+         axios.put(`http://localhost:8000/api/chef_groupes/${id}`);
      }
 
     render(){

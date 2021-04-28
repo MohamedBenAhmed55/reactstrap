@@ -16,6 +16,7 @@ class Company extends Component {
             setShow: false,
         };
         this.refreshPage = this.refreshPage.bind(this);
+        this.deleteCompany= this.deleteCompany.bind(this);
 
     }
 
@@ -25,8 +26,8 @@ class Company extends Component {
     }
 
     refreshPage = () => {
-        //   window.location.reload();
-        this.getCompanies();
+        window.location.reload();
+        
     }
 
     getCompanies() {
@@ -37,8 +38,7 @@ class Company extends Component {
 
     deleteCompany(id) {
         axios.delete(`http://localhost:8000/api/companies/${id}`);
-        
-
+        this.refreshPage();
     }
 
     modifyCompany(id) {
@@ -83,14 +83,13 @@ class Company extends Component {
                                                 <td>{company.matriculeFiscale}</td>
                                                 <td>{company.secteurActivite}</td>
                                                 <td>{company.phone}</td>
-                                                <td><Button onClick={() => this.modifyCompany(company.id)} >Modify</Button></td>
-                                                <td><Button onClick={() => this.deleteCompany(company.id)} >Remove</Button></td>
+                                                <td> <ModalEntity Buttontitle="Modifier" title="Modifier société" body={<FormAjoutCompany data={company} modify={company.id} />}  /></td>
+                                                <td><Button onClick={() => this.deleteCompany(company.id)} >Supprimer</Button></td>
                                             </tr>)}
 
                                     </tbody>
                                 </table>
                             </div>
-
                         }
 
                     </div>

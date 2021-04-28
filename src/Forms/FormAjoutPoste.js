@@ -23,10 +23,12 @@ class FormAjoutPoste extends Component {
 
   componentDidMount() {
     this.setFields();    
-    console.log(jwt_decode(localStorage.getItem('token')).company)
+    // console.log(jwt_decode(localStorage.getItem('token')).company)
     this.setState({company: "/api/companies/" + jwt_decode(localStorage.getItem('token')).company})
-    console.log("/api/companies/" +jwt_decode(localStorage.getItem('token')).company );
-    console.log(this.state.company  )
+    // console.log("/api/companies/" +jwt_decode(localStorage.getItem('token')).company );
+    // console.log(this.state.company)
+    console.log(this.state.id);
+
   }
 
   setFields() {

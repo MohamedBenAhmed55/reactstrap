@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import ModalEntity from './ModalEntity';
 import Forms from './Forms/ChangePassword';
+import FormsUpdate from './Forms/FormProfileUserUpdate';
 import jwt_decode from "jwt-decode";
 
 class UserProfile extends Component {
@@ -13,7 +14,7 @@ class UserProfile extends Component {
             'datenais': "",
             'dateemb': "",
             'token':"",
-            'id':"",
+            'id':jwt_decode(localStorage.getItem('token')).UserId,
         };
     }
 
@@ -37,10 +38,11 @@ class UserProfile extends Component {
     getUser(id) {
         
         axios.get(`http://localhost:8000/api/getsingleuser/${id}`).then(response => {
-            console.log(response);
+            // console.log(response);
             this.setState({ user: response.data });
-            console.log(this.state.user);
+            // console.log(this.state.user);
             this.setState({datenais: this.state.user.datenais.date , dateemb: this.state.user.dateemb.date});
+            console.log(this.state.user.id);
           
 
         })
@@ -63,7 +65,9 @@ class UserProfile extends Component {
                                             <h4>{this.state.user.name} {this.state.user.lastname}</h4>
                                             <p class="text-secondary mb-1">Full Stack Developer</p>
                                             <p class="text-muted font-size-sm">{this.state.user.adresse}</p>    
-                                            <ModalEntity Buttontitle="Modifier mdp" title="Modifier mot de passe" body={<Forms />} />
+                                            <ModalEntity Buttontitle="Modifier mdp" title="Modifier mot de passe" body={<Forms modify={this.state.id}/>}  />
+                                            <hr />
+                                            <ModalEntity Buttontitle="Modifier profile" title="Modifier Profile" body={<FormsUpdate modify={this.state.id}/>}  />
                                         </div>
                                     </div>
                                 </div>

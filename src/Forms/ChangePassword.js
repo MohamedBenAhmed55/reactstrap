@@ -10,7 +10,7 @@ class ChangePassword extends Component {
 
       "password": "",
       "password_confirm": "",
-      "id": props.id,
+      "id": props.modify,
     };
 
 
@@ -25,8 +25,12 @@ class ChangePassword extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.updatepassword(this.state.id);
-
+    if (this.state.password != this.state.password_confirm) {
+      alert("password mismatch");
+    }
+    else {
+      this.updatepassword(this.state.id);
+    }
   }
 
   updatepassword(id) {
@@ -34,12 +38,16 @@ class ChangePassword extends Component {
       method: 'patch',
       url: `http://localhost:8000/api/users/${id}`,
       data: {
-        "password": this.state.password,
+        "password": this.state.password
       },
       headers: {
         "Content-Type": 'application/merge-patch+json'
       }
     })
+  }
+
+  componentDidMount(){
+    console.log(this.props.modify)
   }
 
 
