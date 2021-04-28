@@ -37,7 +37,7 @@ class Company extends Component {
 
     deleteCompany(id) {
         axios.delete(`http://localhost:8000/api/companies/${id}`);
-        this.refreshPage();
+        
 
     }
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Login.css';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-import { Redirect } from 'react-router';
+import { Redirect ,Switch , Router } from 'react-router';
 // import NavBar from './NavBar';
 
 class Login extends Component {
@@ -10,12 +10,14 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            "username": "admin",
+            "username": "",
             "password": "",
             "token": "",
+            "redirect":false,
         };
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        // this.redirect=this.redirect.bind(this);
     }
 
     onChange(e) {
@@ -54,13 +56,24 @@ class Login extends Component {
                 console.log(jwtDecode(this.state.token));
                 localStorage.setItem('token', this.state.token);
                 // console.log(localStorage.getItem('token'));
-
-                // <Redirect to= "/" component ={NavBar}/>
+                
+                <Router ><Redirect to="/dashboard" /></Router>
+                // localStorage.setItem('authenticate', true);
+                this.setState({redirect: true});
+                // localStorage.setItem("isLoggedout", false);
+            
+            
             }
         });
 
         event.preventDefault();
     }
+
+    // redirect(token){
+    //     if(token){
+    //         <Redirect to="/dashboard" />
+    //     }
+    // }
 
     // handleUsernameChange(event) {
     //     this.setState({ username: event.target.value })
@@ -71,7 +84,10 @@ class Login extends Component {
     // }
 
     render() {
+        
+      
         return (
+            
             <div className="container">
                 <div className="card card-container">
 
@@ -92,6 +108,7 @@ class Login extends Component {
                         Forgot the password?
             </a>
                 </div>
+                {this.state.redirect ? <Redirect exact from="/login" to="/dashboard" /> : null}                                                       
 
             </div>
 

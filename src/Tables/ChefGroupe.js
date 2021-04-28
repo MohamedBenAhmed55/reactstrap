@@ -4,15 +4,18 @@ import { Button } from 'react-bootstrap';
 import Popup from "reactjs-popup";
 import Forms from '../Forms/FormAjoutChefGroupe';
 import ModalEntity from '../ModalEntity';
+import { Redirect } from 'react-router-dom';
 
 class ChefGroupe extends Component{
 
     constructor() {
         super();
-        this.state = { Chefs: []};
+        this.state = { Chefs: [] , redirect: false};
     }
     componentDidMount() {
+        // this.setState({redirect: localStorage.getItem("isLoggedout")})
         this.getChefGroupe();
+        
         
     }
 
@@ -84,6 +87,7 @@ class ChefGroupe extends Component{
                 </div>
                 </div>
                 </div>
+                {this.state.redirect ? <Redirect to="/login" /> : null}   
             </div>
         )
     }

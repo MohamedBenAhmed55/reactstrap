@@ -11,6 +11,7 @@ class FormAjoutSalle extends Component {
             "name": "",
             "company_id": "",
             "etage": "",
+            "id": props.modify,
         };
 
 
@@ -28,18 +29,27 @@ class FormAjoutSalle extends Component {
 
     }
 
-    updateSalle(id){
-        axios.put(`http://localhost:8000/api/postes/${id}`, {
-          "name": this.state.name,
-          "company_id": this.state.company_id,
-        })
-          .then(res => {
-            console.log({
-              "name": this.state.name,
-              "company_id": this.state.company_id,
-            });
-          })
+  updateSalle(id) {
+    axios({
+      method: 'patch',
+      url: `http://localhost:8000/api/salles/${id}`,
+      data: {
+        "name": this.state.name,
+        "company_id": this.state.company_id,
+        "etage": this.state.etage,
+      },
+      headers: {
+        "Content-Type": 'application/merge-patch+json'
       }
+    })
+  }
+
+  setFields() {
+    if (this.props.data) {
+      this.setState({ "name": this.props.data.name, "company_id": this.props.data.company_id,etage: this.props.data.etage, });
+
+    }
+  }
 
 
     onChange(e) {
@@ -48,18 +58,26 @@ class FormAjoutSalle extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
-        axios.post(`http://localhost:8000/api/postes`, {
-            "name": this.state.name,
+    
+        if (this.state.id) {
+          this.updateSalle(this.state.id);
+        }
+        else {
+          axios.post(`http://localhost:8000/api/salles`, {
+            
+            "name":this.state.name ,
             "company_id": this.state.company_id,
-        })
+            "etage": this.state.etage,
+          })
             .then(res => {
-                console.log({
-                    "name": this.state.name,
-                    "company_id": this.state.company_id,
-                });
+              console.log({
+                "name":this.state.name ,
+            "company_id": this.state.company_id,
+            "etage": this.state.etage,
+              });
             })
-    }
+        }
+      }
 
 
 

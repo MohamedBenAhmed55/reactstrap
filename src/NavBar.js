@@ -3,7 +3,6 @@ import { Route, Switch, Redirect, Link, withRouter } from 'react-router-dom';
 import EventCalendar from './Calendar/EventCalendar';
 import Users from './Tables/Users';
 import JourFerie from './Tables/JoursFerie';
-import FormAjoutEvenement from './Forms/FormAjoutEvenement';
 import Dropdown from 'react-bootstrap/Dropdown'
 import logo from './images/LogoCosap.png';
 import Company from './Tables/company';
@@ -15,7 +14,6 @@ import Salles from './Tables/Salles';
 import Postes from './Tables/Postes';
 import Groupes from './Tables/Groupes';
 import ChefGroupe from './Tables/ChefGroupe';
-import FormAjoutPoste from './Forms/FormAjoutPoste';
 import HomePage from './HomePage/HomePage';
 
 
@@ -23,11 +21,15 @@ class Navbar extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {redirect:false};
         this.Logout = this.Logout.bind(this);
     }
+    
     Logout() {
         localStorage.removeItem('token');
+        this.setState({redirect: true});
+        localStorage.setItem("isLoggedout", true);
+        
     }
 
 
@@ -35,7 +37,7 @@ class Navbar extends Component {
         return (
             <div>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <Link className={"navbar-brand"} to={"/home"}> <img src={logo} alt="logo" style={{ width: "40px", height: "40px " }} /></Link>
+                    <Link className={"navbar-brand"} to={"/dashboard/home"}> <img src={logo} alt="logo" style={{ width: "40px", height: "40px " }} /></Link>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -45,31 +47,29 @@ class Navbar extends Component {
                             <ul className="navbar-nav mr-auto">
 
                                 <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/Profile"}> Profile </Link>
+                                    <Link className={"nav-link"} to={"/dashboard/Profile"}> Profile </Link>
                                 </li>
 
                                 <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/globalCalendar"}> Calendrier Global </Link>
+                                    <Link className={"nav-link"} to={"/dashboard/globalCalendar"}> Calendrier Global </Link>
                                 </li>
 
                                 <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/eventcalendar"}> My Calendar </Link>
+                                    <Link className={"nav-link"} to={"/dashboard/eventcalendar"}> My Calendar </Link>
                                 </li>
 
                                 <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/users"}> Users </Link>
+                                    <Link className={"nav-link"} to={"/dashboard/users"}> Users </Link>
                                 </li>
 
                                 <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/Jours-Feries"}> JoursF </Link>
+                                    <Link className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link>
                                 </li>
 
-                                <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/Ajout-evt"}> Evenement </Link>
-                                </li>
+                              
 
                                 <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/company"}> Company </Link>
+                                    <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link>
                                 </li>
 
                             </ul>
@@ -80,13 +80,13 @@ class Navbar extends Component {
                 </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/Jours-Feries"}> JoursF </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/addCompany"}> AjoutCompany </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/heures-travail"}> Heures Travail </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/Salles"}> Salles </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/Postes"}> Postes </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/Groupes"}> Groupes </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/ChefGroup"}> Chefs Group </Link></Dropdown.Item>
+                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link></Dropdown.Item>
+                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/addCompany"}> AjoutCompany </Link></Dropdown.Item>
+                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/heures-travail"}> Heures Travail </Link></Dropdown.Item>
+                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Salles"}> Salles </Link></Dropdown.Item>
+                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Postes"}> Postes </Link></Dropdown.Item>
+                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Groupes"}> Groupes </Link></Dropdown.Item>
+                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/ChefGroup"}> Chefs Group </Link></Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
 
@@ -101,23 +101,22 @@ class Navbar extends Component {
 
                 </nav>
                 <Switch>
-                    <Redirect exact from="/" to="/home" />
-                    <Route path="/eventcalendar" component={EventCalendar} />
-                    <Route path="/users" component={Users} />
-                    <Route path="/Jours-Feries" component={JourFerie} />
-                    {/* <Route path="/login" component={Login} /> */}
-                    <Route path="/Ajout-evt" component={FormAjoutEvenement} />
-                    <Route path="/company" component={Company} />
-                    <Route path="/addCompany" component={FormAjoutCompany} />
-                    <Route path="/globalCalendar" component={GlobalCalendar} />
-                    <Route path="/heures-travail" component={HeuresTravail} />
-                    <Route path="/Profile" component={Profile} />
-                    <Route path="/Salles" component={Salles} />
-                    <Route path="/Postes" component={Postes} />
-                    <Route path="/Groupes" component={Groupes} />
-                    <Route path="/ChefGroup" component={ChefGroupe} />
-                    <Route path="/home" component={HomePage} />
+                    <Redirect exact from="/dashboard" to="/dashboard/home" />
+                    <Route path="/dashboard/eventcalendar" component={EventCalendar} />
+                    <Route path="/dashboard/users" component={Users} />
+                    <Route path="/dashboard/Jours-Feries" component={JourFerie} />
+                    <Route path="/dashboard/company" component={Company} />
+                    <Route path="/dashboard/addCompany" component={FormAjoutCompany} />
+                    <Route path="/dashboard/globalCalendar" component={GlobalCalendar} />
+                    <Route path="/dashboard/heures-travail" component={HeuresTravail} />
+                    <Route path="/dashboard/Profile" component={Profile} />
+                    <Route path="/dashboard/Salles" component={Salles} />
+                    <Route path="/dashboard/Postes" component={Postes} />
+                    <Route path="/dashboard/Groupes" component={Groupes} />
+                    <Route path="/dashboard/ChefGroup" component={ChefGroupe} />
+                    <Route path="/dashboard/home" component={HomePage} />
                 </Switch>
+                {this.state.redirect ? <Redirect  to="/login" /> : null}
             </div>)
     }
 }

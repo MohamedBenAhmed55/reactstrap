@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 class FormAjoutPoste extends Component {
 
@@ -9,7 +10,7 @@ class FormAjoutPoste extends Component {
     this.state = {
 
       "name": "",
-      "company_id": "",
+      "company": "",
       "id": props.modify,
 
     };
@@ -21,12 +22,16 @@ class FormAjoutPoste extends Component {
   }
 
   componentDidMount() {
-    this.setFields();
+    this.setFields();    
+    console.log(jwt_decode(localStorage.getItem('token')).company)
+    this.setState({company: "/api/companies/" + jwt_decode(localStorage.getItem('token')).company})
+    console.log("/api/companies/" +jwt_decode(localStorage.getItem('token')).company );
+    console.log(this.state.company  )
   }
 
   setFields() {
     if (this.props.data) {
-      this.setState({ "name": this.props.data.name, "company_id": this.props.data.company_id, });
+      this.setState({ "name": this.props.data.name, "company": this.props.data.company, });
 
     }
   }
@@ -40,42 +45,27 @@ class FormAjoutPoste extends Component {
 
     if (this.state.id) {
       this.updatePost(this.state.id);
+      alert("poste updated !");
     }
     else {
       axios.post(`http://localhost:8000/api/postes`, {
         "name": this.state.name,
-        "company_id": this.state.company_id,
+        "company": "/api/companies/" + this.state.company_id,
       })
         .then(res => {
           console.log({
             "name": this.state.name,
             "company_id": this.state.company_id,
           });
+          alert("poste created !")
         })
     }
   }
 
-  // updatePost(id){
-  //   let config = {
-  //     headers: {
-  //       header1: "application/merge-patch+json",
-  //     }
-  //   }
-  //   axios.patch(`http://localhost:8000/api/postes/${id}`, config,{
-  //     "name": this.state.name,
-  //     "company_id": this.state.company_id,
-  //   })
-  //     .then(res => {
-  //       console.log({
-  //         "name": this.state.name,
-  //         "company_id": this.state.company_id,
-  //       });
-  //     })
-  // }
 
   updatePost(id) {
     axios({
-      method: 'patch', //you can set what request you want to be
+      method: 'patch',
       url: `http://localhost:8000/api/postes/${id}`,
       data: {
         "name": this.state.name,

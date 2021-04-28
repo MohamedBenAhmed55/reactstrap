@@ -36,18 +36,7 @@ class FormAjoutCompany extends Component {
     })
   }
 
-  updateCompany(id){
-    axios.put(`http://localhost:8000/api/postes/${id}`, {
-      "name": this.state.name,
-      "company_id": this.state.company_id,
-    })
-      .then(res => {
-        console.log({
-          "name": this.state.name,
-          "company_id": this.state.company_id,
-        });
-      })
-  }
+ 
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -94,6 +83,18 @@ class FormAjoutCompany extends Component {
     this.setState({ number: this.state.number + 1 })
   }
 
+  updatepassword(id) {
+    axios({
+      method: 'patch',
+      url: `http://localhost:8000/api/users/${id}`,
+      data: {
+        "password": this.state.password,
+      },
+      headers: {
+        "Content-Type": 'application/merge-patch+json'
+      }
+    })
+  }
 
   render() {
 

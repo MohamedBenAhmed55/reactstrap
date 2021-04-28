@@ -40,8 +40,8 @@ class UserProfile extends Component {
             console.log(response);
             this.setState({ user: response.data });
             console.log(this.state.user);
-            this.setState({datenais: this.state.user.datenais.date});
-            this.setState({dateemb: this.state.user.dateemb.date});
+            this.setState({datenais: this.state.user.datenais.date , dateemb: this.state.user.dateemb.date});
+          
 
         })
     }

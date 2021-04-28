@@ -10,11 +10,13 @@ class ChangePassword extends Component {
 
       "password": "",
       "password_confirm": "",
+      "id": props.id,
     };
 
 
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.updatepassword = this.updatepassword.bind(this);
   }
 
   onChange(e) {
@@ -23,17 +25,21 @@ class ChangePassword extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    this.updatepassword(this.state.id);
 
-    axios.post(`http://localhost:8000/api/postes`, {
-      "name": this.state.name,
-      "company_id": this.state.company_id,
+  }
+
+  updatepassword(id) {
+    axios({
+      method: 'patch',
+      url: `http://localhost:8000/api/users/${id}`,
+      data: {
+        "password": this.state.password,
+      },
+      headers: {
+        "Content-Type": 'application/merge-patch+json'
+      }
     })
-      .then(res => {
-        console.log({
-          "name": this.state.name,
-          "company_id": this.state.company_id,
-        });
-      })
   }
 
 

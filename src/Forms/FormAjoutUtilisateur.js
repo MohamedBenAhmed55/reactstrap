@@ -42,6 +42,23 @@ class FormAjoutUtilisateur extends Component {
 
   onRoleschange(e) {
     this.setState({ roles: [].slice.call(e.target.selectedOptions).map(item => item.value) })
+    console.log(this.state.roles);
+  }
+
+
+  updateUser(id) {
+    axios({
+      method: 'patch',
+      url: `http://localhost:8000/api/salles/${id}`,
+      data: {
+        "name": this.state.name,
+        "company_id": this.state.company_id,
+        "etage": this.state.etage,
+      },
+      headers: {
+        "Content-Type": 'application/merge-patch+json'
+      }
+    })
   }
 
 
@@ -49,7 +66,10 @@ class FormAjoutUtilisateur extends Component {
     e.preventDefault();
 
 
-
+    if (this.state.id) {
+      this.updateUser(this.state.id);
+    }
+    else{
     axios.post(`http://localhost:8000/api/users`, {
 
       "username": this.state.username,
@@ -72,20 +92,37 @@ class FormAjoutUtilisateur extends Component {
       "matricule": this.state.matricule,
       "company": this.state.company,
       "groupe": this.state.groupe,
-
     })
       .then(res => {
         console.log({
           res
         }
         );
-      })
+      })}
   }
 
-  updateUtilisateur(id){
+  updateUtilisateur(id) {
     axios.put(`http://localhost:8000/api/users/${id}`, {
-      "name": this.state.name,
-      "company_id": this.state.company_id,
+      "username": this.state.username,
+      "roles": this.state.roles,
+      "password": this.state.password,
+      "email": this.state.email,
+      "cin": this.state.cin,
+      "nom": this.state.nom,
+      "prenom": this.state.prenom,
+      "dateNai": this.state.dateNai,
+      "dateEmbauche": this.state.dateEmbauche,
+      "Genre": this.state.Genre,
+      "Adresse": this.state.Adresse,
+      "Salaire": this.state.Salaire,
+      "phone": this.state.phone,
+      "Fax": this.state.Fax,
+      "Pays": this.state.Pays,
+      "image": this.state.image,
+      "etatPresence": this.state.etatPresence,
+      "matricule": this.state.matricule,
+      "company": this.state.company,
+      "groupe": this.state.groupe,
     })
       .then(res => {
         console.log({
@@ -114,15 +151,10 @@ class FormAjoutUtilisateur extends Component {
 
           </Col>
 
-          <Col md>
-            <Form.Group controlId="formEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Username" name="email" value={this.state.email} onChange={this.onChange} />
-            </Form.Group>
-
-          </Col>
+         
         </Row>
         <Row>
+        
           <Col md>
             <Form.Group controlId="formName">
               <Form.Label>Prenom</Form.Label>
@@ -138,14 +170,37 @@ class FormAjoutUtilisateur extends Component {
             </Form.Group>
 
           </Col>
+          </Row>
 
+          <Row>
           <Col md>
             <Form.Group controlId="formCin">
               <Form.Label>Cin</Form.Label>
-              <Form.Control type="text" placeholder="Cin" name="cin" value={this.state.cin} onChange={this.onChange} />
+              <Form.Control type="number" placeholder="Cin" name="cin"  size ="8" value={this.state.cin} onChange={this.onChange} />
             </Form.Group>
 
           </Col>
+
+          <Col md>
+            <Form.Group controlId="formNumero">
+              <Form.Label>N°Tel</Form.Label>
+              <Form.Control type="phone" placeholder="Numero" name="Fax"   value={this.state.Fax} onChange={this.onChange} />
+            </Form.Group>
+
+          </Col>
+
+          </Row>
+          <Row>
+            
+            <Col md>
+            <Form.Group controlId="formEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control type="email" placeholder="Email "  name="email" value={this.state.email} onChange={this.onChange} />
+            </Form.Group>
+
+          </Col>
+          </Row>
+          <Row>
 
           <Col md>
             <Form.Group controlId="formDateNais">
@@ -162,13 +217,29 @@ class FormAjoutUtilisateur extends Component {
             </Form.Group>
 
           </Col>
+          </Row>
+          <Row>
+          <Col md>
+            <Form.Group controlId="formMatricule">
+              <Form.Label>Matricule</Form.Label>
+              <Form.Control type="text" placeholder="Matricule" name="matricule" value={this.state.matricule} onChange={this.onChange} />
+            </Form.Group>
+          </Col>
 
+          <Col md>
+            <Form.Group controlId="formPays">
+              <Form.Label>Pays</Form.Label>
+              <Form.Control type="text" placeholder="pays" name="pays" value={this.state.Pays} onChange={this.onChange} />
+            </Form.Group>
+          </Col>
+          
+          </Row>
+          <Row>
           <Form.Group as={Col} controlId="my_multiselect_field">
             <Form.Label>Roles</Form.Label>
-            <Form.Control as="select" multiple value={this.state.roles} onChange={this.onRoleschange}>
-              <option value="field1">Field 1</option>
-              <option value="field2">Field 2</option>
-              <option value="field3">Field 3</option>
+            <Form.Control as="select" value={this.state.roles} onChange={this.onRoleschange}>
+              <option value="field1">ROLE_USER</option>
+              <option value="field2">ROLE_ADMIN</option>
             </Form.Control>
           </Form.Group>
         </Row>

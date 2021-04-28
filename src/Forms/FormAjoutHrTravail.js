@@ -72,17 +72,18 @@ class FormAjoutHrTravail extends Component {
       });
   }
 
-  updateHrTravail(id){
-    axios.put(`http://localhost:8000/api/postes/${id}`, {
-      "name": this.state.name,
-      "company_id": this.state.company_id,
+
+  updatepassword(id) {
+    axios({
+      method: 'patch',
+      url: `http://localhost:8000/api/users/${id}`,
+      data: {
+        "password": this.state.password,
+      },
+      headers: {
+        "Content-Type": 'application/merge-patch+json'
+      }
     })
-      .then(res => {
-        console.log({
-          "name": this.state.name,
-          "company_id": this.state.company_id,
-        });
-      })
   }
 
   render() {

@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import Forms from '../Forms/FormAjoutPoste'
-import ModalEntity from '../ModalEntity'
+import Forms from '../Forms/FormAjoutPoste';
+import ModalEntity from '../ModalEntity';
+import jwt_decode from "jwt-decode";
 
 class Postes extends Component {
 
     constructor() {
         super();
-        this.state = { Postes: [] };
+        this.state = { Postes: [], companyId:"" };
 
         this.deletePoste = this.deletePoste.bind(this);
     }
 
     componentDidMount() {
         this.getPostes();
+
 
     }
 
@@ -28,6 +30,8 @@ class Postes extends Component {
 
     deletePoste(id) {
         axios.delete(`http://localhost:8000/api/postes/${id}`);
+        window.location.reload();
+        alert("poste deleted!");
 
     }
 
