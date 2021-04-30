@@ -30,6 +30,7 @@ class ChangePassword extends Component {
     }
     else {
       this.updatepassword(this.state.id);
+      alert("mot de passe modifiée")
     }
   }
 
@@ -43,6 +44,8 @@ class ChangePassword extends Component {
       headers: {
         "Content-Type": 'application/merge-patch+json'
       }
+    }).catch(err => {
+      alert("Failed operation")
     })
   }
 
@@ -60,14 +63,14 @@ class ChangePassword extends Component {
           <Col md>
             <Form.Group controlId="formCompanyName">
               <Form.Label>Nouvel mot de passe</Form.Label>
-              <Form.Control type="password" value={this.state.password} name="password" onChange={this.onChange} />
+              <Form.Control type="password" value={this.state.password} required  name="password" onChange={this.onChange} />
             </Form.Group>
           </Col>
 
           <Col md>
             <Form.Group controlId="formPosteName">
               <Form.Label>Confirmer</Form.Label>
-              <Form.Control type="password" value={this.state.password_confirm} name="password_confirm" onChange={this.onChange} />
+              <Form.Control type="password" value={this.state.password_confirm} required name="password_confirm" onChange={this.onChange} />
             </Form.Group>
 
           </Col>

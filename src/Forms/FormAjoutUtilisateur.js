@@ -207,7 +207,7 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formCin">
               <Form.Label>Cin</Form.Label>
-              <Form.Control type="number" placeholder="Cin" name="cin" size="8" value={this.state.cin} onChange={this.onChange} />
+              <Form.Control type="number" placeholder="Cin" name="cin" min="00000001" max="99999999" value={this.state.cin} onChange={this.onChange} />
             </Form.Group>
 
           </Col>

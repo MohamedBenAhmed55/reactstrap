@@ -10,11 +10,11 @@ class UserProfile extends Component {
     constructor() {
         super();
         this.state = {
-            user: [],
+            'user': "",
             'datenais': "",
             'dateemb': "",
-            'token':"",
-            'id':jwt_decode(localStorage.getItem('token')).UserId,
+            'token': "",
+            'id': jwt_decode(localStorage.getItem('token')).UserId,
         };
     }
 
@@ -26,29 +26,29 @@ class UserProfile extends Component {
         // console.log(this.state.id);
         this.TokenHandle();
         this.getUser(this.state.id);
-        
+
     }
 
-    TokenHandle(){
+    TokenHandle() {
         let token = localStorage.getItem('token');
         // console.log(jwt_decode(token).UserId);
-        this.state.id=jwt_decode(token).UserId;
+        this.state.id = jwt_decode(token).UserId;
     }
 
     getUser(id) {
-        
+
         axios.get(`http://localhost:8000/api/getsingleuser/${id}`).then(response => {
-            // console.log(response);
+            console.log(response.data);
             this.setState({ user: response.data });
-            // console.log(this.state.user);
-            this.setState({datenais: this.state.user.datenais.date , dateemb: this.state.user.dateemb.date});
+            console.log(this.state.user);
+            this.setState({ datenais: this.state.user.datenais.date, dateemb: this.state.user.dateemb.date });
             console.log(this.state.user.id);
-          
+
 
         })
     }
 
-    
+
 
 
     render() {
@@ -64,10 +64,10 @@ class UserProfile extends Component {
                                         <div class="mt-3">
                                             <h4>{this.state.user.name} {this.state.user.lastname}</h4>
                                             <p class="text-secondary mb-1">Full Stack Developer</p>
-                                            <p class="text-muted font-size-sm">{this.state.user.adresse}</p>    
-                                            <ModalEntity Buttontitle="Modifier mdp" title="Modifier mot de passe" body={<Forms modify={this.state.id}/>}  />
+                                            <p class="text-muted font-size-sm">{this.state.user.adresse}</p>
+                                            <ModalEntity Buttontitle="Modifier mot de passe" title="Modifier mot de passe" body={<Forms modify={this.state.id} />} />
                                             <hr />
-                                            <ModalEntity Buttontitle="Modifier profile" title="Modifier Profile" body={<FormsUpdate modify={this.state.id}/>}  />
+                                            <ModalEntity Buttontitle="Modifier profile" title="Modifier Profile" body={<FormsUpdate modify={this.state.id} user={this.state.user} />} />
                                         </div>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@ class UserProfile extends Component {
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             {this.state.user.email}
-                                            
+
                                         </div>
                                     </div>
                                     <hr />
@@ -146,7 +146,7 @@ class UserProfile extends Component {
                                             <h6 class="mb-0">date de naissance</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            {this.state.datenais.substr(0,10)}
+                                            {this.state.datenais.substr(0, 10)}
                                         </div>
                                     </div>
                                     <hr />
@@ -155,7 +155,7 @@ class UserProfile extends Component {
                                             <h6 class="mb-0">date d'embauche</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            {this.state.dateemb.substr(0,10)}
+                                            {this.state.dateemb.substr(0, 10)}
                                         </div>
                                     </div>
                                     <hr />

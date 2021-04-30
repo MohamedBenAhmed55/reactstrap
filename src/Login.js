@@ -37,19 +37,19 @@ class Login extends Component {
     // }
 
     handleSubmit(event) {
-        console.log('login', {
+        // console.log('login', {
 
-            "username": this.state.username,
-            "password": this.state.password,
+        //     "username": this.state.username,
+        //     "password": this.state.password,
 
-        });
+        // });
         axios.post(`http://localhost:8000/api/login_check`, {
 
             "username": this.state.username,
             "password": this.state.password,
 
         }).then(response => {
-            // console.log(response.data);
+            console.log(response);
             if (response.data.token) {
                 this.setState({ token: response.data.token });
                 console.log(this.state.token);
@@ -60,10 +60,12 @@ class Login extends Component {
                 <Router ><Redirect to="/dashboard" /></Router>
                 // localStorage.setItem('authenticate', true);
                 this.setState({redirect: true});
-                // localStorage.setItem("isLoggedout", false);
-            
-            
+                // localStorage.setItem("isLoggedout", false);            
             }
+            
+        }).catch((error) => {
+            console.log(error);
+            alert("Invalid credentials") 
         });
 
         event.preventDefault();
@@ -95,8 +97,8 @@ class Login extends Component {
                     <p id="profile-name" className="profile-name-card"></p>
                     <form className="form-signin" method="post" onSubmit={this.handleSubmit} >
                         <span id="reauth-email" className="reauth-email"></span>
-                        <input type="text" id="inputEmail" className="form-control" placeholder="Username" value={this.state.username} name="username" onChange={this.onChange} />
-                        <input type="password" id="inputPassword" className="form-control" placeholder="Password" value={this.state.password} name="password" onChange={this.onChange} />
+                        <input type="text" id="inputEmail" className="form-control" required placeholder="Username" value={this.state.username} name="username" onChange={this.onChange} />
+                        <input type="password" id="inputPassword" className="form-control" required placeholder="Password" value={this.state.password} name="password" onChange={this.onChange} />
                         {/* <div id="remember" className="checkbox">
                             <label>
                                 <input type="checkbox" value="remember-me" /> Remember me

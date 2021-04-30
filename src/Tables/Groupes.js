@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import Popup from "reactjs-popup";
 import Forms from '../Forms/FomAjoutGroupe'
+import ModalEntity from '../ModalEntity';
 
 class Groupes extends Component {
 
@@ -16,20 +16,19 @@ class Groupes extends Component {
 
     }
 
-
     getGroupes() {
         axios.get(`http://localhost:8000/api/groupes`).then(response => {
             this.setState({ Groupes: response.data['hydra:member'] })
         })
     }
+
     deleteGroup(id) {
-        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        axios.delete(`http://localhost:8000/api/groupes/${id}`);
+        alert("group deleted!");
+        window.location.reload();
 
     }
 
-    modifyGroup(id) {
-        axios.put(`http://localhost:8000/api/companies/${id}`);
-    }
 
     render() {
 
@@ -59,8 +58,9 @@ class Groupes extends Component {
                                                 <tr class="table-light" >
                                                     <td>{groupe.name}</td>
                                                     <td>{groupe.chef}</td>
-                                                    <td><Button onClick={() => this.deleteGroup(groupe.id)} >Modify</Button></td>
-                                                    <td><Button onClick={() => this.modifyGroup(groupe.id)} >Remove</Button></td>
+                                                    <td>  <ModalEntity Buttontitle="Modifier" title="Modifer un groupe" body={<Forms />} modify={groupe.id} data={groupe}/></td>
+                                                    <td><Button onClick={() => this.deleteGroup(groupe.id)} >supprimer</Button></td>
+                                                    
                                                 </tr>)}
 
                                         </tbody>
@@ -77,9 +77,7 @@ class Groupes extends Component {
                 <div className="container">
                     <div className={'row'}>
                         <div className="col-md-10 offset-md-1 row-block" >
-                            <Popup trigger={<Button > Ajouter groupe</Button>} position="right center">
-                                <Forms />
-                            </Popup>
+                        <ModalEntity Buttontitle="Ajouter" title="Ajouter un groupe" body={<Forms />} />
                         </div>
                     </div>
                 </div>
