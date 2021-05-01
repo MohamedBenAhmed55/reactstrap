@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import classes from './ModalError.module.css'
 
 class ModalError extends Component {
   constructor(props){
@@ -26,7 +27,7 @@ class ModalError extends Component {
 
    render(){
   return (
-    <div>
+    <div className={classes.modal}>
      
 
       <Modal
@@ -39,7 +40,10 @@ class ModalError extends Component {
           <Modal.Title>Erreur des champs</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {this.state.body}
+          {this.state.body.map(message =>
+          <p>{message}</p>
+          
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={this.handleClose}>

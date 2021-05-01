@@ -24,14 +24,11 @@ class Users extends Component {
     }
 
     deleteUser(id) {
-        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        axios.delete(`http://localhost:8000/api/users/${id}`);
+        window.location.reload();
+        alert("Utilisateur supprimé!");
 
     }
-
-    modifyUser(id) {
-        axios.put(`http://localhost:8000/api/companies/${id}`);
-    }
-
 
 
     render() {
@@ -75,7 +72,7 @@ class Users extends Component {
                                                 <td>{user.Fax}</td>
                                                 <td>{user.Pays}</td>
                                                 <td>{user.email}</td>
-                                                <td><ModalEntity Buttontitle="Modifier" title="Modifier utilisateur" body={<Forms />} data={user} modify={user.id} /></td>
+                                                <td><ModalEntity Buttontitle="Modifier" title="Modifier utilisateur" body={<Forms data={user} modify={user.id} show={false} />}  /></td>
                                                 <td><Button onClick={() => this.deleteUser(user.id)} >Remove</Button></td>
                                             </tr>)}
 
@@ -93,7 +90,7 @@ class Users extends Component {
                 <div className="container">
                     <div className={'row'}>
                         <div className="col-md-10 offset-md-1 row-block" >
-                            <ModalEntity Buttontitle="Add User" title="Ajouter utilisateur" body={<Forms />} />
+                            <ModalEntity Buttontitle="Add User" title="Ajouter utilisateur" body={<Forms show={true}/>} />
                         </div>
                     </div>
                 </div>

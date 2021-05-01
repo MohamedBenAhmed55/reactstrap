@@ -175,7 +175,7 @@ class FormAjoutChefGroupe extends Component {
           </Col>
         </Row>
 
-        <Button variant="secondary" type="submit">Ajouter Chef</Button>
+        <Button variant="secondary" type="submit">Confirmer</Button>
       </Form>
     )
   }

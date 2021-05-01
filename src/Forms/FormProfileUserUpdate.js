@@ -20,7 +20,7 @@ class FormProfileUserUpdate extends Component {
             "user": "",
             "id": props.modify,
             "error":false,
-            "message":"",
+            "message":[],
         };
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,7 +38,7 @@ class FormProfileUserUpdate extends Component {
     updateUser(id) {
         let message = this.fieldsControl();
         console.log(message);
-        if(message== "")
+        if(message== [])
        { axios({
             method: 'patch',
             url: `http://localhost:8000/api/users/${id}`,
@@ -113,27 +113,36 @@ class FormProfileUserUpdate extends Component {
     }
 
     fieldsControl() {
-       let message="";
-        if (isNaN(this.state.Fax)) {
-            message=  " Le numero de Fax doit être un nombre" + " / ";
+       let message=[];
+       this.setState({erreur:false, message: []});
+       
+       if (isNaN(this.state.Fax) || this.state.phone.length !=8) {
+            message.push(" Le numero de Fax doit être un nombre");
             this.setState({Fax: this.state.user.Fax})
 
          }
 
-         if (isNaN(this.state.phone)) {
-            message=message +  " Le numero de tel doit être un nombre" + " / "
+         if (isNaN(this.state.phone) || this.state.phone.length != 8) {
+            message.push("Le numero de téléphone doit contenir 8 chiffres");
             this.setState({phone: this.state.user.phone})
 
          }
 
          if (!isNaN(this.state.username)){
-             message = message + " le username ne doit pas être un nombre!" + 
+            message.push(" le username ne doit pas être un nombre!");
              this.setState({username: this.state.user.username})
          }
 
+         let i=0;
+         while(i<this.state.username.length){
+             if (!(isNaN(this.state.username[i]))){
+                message.push("le username ne doit pas contenir un nombre !")
+             }
+         }
+
          for(let i=0;i<this.state.username.length;i++){
-             if (!this.state.username[i].isNaN){
-                 message = message + "le username ne doit pas contenir un nombre !" + 
+             if (!(this.state.username[i].isNaN)){
+                message.push("le username ne doit pas contenir un nombre !")
                  this.setState({username: this.state.user.username}) 
                  break;
              }
@@ -142,33 +151,33 @@ class FormProfileUserUpdate extends Component {
         
 
          if (!isNaN(this.state.nom)){
-            message = message + " le nom ne doit pas être un nombre !"  
+            message.push(" le nom ne doit pas être un nombre !") 
             this.setState({nom: this.state.user.nom})
         }
 
         for(let i=0;i<this.state.nom.length;i++){
-            if (!this.state.nom[i].isNaN){
-                message = message +"le nom ne doit pas contenir un nombre ! "  
+            if (!(this.state.nom[i].isNaN)){
+                message.push("le nom ne doit pas contenir un nombre ! ")  
                 this.setState({nom: this.state.user.nom})
                 break;
             }
         }
 
         if (!isNaN(this.state.prenom)){
-            message = message + " le prenom ne doit pas être un nombre !" + 
+            message.push(" le prenom ne doit pas être un nombre !") 
             this.setState({prenom: this.state.user.prenom})
         }
 
         for(let i=0;i<this.state.prenom.length;i++){
-            if (!this.state.prenom[i].isNaN){
-                message = message + "le prenom ne doit pas contenir un nombre ! " 
+            if (!(this.state.prenom[i].isNaN)){
+                message.push("le prenom ne doit pas contenir un nombre ! ") 
                 this.setState({prenom: this.state.user.prenom})
                 break;
             }
         }
 
         if (this.state.email.indexOf("@")==-1 || this .state.email.indexOf(".") == -1 ) {
-            message = message +"mail invalide !" 
+            message.push("mail invalide !") 
             this.setState({email: this.state.user.email})
 
         }
@@ -249,7 +258,7 @@ class FormProfileUserUpdate extends Component {
                       
             </Form>
             
-            {/* {this.state.erreur ? <Modal className={classes.modal} body={this.state.message}/> : null }  */}
+            {this.state.erreur ? <Modal className={classes.modal} body={this.state.message}/> : null } 
               
             </div>
             
