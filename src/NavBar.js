@@ -15,6 +15,7 @@ import Postes from './Tables/Postes';
 import Groupes from './Tables/Groupes';
 import ChefGroupe from './Tables/ChefGroupe';
 import HomePage from './HomePage/HomePage';
+import Taches from './Tables/Taches'
 
 
 class Navbar extends Component {
@@ -72,6 +73,11 @@ class Navbar extends Component {
                                     <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link>
                                 </li>
 
+                                <li className="nav-item">
+                                    <Link className={"nav-link"} to={"/dashboard/Taches"}> Taches </Link>
+                                </li>
+
+
                             </ul>
                             <li class="nav-item dropdown">
                                 <Dropdown>
@@ -114,7 +120,9 @@ class Navbar extends Component {
                     <Route path="/dashboard/Postes" component={Postes} />
                     <Route path="/dashboard/Groupes" component={Groupes} />
                     <Route path="/dashboard/ChefGroup" component={ChefGroupe} />
-                    <Route path="/dashboard/home" component={HomePage} />
+                    <Route path="/dashboard/home" component={HomePage} />                   
+                    <Route path="/dashboard/Taches" component={Taches} />
+                    
                 </Switch>
                 {this.state.redirect ? <Redirect  to="/login" /> : null}
             </div>)
