@@ -6,7 +6,7 @@ import ModalEntity from '../ModalEntity';
 
 
 class JourFerie extends Component {
-    
+
     constructor() {
         super();
         this.state = {
@@ -26,8 +26,20 @@ class JourFerie extends Component {
     }
 
     deleteJour(id) {
-        axios.delete(`http://localhost:8000/api/jours_feries/${id}`);
-        this.getJoursFeries();
+        let del = window.confirm("êtes vous sûr ?");
+        if (del) {
+            axios.delete(`http://localhost:8000/api/jours_feries/${id}`).then(res => {
+                alert("élément supprimé!");
+                this.getJoursFeries();
+                // window.location.reload();
+            }
+            );
+            // this.getJoursFeries();
+            // window.location.reload();
+        }
+        else {
+            this.getJoursFeries();
+        }
     }
 
     modifyJour(id) {
@@ -63,7 +75,7 @@ class JourFerie extends Component {
 
                                                     <td>{jour.titre}</td>
                                                     <td>{jour.date.substr(0, 10)}</td>
-                                                    <td><Button onClick={() => this.modifyJour(jour.id)} >Modify</Button></td>
+                                                    <td><ModalEntity Buttontitle="Modifier" title="Modifier un jour ferié" body={<Forms body={jour} modify={jour.id} />} /></td>
                                                     <td><Button onClick={() => this.deleteJour(jour.id)} >Remove</Button></td>
                                                 </tr>)}
 

@@ -25,13 +25,7 @@ class Salles extends Component {
     }
 
     deleteSalle(id) {
-        axios.delete(`http://localhost:8000/api/companies/${id}`);
-        this.refreshPage();
-
-    }
-
-    modifySalle(id) {
-        axios.put(`http://localhost:8000/api/companies/${id}`);
+        axios.delete(`http://localhost:8000/api/companies/${id}`).then (res => { alert("élément supprimé!"); this.getSalles()});
     }
 
 
@@ -64,7 +58,7 @@ class Salles extends Component {
                                             <tr class="table-light" key={Salle.id}>
                                                 <td>{Salle.nom}</td>
                                                 <td>{Salle.Etage}</td>
-                                                <td><Button onClick={() => this.modifySalle(Salle.id)} >Modify</Button></td>
+                                                <td><ModalEntity Buttontitle="Modifier" title="Modifier salle" body={<Forms body={Salle} modify={Salle.id} />} /></td>
                                                 <td><Button onClick={() => this.deleteSalle(Salle.id)} >Remove</Button></td>
                                             </tr>)}
 

@@ -9,7 +9,7 @@ class Postes extends Component {
 
     constructor() {
         super();
-        this.state = { Postes: [], companyId:"" };
+        this.state = { Postes: [], companyId: "" };
 
         this.deletePoste = this.deletePoste.bind(this);
     }
@@ -29,15 +29,9 @@ class Postes extends Component {
     }
 
     deletePoste(id) {
-        axios.delete(`http://localhost:8000/api/postes/${id}`);
-        window.location.reload();
-        alert("poste deleted!");
-
+        axios.delete(`http://localhost:8000/api/postes/${id}`).then(res => { alert("élément supprimé!"); this.getPostes() });
     }
 
-    modifyPoste(id) {
-        axios.put(`http://localhost:8000/api/postes/${id}`);
-    }
 
     render() {
 
@@ -86,7 +80,7 @@ class Postes extends Component {
                 <div className="container">
                     <div className={'row'}>
                         <div className="col-md-10 offset-md-1 row-block" >
-                        <ModalEntity Buttontitle="Add Poste" title="Ajouter Poste" body={<Forms />} />
+                            <ModalEntity Buttontitle="Add Poste" title="Ajouter Poste" body={<Forms />} />
                         </div>
                     </div>
                 </div>

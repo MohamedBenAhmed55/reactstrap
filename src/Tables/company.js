@@ -37,13 +37,10 @@ class Company extends Component {
     }
 
     deleteCompany(id) {
-        axios.delete(`http://localhost:8000/api/companies/${id}`);
-        this.refreshPage();
+        axios.delete(`http://localhost:8000/api/companies/${id}`).then(res =>{this.getCompanies()});
+        
     }
 
-    modifyCompany(id) {
-        axios.put(`http://localhost:8000/api/companies/${id}`);
-    }
 
     render() {
 

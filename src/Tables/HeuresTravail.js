@@ -26,7 +26,7 @@ class HeuresTravail extends Component {
     }
 
     deleteHeure(id) {
-        axios.delete(`http://localhost:8000/api/companies/${id}`);
+        axios.delete(`http://localhost:8000/api/companies/${id}`).then(res => { alert("élément supprimé!"); this.getHeures()});
 
     }
 

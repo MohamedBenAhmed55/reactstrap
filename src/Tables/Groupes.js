@@ -23,10 +23,7 @@ class Groupes extends Component {
     }
 
     deleteGroup(id) {
-        axios.delete(`http://localhost:8000/api/groupes/${id}`);
-        alert("group deleted!");
-        window.location.reload();
-
+        axios.delete(`http://localhost:8000/api/groupes/${id}`).then(res =>{ alert("group supprimé!"); this.getGroupes()});
     }
 
 

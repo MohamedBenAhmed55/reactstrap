@@ -66,7 +66,23 @@ class Taches extends Component{
         }).catch(err => {
             alert("L'opération a échoué");
         })}
-    
+
+        deletetache(id) {
+        let del = window.confirm("êtes vous sûr ?");
+        if (del) {
+            axios.delete(`http://localhost:8000/api/jours_feries/${id}`).then(res => {
+                alert("élément supprimé!");
+                this.getJoursFeries();
+                // window.location.reload();
+            }
+            );
+            // this.getJoursFeries();
+            // window.location.reload();
+        }
+        else {
+            this.getJoursFeries();
+        }
+    }
 
 
 
@@ -107,7 +123,7 @@ class Taches extends Component{
                                             <td>{tache.Priorite}</td>
                                             <td>{tache.description}</td>
                                             { tache.isValidated  ? <td>Validée</td> : <td>Non validée</td>}                                                 
-                                            <td><Button onClick={() => this.modifytache(tache.id)} >Modifier</Button></td>
+                                            <td><ModalEntity Buttontitle="Modifier" title="Modifier Tache" body={<Forms body={tache} modify={tache.id} />} /></td>
                                             <td><Button onClick={() => this.deletetache(tache.id)} >Supprimer</Button></td>
                                             <td><Button onClick={() => this.Validatetache(tache.id)} >Valider</Button></td>
                                         </tr> : null) )}
@@ -115,19 +131,11 @@ class Taches extends Component{
                                 </tbody>
                             </table>
                         </div>
-
-
-
-
                     }
-
                 </div>
             </section>
             <div className="container">
-
                 <ModalEntity Buttontitle="Ajouter Tache" title="Ajouter Tache" body={<Forms />} />
-
-
             </div>
         </div>             
         )
