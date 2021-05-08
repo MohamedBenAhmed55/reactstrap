@@ -13,28 +13,33 @@ class Taches extends Component{
     constructor(props){
         super(props);
         this.state={
-            Taches:[],
-            Tachesres:[],
+            Conges:[],
             CompanyId:jwt_decode(localStorage.getItem('token')).company,
             UserId:jwt_decode(localStorage.getItem('token')).UserId,
+            "dateDeb": "",
+            "dateFin": "",
+            "dateReprise": "",
+            "Type": "",
+            "isValidated": false,
+            "user": "",
         }
 
     }
 
     componentDidMount(){
-        this.getTaches();
+        this.getConges();       
     }
 
-    getTaches() {
-        axios.get(`http://localhost:8000/api/taches`).then(response => {
-            this.setState({ Taches: response.data['hydra:member'] })
+    getConges() {
+        axios.get(`http://localhost:8000/api/conges`).then(response => {
+            this.setState({ Conges: response.data['hydra:member'] })
         })
     }
 
     Validatetache(id){
         axios({
             method: 'patch',
-            url: `http://localhost:8000/api/taches/${id}`,
+            url: `http://localhost:8000/api/conges/${id}`,
             data: {
                 "isValidated":true,
             },
@@ -48,13 +53,15 @@ class Taches extends Component{
         deletetache(id) {
         let del = window.confirm("êtes vous sûr ?");
         if (del) {
-            axios.delete(`http://localhost:8000/api/taches/${id}`).then(res => {
+            axios.delete(`http://localhost:8000/api/conges/${id}`).then(res => {
                 alert("élément supprimé!");
-                this.getTaches();
+                this.getJoursFeries();
             }
-            );
+            )
         }
     }
+
+
 
     render(){
         return(
@@ -63,16 +70,19 @@ class Taches extends Component{
             <section className="row-section">
 
                 <div className="container">
+
                     {
                         <div className={'row'}>
+
+
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col">libelle</th>
                                         <th scope="col">dateDeb</th>
-                                        <th scope="col">Delai</th>
-                                        <th scope="col">Priorite</th>
-                                        <th scope="col">description</th>                                        
+                                        <th scope="col">dateFin</th>
+                                        <th scope="col">dateReprise</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">isValidated</th>                                        
                                         <th scope="col">validée</th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
@@ -81,18 +91,17 @@ class Taches extends Component{
                                 </thead>
 
                                 <tbody>
-                                    {this.state.Taches.map(tache =>
-                                        ( tache.userDestinataire.substr(11,tache.userDestinataire.length-11) == this.state.UserId ?     
-                                            <tr class="table-light" key={tache.id}>                                           
-                                            <td>{tache.libelle}</td>
-                                            <td>{tache.dateDeb.substr(0,10)}</td>
-                                            <td>{tache.dateFin.substr(0,10)}</td>
-                                            <td>{tache.Priorite}</td>
-                                            <td>{tache.description}</td>
-                                            { tache.isValidated  ? <td>Validée</td> : <td>Non validée</td>}                                                 
+                                    {this.state.Conges.map(conge =>
+                                        ( conge.user.substr(11,tache.user.length-11) == this.state.UserId ?     
+                                            <tr class="table-light" key={conge.id}>                                           
+                                            <td>{conge.libelle}</td>
+                                            <td>{conge.dateDeb.substr(0,10)}</td>
+                                            <td>{conge.dateFin.substr(0,10)}</td>
+                                            <td>{conge.Priorite}</td>
+                                            <td>{conge.description}</td>
+                                            { conge.isValidated  ? <td>Validé</td> : <td>Non validé</td>}                                                 
                                             <td><ModalEntity Buttontitle="Modifier" title="Modifier Tache" body={<Forms body={tache} modify={tache.id} />} /></td>
-                                            <td><Button onClick={() => this.deletetache(tache.id)} >Supprimer</Button></td>
-                                            <td><Button onClick={() => this.Validatetache(tache.id)} >Valider</Button></td>
+                                            <td><Button onClick={() => this.deletetache(tache.id)} >Supprimer</Button></td>                               
                                         </tr> : null) )}
 
                                 </tbody>

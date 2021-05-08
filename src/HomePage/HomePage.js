@@ -40,7 +40,6 @@ class HomePage extends Component {
         })
     }
 
-
     render() {
         return (
             <Container>
@@ -66,8 +65,6 @@ class HomePage extends Component {
             </Col>
             {/* <Col xs="6" sm="4"> </Col> */}
             </Row>
-           
-            
             </Container>)
     }
 }

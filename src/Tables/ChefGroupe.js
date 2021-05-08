@@ -25,10 +25,13 @@ class ChefGroupe extends Component {
     }
 
     deleteChef(id) {
-        axios.delete(`http://localhost:8000/api/chef_groupes/${id}`).then(res => {
-            alert("chef supprimé!");
-            this.getChefGroupe();
-        });
+        let confirm = window.confirm("êtes-vous sûr ?")
+        if (confirm) {
+            axios.delete(`http://localhost:8000/api/chef_groupes/${id}`).then(res => {
+                alert("chef supprimé!");
+                this.getChefGroupe();
+            });
+        }
 
 
     }

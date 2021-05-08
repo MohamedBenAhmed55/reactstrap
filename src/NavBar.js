@@ -66,9 +66,7 @@ class Navbar extends Component {
                                 <li className="nav-item">
                                     <Link className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link>
                                 </li>
-
                               
-
                                 <li className="nav-item">
                                     <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link>
                                 </li>
@@ -98,11 +96,7 @@ class Navbar extends Component {
 
                             </li>
                         </ul>
-
-
                         <button class="btn btn-secondary my-2 my-sm-0" onClick={this.Logout}>Logout</button>
-
-
                     </div>
 
                 </nav>
@@ -128,6 +122,5 @@ class Navbar extends Component {
             </div>)
     }
 }
-
 
 export default Navbar;

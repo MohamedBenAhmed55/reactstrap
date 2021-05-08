@@ -26,8 +26,10 @@ class HeuresTravail extends Component {
     }
 
     deleteHeure(id) {
-        axios.delete(`http://localhost:8000/api/companies/${id}`).then(res => { alert("élément supprimé!"); this.getHeures()});
-
+        let confirm = window.confirm("êtes-vous sûr ?")
+        if (confirm) {
+            axios.delete(`http://localhost:8000/api/companies/${id}`).then(res => { alert("élément supprimé!"); this.getHeures() });
+        }
     }
 
     modifyHeure(id) {

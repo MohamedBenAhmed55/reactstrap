@@ -25,7 +25,10 @@ class Salles extends Component {
     }
 
     deleteSalle(id) {
-        axios.delete(`http://localhost:8000/api/companies/${id}`).then (res => { alert("élément supprimé!"); this.getSalles()});
+        let confirm = window.confirm("veuillez confirmer")
+        if (confirm) {
+            axios.delete(`http://localhost:8000/api/companies/${id}`).then(res => { alert("élément supprimé!"); this.getSalles() });
+        }
     }
 
 

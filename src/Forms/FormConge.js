@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Row, Col, Button, Form, Container } from 'react-bootstrap';
 import jwt_decode from "jwt-decode";
 
-class FormTache extends Component {
+class FormConge extends Component {
 
     constructor(props) {
         super(props);
@@ -23,6 +23,7 @@ class FormTache extends Component {
             "Usernames": [],
 
         }
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
 
@@ -47,6 +48,8 @@ class FormTache extends Component {
     }
 
     setFields() {
+        let user_dest=this.getUserdest(); 
+
         this.setState({
             "libelle": this.state.tache.libelle,
             "dateDeb": this.state.tache.dateDeb,
@@ -54,6 +57,7 @@ class FormTache extends Component {
             "description": this.state.tache.description,
             "Priorite": this.state.tache.Priorite,
             "userDestinataire": this.state.tache.user_dest,
+            "user_dest": "",
         })
     }
 
@@ -100,7 +104,6 @@ class FormTache extends Component {
                 "dateFin": this.state.dateFin,
                 "description": this.state.description,
                 "Priorite": this.state.Priorite,
-                "isValidated": this.state.isValidated,
                 "userDestinataire": "/api/users/" + uid,
 
             },
@@ -137,12 +140,13 @@ class FormTache extends Component {
         return uid;
     }
 
+
     render() {
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Row>
                     <Col md>
-                        <Form.Group controlId="formLibelle">
+                        <Form.Group controlId="formCompanyName">
                             <Form.Label>libelle</Form.Label>
                             <Form.Control type="text" value={this.state.libelle} name="libelle" onChange={this.onChange} />
                         </Form.Group>
@@ -181,7 +185,7 @@ class FormTache extends Component {
                 <Col md>
                     <Form.Group as={Col} controlId="formSalleId">
                         <Form.Label>Priorité</Form.Label>
-                        <Form.Control as="select" defaultValue="01" name="Priorite" value={this.state.Priorite} onChange={this.onChange}>
+                        <Form.Control as="select" defaultValue="01">
                             <option>Elevé</option>
                             <option>Moyenne</option>
                             <option>Faible</option>
@@ -191,6 +195,8 @@ class FormTache extends Component {
                 </Col>
 
                 <Row>
+
+
                     <Col md>
                         <Form.Group controlId="formPosteName">
                             <Form.Label>Description</Form.Label>
@@ -199,10 +205,13 @@ class FormTache extends Component {
 
                     </Col>
                 </Row>
+
                 <Button variant="secondary" type="submit" >Confirmer</Button>
             </Form>
         )
     }
+
+
 }
 
-export default FormTache;
+export default FormConge;

@@ -23,7 +23,10 @@ class Groupes extends Component {
     }
 
     deleteGroup(id) {
-        axios.delete(`http://localhost:8000/api/groupes/${id}`).then(res =>{ alert("group supprimé!"); this.getGroupes()});
+        let confirm = window.confirm("êtes-vous sûr ?")
+        if (confirm) {
+            axios.delete(`http://localhost:8000/api/groupes/${id}`).then(res => { alert("group supprimé!"); this.getGroupes() });
+        }
     }
 
 
@@ -55,9 +58,9 @@ class Groupes extends Component {
                                                 <tr class="table-light" >
                                                     <td>{groupe.name}</td>
                                                     <td>{groupe.chef}</td>
-                                                    <td>  <ModalEntity Buttontitle="Modifier" title="Modifer un groupe" body={<Forms />} modify={groupe.id} data={groupe}/></td>
+                                                    <td>  <ModalEntity Buttontitle="Modifier" title="Modifer un groupe" body={<Forms />} modify={groupe.id} data={groupe} /></td>
                                                     <td><Button onClick={() => this.deleteGroup(groupe.id)} >supprimer</Button></td>
-                                                    
+
                                                 </tr>)}
 
                                         </tbody>
@@ -74,7 +77,7 @@ class Groupes extends Component {
                 <div className="container">
                     <div className={'row'}>
                         <div className="col-md-10 offset-md-1 row-block" >
-                        <ModalEntity Buttontitle="Ajouter" title="Ajouter un groupe" body={<Forms />} />
+                            <ModalEntity Buttontitle="Ajouter" title="Ajouter un groupe" body={<Forms />} />
                         </div>
                     </div>
                 </div>

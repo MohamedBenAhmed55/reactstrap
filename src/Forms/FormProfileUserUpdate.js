@@ -62,13 +62,11 @@ class FormProfileUserUpdate extends Component {
         }
     }
 
-
     handleSubmit(e) {
         e.preventDefault();
         if (this.state.id) {
             this.updateUser(this.state.id);
         }
-
     }
 
 
@@ -185,7 +183,6 @@ class FormProfileUserUpdate extends Component {
         this.setState({erreur:true, message: message})       
          return message;
     }
-
 
     render() {
         return (

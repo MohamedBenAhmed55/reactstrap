@@ -14,7 +14,6 @@ class FormAjoutSalle extends Component {
             "id": props.modify,
         };
 
-
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }

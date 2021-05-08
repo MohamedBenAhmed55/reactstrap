@@ -16,8 +16,6 @@ class Postes extends Component {
 
     componentDidMount() {
         this.getPostes();
-
-
     }
 
 
@@ -29,7 +27,10 @@ class Postes extends Component {
     }
 
     deletePoste(id) {
-        axios.delete(`http://localhost:8000/api/postes/${id}`).then(res => { alert("élément supprimé!"); this.getPostes() });
+        let confirm = window.confirm("êtes-vous sûr ?")
+        if (confirm) {
+            axios.delete(`http://localhost:8000/api/postes/${id}`).then(res => { alert("élément supprimé!"); this.getPostes() });
+        }
     }
 
 

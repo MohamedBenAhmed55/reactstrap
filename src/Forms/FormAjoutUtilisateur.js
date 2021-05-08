@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
-import Modal from '../ModalError';
 
 class FormAjoutUtilisateur extends Component {
 
@@ -172,13 +171,13 @@ class FormAjoutUtilisateur extends Component {
     let message = "";
     this.setState({ erreur: false, message: [] });
 
-    if (isNaN(this.state.Fax) || this.state.phone.length != 8) {
+    if (isNaN(this.state.Fax)) {
       message = message + " Le numero de Fax doit être un nombre \n "
       this.setState({ Fax: this.state.user.Fax })
 
     }
 
-    if (isNaN(this.state.phone) || this.state.phone.length != 8) {
+    if (isNaN(this.state.phone)) {
       message = message + "Le numero de téléphone doit contenir 8 chiffres \n"
       this.setState({ phone: this.state.user.phone })
 
@@ -189,9 +188,10 @@ class FormAjoutUtilisateur extends Component {
       this.setState({ username: this.state.user.username })
     }
 
-    if(this.state.username){
-    for (let i = 0; i < this.state.username.length; i++) {
-      if (!(this.state.username[i].isNaN)) {
+    if(this.state.username.localeCompare("") != 0){
+      let array =this.state.username.split;
+    for (let i = 0; i < array.length; i++) {
+      if (!(array[i].isNaN)) {
          message = message +"le username ne doit pas contenir un nombre ! \n "
         this.setState({ username: this.state.user.username })
         break;
@@ -205,14 +205,14 @@ class FormAjoutUtilisateur extends Component {
       this.setState({ nom: this.state.user.nom })
     }
 
-    if(this.state.nom){
+    
     for (let i = 0; i < this.state.nom.length; i++) {
       if (!(this.state.nom[i].isNaN)) {
          message = message +"le nom ne doit pas contenir un nombre ! \n "
         this.setState({ nom: this.state.user.nom })
         break;
       }
-    }}
+    }
 
     if (!isNaN(this.state.prenom)) {
        message = message +" le prenom ne doit pas être un nombre ! \n"
@@ -249,7 +249,7 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formUsername">
               <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.onChange} />
+              <Form.Control type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.onChange} required />
             </Form.Group>
 
           </Col>
@@ -258,7 +258,7 @@ class FormAjoutUtilisateur extends Component {
           {this.state.show ? <Col md>
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange} />
+              <Form.Control type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange} required   />
             </Form.Group>
 
           </Col> : null}
@@ -270,7 +270,7 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formName">
               <Form.Label>Prenom</Form.Label>
-              <Form.Control type="text" placeholder="Prenom" name="prenom" value={this.state.prenom} onChange={this.onChange} />
+              <Form.Control type="text" placeholder="Prenom" name="prenom" value={this.state.prenom} onChange={this.onChange} required />
             </Form.Group>
 
           </Col>
@@ -278,7 +278,7 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formLastname">
               <Form.Label>Nom</Form.Label>
-              <Form.Control type="text" placeholder="Nom" name="nom" value={this.state.nom} onChange={this.onChange} />
+              <Form.Control type="text" placeholder="Nom" name="nom" value={this.state.nom} onChange={this.onChange} required />
             </Form.Group>
 
           </Col>
@@ -288,15 +288,14 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formCin">
               <Form.Label>Cin</Form.Label>
-              <Form.Control type="number" placeholder="Cin" name="cin" min="00000001" max="99999999" value={this.state.cin} onChange={this.onChange} />
+              <Form.Control type="number" placeholder="Cin" name="cin" min="00000001" max="99999999" value={this.state.cin} onChange={this.onChange} required />
             </Form.Group>
-
           </Col>
 
           <Col md>
             <Form.Group controlId="formNumero">
               <Form.Label>N°Tel</Form.Label>
-              <Form.Control type="phone" placeholder="Numero" name="phone" value={this.state.phone} onChange={this.onChange} />
+              <Form.Control type="number" placeholder="Numero" name="phone" min="00000001" max="99999999" value={this.state.phone} onChange={this.onChange} required />
             </Form.Group>
 
           </Col>
@@ -308,13 +307,13 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formNumeroFax">
               <Form.Label>Fax</Form.Label>
-              <Form.Control type="Fax" placeholder="Fax" name="Fax" value={this.state.Fax} onChange={this.onChange} />
+              <Form.Control type="Fax" placeholder="Fax" name="Fax" value={this.state.Fax} onChange={this.onChange} required />
             </Form.Group>
 
           </Col>
           <Form.Group as={Col} >
             <Form.Label>Genre</Form.Label>
-            <Form.Control as="select" name="Genre" value={this.state.Genre} onChange={this.onChange}>
+            <Form.Control as="select" name="Genre" value={this.state.Genre} onChange={this.onChange} required>
               <option>M</option>
               <option>F</option>
             </Form.Control>
@@ -325,7 +324,7 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formAdresse">
               <Form.Label>Adresse</Form.Label>
-              <Form.Control type="text" placeholder="Adresse" name="Adresse" value={this.state.Adresse} onChange={this.onChange} />
+              <Form.Control type="text" placeholder="Adresse" name="Adresse" value={this.state.Adresse} onChange={this.onChange} required />
             </Form.Group>
           </Col>
         </Row>
@@ -334,7 +333,7 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formEmail">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Email " name="email" value={this.state.email} onChange={this.onChange} />
+              <Form.Control type="email" placeholder="Email " name="email" value={this.state.email} onChange={this.onChange} required />
             </Form.Group>
 
           </Col>
@@ -344,7 +343,7 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formDateNais">
               <Form.Label>Date de Naissance</Form.Label>
-              <Form.Control type="date" name="dateNai" value={this.state.dateNai} onChange={this.onChange} />
+              <Form.Control type="date" name="dateNai" value={this.state.dateNai} onChange={this.onChange} required />
             </Form.Group>
 
           </Col>
@@ -352,7 +351,7 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formDateEmbauche">
               <Form.Label>Date embauche</Form.Label>
-              <Form.Control type="date" name="dateEmbauche" value={this.state.dateEmbauche} onChange={this.onChange} />
+              <Form.Control type="date" name="dateEmbauche" value={this.state.dateEmbauche} onChange={this.onChange} required />
             </Form.Group>
 
           </Col>
@@ -361,14 +360,14 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formMatricule">
               <Form.Label>Matricule</Form.Label>
-              <Form.Control type="text" placeholder="Matricule" name="matricule" value={this.state.matricule} onChange={this.onChange} />
+              <Form.Control type="text" placeholder="Matricule" name="matricule" value={this.state.matricule} onChange={this.onChange} required />
             </Form.Group>
           </Col>
 
           <Col md>
             <Form.Group controlId="formPays">
               <Form.Label>Pays</Form.Label>
-              <Form.Control type="text" placeholder="Pays" name="Pays" value={this.state.Pays} onChange={this.onChange} />
+              <Form.Control type="text" placeholder="Pays" name="Pays" value={this.state.Pays} onChange={this.onChange} required />
             </Form.Group>
           </Col>
 
@@ -386,7 +385,7 @@ class FormAjoutUtilisateur extends Component {
         <Row>
           <Form.Group as={Col} >
             <Form.Label>Etat présence</Form.Label>
-            <Form.Control as="select" name="etatPresence" value={this.state.etatPresence} onChange={this.onChange}>
+            <Form.Control as="select" name="etatPresence" value={this.state.etatPresence} onChange={this.onChange} required>
               <option>Présent</option>
               <option>En congé</option>
               <option>En mission</option>

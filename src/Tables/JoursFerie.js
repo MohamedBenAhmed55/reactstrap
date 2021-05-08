@@ -34,11 +34,6 @@ class JourFerie extends Component {
                 // window.location.reload();
             }
             );
-            // this.getJoursFeries();
-            // window.location.reload();
-        }
-        else {
-            this.getJoursFeries();
         }
     }
 

@@ -25,16 +25,6 @@ class Login extends Component {
     }
 
 
-    // componentDidMount() {
-    //     this.Login();
-    // }
-
-    // componentDidMount(){
-    //     let token = JSON.parse(jwtDecode(localStorage.getItem('token')));
-    //     if (token){
-    //         <Redirect to= "/home"/>
-    //     }
-    // }
 
     handleSubmit(event) {
         // console.log('login', {
