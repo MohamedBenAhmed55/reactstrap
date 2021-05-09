@@ -47,7 +47,6 @@ class FormAjoutPoste extends Component {
 
     if (this.state.id) {
       this.updatePost(this.state.id);
-      alert("poste updated !");
     }
     else {
       axios.post(`http://localhost:8000/api/postes`, {
@@ -76,6 +75,8 @@ class FormAjoutPoste extends Component {
       headers: {
         "Content-Type": 'application/merge-patch+json'
       }
+    }).then(res =>{
+      alert("poste updated !");
     })
   }
 

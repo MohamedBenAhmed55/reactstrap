@@ -16,21 +16,26 @@ import Groupes from './Tables/Groupes';
 import ChefGroupe from './Tables/ChefGroupe';
 import HomePage from './HomePage/HomePage';
 import Taches from './Tables/Taches'
+import jwtdecode from 'jwt-decode';
 
 
 class Navbar extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {redirect:false};
+        this.state = { redirect: false, role: jwtdecode(localStorage.getItem('token')).roles[0] };
         this.Logout = this.Logout.bind(this);
     }
-    
+
     Logout() {
         localStorage.removeItem('token');
-        this.setState({redirect: true});
+        this.setState({ redirect: true });
         localStorage.setItem("isLoggedout", true);
-        
+
+    }
+
+    componentDidMount() {
+        console.log(this.state.role == "ROLE_ADMIN")
     }
 
 
@@ -59,17 +64,17 @@ class Navbar extends Component {
                                     <Link className={"nav-link"} to={"/dashboard/eventcalendar"}> My Calendar </Link>
                                 </li>
 
-                                <li className="nav-item">
+                                {/* <li className="nav-item">
                                     <Link className={"nav-link"} to={"/dashboard/users"}> Users </Link>
-                                </li>
+                                </li> */}
 
-                                <li className="nav-item">
+                                {/* <li className="nav-item">
                                     <Link className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link>
-                                </li>
-                              
-                                <li className="nav-item">
+                                </li> */}
+
+                                {/* <li className="nav-item">
                                     <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link>
-                                </li>
+                                </li> */}
 
                                 <li className="nav-item">
                                     <Link className={"nav-link"} to={"/dashboard/Taches"}> Taches </Link>
@@ -77,15 +82,18 @@ class Navbar extends Component {
 
 
                             </ul>
-                            <li class="nav-item dropdown">
+
+                            { (this.state.role == "ROLE_ADMIN" | this.state.role =="ROLE_CLIENT")
+                             ? <li class="nav-item dropdown">
                                 <Dropdown>
                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                                        Configuration du companie
+                                        Configuration du compagnie
                 </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
+                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/users"}> Users </Link></Dropdown.Item>
                                         <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/addCompany"}> AjoutCompany </Link></Dropdown.Item>
+                                        { this.state.role == "ROLE_ADMIN" ? <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link></Dropdown.Item> : null}
                                         <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/heures-travail"}> Heures Travail </Link></Dropdown.Item>
                                         <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Salles"}> Salles </Link></Dropdown.Item>
                                         <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Postes"}> Postes </Link></Dropdown.Item>
@@ -94,7 +102,7 @@ class Navbar extends Component {
                                     </Dropdown.Menu>
                                 </Dropdown>
 
-                            </li>
+                            </li> : null}
                         </ul>
                         <button class="btn btn-secondary my-2 my-sm-0" onClick={this.Logout}>Logout</button>
                     </div>
@@ -114,11 +122,11 @@ class Navbar extends Component {
                     <Route path="/dashboard/Postes" component={Postes} />
                     <Route path="/dashboard/Groupes" component={Groupes} />
                     <Route path="/dashboard/ChefGroup" component={ChefGroupe} />
-                    <Route path="/dashboard/home" component={HomePage} />                   
+                    <Route path="/dashboard/home" component={HomePage} />
                     <Route path="/dashboard/Taches" component={Taches} />
-                    
+
                 </Switch>
-                {this.state.redirect ? <Redirect  to="/login" /> : null}
+                {this.state.redirect ? <Redirect to="/login" /> : null}
             </div>)
     }
 }

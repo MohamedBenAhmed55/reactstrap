@@ -18,7 +18,11 @@ class FinalPage extends Component{
       }
 
     // componentDidMount(){
-    //   this.HandleAuthentif();
+    //   let token = JSON.parse(jwt_decode(localStorage.getItem('token')));
+    //   if (token){
+    //     console.log("hello everyone");
+    //     this.setState({token:token})
+    //   }
     // }
     
     // componentDidUpdate(prevProps, prevState) {

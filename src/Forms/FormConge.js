@@ -9,18 +9,15 @@ class FormConge extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: props.modify,
-            tache: props.body,
-            "libelle": "",
+            Conges:[],
+            CompanyId:jwt_decode(localStorage.getItem('token')).company,
+             UserId:jwt_decode(localStorage.getItem('token')).UserId,
             "dateDeb": "",
             "dateFin": "",
-            "description": "",
-            "Priorite": "",
+            "dateReprise": "",
+            "Type": "",
             "isValidated": false,
-            "userDestinataire": "",
-            "user_dest":"",
-            "company": jwt_decode(localStorage.getItem('token')).company,
-            "Usernames": [],
+            "user": "",
 
         }
 
@@ -48,16 +45,15 @@ class FormConge extends Component {
     }
 
     setFields() {
-        let user_dest=this.getUserdest(); 
-
+        
         this.setState({
-            "libelle": this.state.tache.libelle,
-            "dateDeb": this.state.tache.dateDeb,
-            "dateFin": this.state.tache.dateFin,
-            "description": this.state.tache.description,
-            "Priorite": this.state.tache.Priorite,
-            "userDestinataire": this.state.tache.user_dest,
-            "user_dest": "",
+            "dateDeb": "",
+            "dateFin": "",
+            "dateReprise": "",
+            "Type": "",
+            "isValidated":"" ,
+            "user":"",
+            "company":"" ,
         })
     }
 

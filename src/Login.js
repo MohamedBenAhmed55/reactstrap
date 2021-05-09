@@ -14,6 +14,7 @@ class Login extends Component {
             "password": "",
             "token": "",
             "redirect":false,
+            "boolean":false,
         };
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -55,7 +56,8 @@ class Login extends Component {
             
         }).catch((error) => {
             console.log(error);
-            alert("Invalid credentials") 
+            alert("Données invalides") 
+            this.setState({count: this.state.count + 1})
         });
 
         event.preventDefault();
@@ -75,11 +77,8 @@ class Login extends Component {
     //     this.setState({ password: event.target.value });
     // }
 
-    render() {
-        
-      
-        return (
-            
+    render() {     
+        return (           
             <div className="container">
                 <div className="card card-container">
 
@@ -87,8 +86,8 @@ class Login extends Component {
                     <p id="profile-name" className="profile-name-card"></p>
                     <form className="form-signin" method="post" onSubmit={this.handleSubmit} >
                         <span id="reauth-email" className="reauth-email"></span>
-                        <input type="text" id="inputEmail" className="form-control" required placeholder="Username" value={this.state.username} name="username" onChange={this.onChange} />
-                        <input type="password" id="inputPassword" className="form-control" required placeholder="Password" value={this.state.password} name="password" onChange={this.onChange} />
+                        <input type="text" id="inputEmail" className="form-control" required placeholder="Username" value={this.state.username} name="username" onChange={this.onChange} readOnly={this.state.boolean} />
+                        <input type="password" id="inputPassword" className="form-control" required placeholder="Password" value={this.state.password} name="password" onChange={this.onChange} readOnly={this.state.boolean}/>
                         {/* <div id="remember" className="checkbox">
                             <label>
                                 <input type="checkbox" value="remember-me" /> Remember me
@@ -100,10 +99,8 @@ class Login extends Component {
                         Forgot the password?
             </a>
                 </div>
-                {this.state.redirect ? <Redirect exact from="/login" to="/dashboard" /> : null}                                                       
-
+                {this.state.redirect ? <Redirect exact from="/login" to="/dashboard" /> : null}
             </div>
-
         )
     }
 }

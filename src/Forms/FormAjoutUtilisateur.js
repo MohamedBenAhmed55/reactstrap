@@ -59,7 +59,7 @@ class FormAjoutUtilisateur extends Component {
       url: `http://localhost:8000/api/users/${id}`,
       data: {
         "username": this.state.username,
-        // "roles": this.state.roles,
+        "roles": this.state.roles,
         "password": this.state.password,
         "email": this.state.email,
         "cin": this.state.cin,
@@ -92,8 +92,8 @@ class FormAjoutUtilisateur extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
     let message = this.fieldsControl();
+    console.log(message);
     if(message == ""){
     if (this.state.id) {
       this.updateUser(this.state.id);
@@ -102,7 +102,7 @@ class FormAjoutUtilisateur extends Component {
       axios.post(`http://localhost:8000/api/users`, {
 
         "username": this.state.username,
-        // "roles": this.state.roles,
+        "roles": this.state.roles,
         "password": this.state.password,
         "email": this.state.email,
         "cin": this.state.cin,
@@ -171,18 +171,6 @@ class FormAjoutUtilisateur extends Component {
     let message = "";
     this.setState({ erreur: false, message: [] });
 
-    if (isNaN(this.state.Fax)) {
-      message = message + " Le numero de Fax doit être un nombre \n "
-      this.setState({ Fax: this.state.user.Fax })
-
-    }
-
-    if (isNaN(this.state.phone)) {
-      message = message + "Le numero de téléphone doit contenir 8 chiffres \n"
-      this.setState({ phone: this.state.user.phone })
-
-    }
-
     if (isNaN(this.state.username)== false) {
       message = message + " le username ne doit pas être un nombre! \n "
       this.setState({ username: this.state.user.username })
@@ -191,49 +179,47 @@ class FormAjoutUtilisateur extends Component {
     if(this.state.username.localeCompare("") != 0){
       let array =this.state.username.split;
     for (let i = 0; i < array.length; i++) {
-      if (!(array[i].isNaN)) {
+      if (!(isNaN(array[i]))) {
          message = message +"le username ne doit pas contenir un nombre ! \n "
         this.setState({ username: this.state.user.username })
         break;
       }
     }}
 
-
-
-    if (!isNaN(this.state.nom)) {
+    if (!(isNaN(this.state.nom))) {
        message = message +" le nom ne doit pas être un nombre ! \n"
       this.setState({ nom: this.state.user.nom })
     }
 
     
-    for (let i = 0; i < this.state.nom.length; i++) {
-      if (!(this.state.nom[i].isNaN)) {
-         message = message +"le nom ne doit pas contenir un nombre ! \n "
-        this.setState({ nom: this.state.user.nom })
-        break;
-      }
-    }
+    // for (let i = 0; i < this.state.nom.length; i++) {
+    //   if (!(this.state.nom[i].isNaN)) {
+    //      message = message +"le nom ne doit pas contenir un nombre ! \n "
+    //     this.setState({ nom: this.state.user.nom })
+    //     break;
+    //   }
+    // }
 
     if (!isNaN(this.state.prenom)) {
        message = message +" le prenom ne doit pas être un nombre ! \n"
       this.setState({ prenom: this.state.user.prenom })
     }
 
-    if(this.state.prenom){
-    for (let i = 0; i < this.state.prenom.length; i++) {
-      if (!(this.state.prenom[i].isNaN)) {
-         message = message +"le prenom ne doit pas contenir un nombre ! \n "
-        this.setState({ prenom: this.state.user.prenom })
-        break;
-      }
-    }}
+    // if(this.state.prenom){
+    // for (let i = 0; i < this.state.prenom.length; i++) {
+    //   if (!(this.state.prenom[i].isNaN)) {
+    //      message = message +"le prenom ne doit pas contenir un nombre ! \n "
+    //     this.setState({ prenom: this.state.user.prenom })
+    //     break;
+    //   }
+    // }}
 
-    if (this.state.email.indexOf("@") == -1 || this.state.email.indexOf(".") == -1) {
-       message = message +"mail invalide ! \n"
-      this.setState({ email: this.state.user.email })
-    }
+    // if (this.state.email.indexOf("@") == -1 || this.state.email.indexOf(".") == -1) {
+    //    message = message +"mail invalide ! \n"
+    //   this.setState({ email: this.state.user.email })
+    // }
 
-    if (!isNaN(this.state.prenom)) {
+    if (!isNaN(this.state.Adresse)) {
        message = message +" l'adresse ne peux pas être un nombre ! \n"
       this.setState({ Adresse: this.state.user.Adresse })
     }
@@ -253,8 +239,6 @@ class FormAjoutUtilisateur extends Component {
             </Form.Group>
 
           </Col>
-
-
           {this.state.show ? <Col md>
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
@@ -262,7 +246,6 @@ class FormAjoutUtilisateur extends Component {
             </Form.Group>
 
           </Col> : null}
-
 
         </Row>
         <Row>
@@ -307,7 +290,7 @@ class FormAjoutUtilisateur extends Component {
           <Col md>
             <Form.Group controlId="formNumeroFax">
               <Form.Label>Fax</Form.Label>
-              <Form.Control type="Fax" placeholder="Fax" name="Fax" value={this.state.Fax} onChange={this.onChange} required />
+              <Form.Control type="number" placeholder="Fax" min="00000001" max="99999999" name="Fax" value={this.state.Fax} onChange={this.onChange} required />
             </Form.Group>
 
           </Col>
@@ -393,15 +376,16 @@ class FormAjoutUtilisateur extends Component {
             </Form.Control>
           </Form.Group>
         </Row>
-        {/* <Row>
+        <Row>
           <Form.Group as={Col} controlId="my_multiselect_field">
             <Form.Label>Roles</Form.Label>
-            <Form.Control as="select" value={this.state.roles} onChange={this.onRoleschange}>
-              <option value="field1">ROLE_USER</option>
-              <option value="field2">ROLE_ADMIN</option>
+            <Form.Control as="select" value={this.state.roles} onChange={this.onRoleschange} name="roles">
+              <option >ROLE_USER</option>
+              <option >ROLE_ADMIN</option>
+              
             </Form.Control>
           </Form.Group>
-        </Row> */}
+        </Row>
 
         <Button variant="secondary" type="submit">Ajouter Utilisateur</Button>
       </Form>

@@ -96,14 +96,6 @@ class FormAjoutGroupe extends Component {
           message = message + " le nom du groupe ne doit pas être un nombre!  " + 
           this.setState({name: this.state.name})
       }
-
-      for(let i=0; i<this.state.name.length;i++){
-        if(!(this.state.name[i].isNaN)){
-          message = message + "le nom du groupe ne doit pas contenir un nombre"
-        }
-
-      }
-
       
           // if (!this.state.name[0].isNaN){
           //     message = message + "le nom du groupe ne doit pas contenir un nombre !" + " / "
