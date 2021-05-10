@@ -122,7 +122,7 @@ setFields(){
         </Row>
 
 
-        <Button variant="secondary" type="submit" >Ajouter Jour Ferie</Button>
+        <Button variant="secondary" type="submit" >Confirmer</Button>
       </Form>
     )
   }

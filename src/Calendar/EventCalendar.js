@@ -20,22 +20,12 @@ class EventCalendar extends Component{
             {title: 'Title 4' , date: '2021-04-04'},
             {title: 'Title 5' , date: '2021-04-05'},
             {title: 'Title 6' , date: '2021-04-06'},         
-        ],show: false,
-        setShow: false,
+        ]
 };
-this.handleClose=this.handleClose.bind(this);
-this.handleShow=this.handleShow.bind(this);
 this.refreshPage=this.refreshPage.bind(this);
-this.handleClose=this.handleClose.bind(this);
+
     }
-    handleClose = () =>{
-        this.setState({setShow: false});
-        this.refreshPage();
-     };
-    handleShow = () => this.setState({setShow: true});
-    refreshPage = ()=>{
-        window.location.reload();
-     }
+
 
     // getEvents() {
     //     axios.get(`http://localhost:8000/api/evenements`).then(response => {
@@ -57,13 +47,13 @@ this.handleClose=this.handleClose.bind(this);
             plugins={[ dayGridPlugin ]}
             initialView="dayGridMonth"
             dateClick={this.handleDateClick}
-            events={this.state.Events}
+            events={[this.state.Events]}
           />
-            </div>
-            <div className="container">
-            <ModalEntity Buttontitle="Add Event" title="Ajouter evenement" body={<Forms />} />
+          <br />
 
-                </div>
+          <ModalEntity Buttontitle="Add Event" title="Ajouter evenement" body={<Forms />} />
+            </div>
+            
             </div>
         )
     }

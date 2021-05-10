@@ -17,6 +17,8 @@ import ChefGroupe from './Tables/ChefGroupe';
 import HomePage from './HomePage/HomePage';
 import Taches from './Tables/Taches'
 import jwtdecode from 'jwt-decode';
+import TachesValider from './Tables/TachesValider';
+import Conges from './Tables/Congés';
 
 
 class Navbar extends Component {
@@ -40,6 +42,7 @@ class Navbar extends Component {
 
 
     render() {
+        
         return (
             <div>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -64,45 +67,51 @@ class Navbar extends Component {
                                     <Link className={"nav-link"} to={"/dashboard/eventcalendar"}> My Calendar </Link>
                                 </li>
 
-                                {/* <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/dashboard/users"}> Users </Link>
-                                </li> */}
-
-                                {/* <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link>
-                                </li> */}
-
-                                {/* <li className="nav-item">
-                                    <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link>
-                                </li> */}
-
                                 <li className="nav-item">
                                     <Link className={"nav-link"} to={"/dashboard/Taches"}> Taches </Link>
                                 </li>
 
+                                <li className="nav-item">
+                                    <Link className={"nav-link"} to={"/dashboard/Conges"}> Conges </Link>
+                                </li>
+
+
+                                {this.state.role == "ROLE_LEAD" | this.state.role == "ROLE_ADMIN" ?
+                                    
+                                        <li className="nav-item">
+                                            <Link className={"nav-link"} to={"/dashboard/Tachesvalider"}> Taches à valider </Link>
+                                        </li> : null}
+                                       
+                                        {this.state.role == "ROLE_LEAD" | this.state.role == "ROLE_ADMIN" ?
+
+                                        <li className="nav-item">
+                                            <Link className={"nav-link"} to={"/dashboard/Congesvalider"}> Congés à valider </Link>
+                                        </li> : null }
+                                        
+                                   
 
                             </ul>
 
-                            { (this.state.role == "ROLE_ADMIN" | this.state.role =="ROLE_CLIENT")
-                             ? <li class="nav-item dropdown">
-                                <Dropdown>
-                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                                        Configuration du compagnie
+                            {(this.state.role == "ROLE_ADMIN" | this.state.role == "ROLE_CLIENT")
+                                ? <li class="nav-item dropdown">
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                            Configuration du compagnie
                 </Dropdown.Toggle>
 
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/users"}> Users </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link></Dropdown.Item>
-                                        { this.state.role == "ROLE_ADMIN" ? <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link></Dropdown.Item> : null}
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/heures-travail"}> Heures Travail </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Salles"}> Salles </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Postes"}> Postes </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Groupes"}> Groupes </Link></Dropdown.Item>
-                                        <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/ChefGroup"}> Chefs Group </Link></Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/users"}> Users </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link></Dropdown.Item>
+                                            {this.state.role == "ROLE_ADMIN" ? <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link></Dropdown.Item> : null}
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/heures-travail"}> Heures Travail </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Salles"}> Salles </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Postes"}> Postes </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Groupes"}> Groupes </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/ChefGroup"}> Chefs Group </Link></Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
 
-                            </li> : null}
+                                </li> : null}
                         </ul>
                         <button class="btn btn-secondary my-2 my-sm-0" onClick={this.Logout}>Logout</button>
                     </div>
@@ -124,6 +133,8 @@ class Navbar extends Component {
                     <Route path="/dashboard/ChefGroup" component={ChefGroupe} />
                     <Route path="/dashboard/home" component={HomePage} />
                     <Route path="/dashboard/Taches" component={Taches} />
+                    <Route path="/dashboard/Tachesvalider" component={TachesValider} />
+                    <Route path="/dashboard/Conges" component={Conges} />
 
                 </Switch>
                 {this.state.redirect ? <Redirect to="/login" /> : null}

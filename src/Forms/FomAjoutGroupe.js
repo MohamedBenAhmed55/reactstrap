@@ -140,7 +140,7 @@ class FormAjoutGroupe extends Component {
 
         </Row>
 
-        <Button variant="secondary" type="submit" >Ajouter Groupe</Button>
+        <Button variant="secondary" type="submit" >Confirmer</Button>
       </Form>
     )
   }

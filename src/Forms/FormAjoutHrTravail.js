@@ -143,7 +143,7 @@ class FormAjoutHrTravail extends Component {
 
         </Row>
 
-        <Button variant="secondary" type="submit" >Ajouter Heures Travail</Button>
+        <Button variant="secondary" type="submit" >Confirmer</Button>
       </Form>
     )
   }

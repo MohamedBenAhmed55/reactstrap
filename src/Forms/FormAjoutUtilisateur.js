@@ -387,7 +387,7 @@ class FormAjoutUtilisateur extends Component {
           </Form.Group>
         </Row>
 
-        <Button variant="secondary" type="submit">Ajouter Utilisateur</Button>
+        <Button variant="secondary" type="submit">Confirmer</Button>
       </Form>
     )
   }

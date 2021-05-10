@@ -3,16 +3,20 @@ import { Button } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutUtilisateur'
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
+import jwtDecode from 'jwt-decode';
+import { Redirect } from 'react-router-dom';
 
 class Users extends Component {
 
     constructor() {
         super();
-        this.state = { users: [] };
+        this.state = { users: [], company:"" };
     }
 
     componentDidMount() {
         this.getUsers();
+        this.setState({company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company});
+        console.log("/api/companies/" + jwtDecode(localStorage.getItem('token')).company)
 
     }
 
@@ -37,6 +41,10 @@ class Users extends Component {
 
 
     render() {
+
+        // if(!localStorage.getItem('token')){
+        //     return (<Redirect to={'/login'}/>)
+        //   }
 
         return (
             <div>
@@ -66,6 +74,7 @@ class Users extends Component {
 
                                     <tbody>
                                         {this.state.users.map(user =>
+                                        ( this.state.company == user.company ?
                                             <tr class="table-light" >
                                                 <td>{user.nom}</td>
                                                 <td>{user.prenom}</td>
@@ -79,7 +88,7 @@ class Users extends Component {
                                                 <td>{user.email}</td>
                                                 <td><ModalEntity Buttontitle="Modifier" title="Modifier utilisateur" body={<Forms data={user} modify={user.id} show={false} />} /></td>
                                                 <td><Button onClick={() => this.deleteUser(user.id)} >Remove</Button></td>
-                                            </tr>)}
+                                            </tr> : null))}
 
                                     </tbody>
                                 </table>

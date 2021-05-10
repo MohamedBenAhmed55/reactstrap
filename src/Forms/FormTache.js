@@ -20,6 +20,7 @@ class FormTache extends Component {
             "userDestinataire": "",
             "user_dest":"",
             "company": jwt_decode(localStorage.getItem('token')).company,
+            "user": jwt_decode(localStorage.getItem('token')).UserId,
             "Usernames": [],
 
         }
@@ -69,19 +70,32 @@ class FormTache extends Component {
             this.modifyTache(this.state.id, uid);
         }
         else {
+            // console.log( 'test',{
+            //     "company": "/api/companies/" + this.state.company,
+            //     "libelle": this.state.libelle,
+            //     "dateDeb":  this.state.dateDeb,
+            //     "dateFin": this.state.dateFin,
+            //     "description": this.state.description,
+            //     "Priorite":  this.state.Priorite,
+            //     "isValidated":this.state.isValidated,
+            //     "userDestinataire":"/api/users/" + uid,
+            //     "userId":this.state.user});
+
             axios.post(`http://localhost:8000/api/taches`,
                 {
                     "company": "/api/companies/" + this.state.company,
                     "libelle": this.state.libelle,
-                    "dateDeb": this.state.dateDeb,
-                    "dateFin": this.state.dateFin,
+                    "dateDeb": "05-02-2021",
+                    "dateFin": "05-03-2021",
                     "description": this.state.description,
                     "Priorite": this.state.Priorite,
                     "isValidated": this.state.isValidated,
                     "userDestinataire": "/api/users/" + uid,
+                    "userId":""+ this.state.user,
                 })
                 .then(res => {
-                    window.location.reload()
+                    window.location.reload();
+                    alert("succès")
                 }).catch(err => {
                     alert("l'opération a échoué")
                 });

@@ -7,7 +7,7 @@ import axios from 'axios';
 import jwt_decode from "jwt-decode";
 
 
-class Taches extends Component {
+class CongesValider extends Component {
 
     constructor(props) {
         super(props);
@@ -16,7 +16,6 @@ class Taches extends Component {
             CompanyId: jwt_decode(localStorage.getItem('token')).company,
             UserId: jwt_decode(localStorage.getItem('token')).UserId,
         }
-
     }
 
     componentDidMount() {
@@ -82,7 +81,7 @@ class Taches extends Component {
 
                                     <tbody>
                                         {this.state.Conges.map(conge =>
-                                        (conge.user.substr(11, tache.user.length - 11) == this.state.UserId ?
+                                        (conge.isValidated ==false ?
                                             <tr class="table-light" key={conge.id}>
                                                 <td>{conge.libelle}</td>
                                                 <td>{conge.dateDeb.substr(0, 10)}</td>
@@ -99,12 +98,10 @@ class Taches extends Component {
                         }
                     </div>
                 </section>
-                <div className="container">
-                    <ModalEntity Buttontitle="Ajouter Tache" title="Ajouter Tache" body={<Forms />} />
-                </div>
+                
             </div>
         )
     }
 }
 
-export default Taches;
+export default CongesValider;

@@ -214,7 +214,7 @@ class FormAjoutCompany extends Component {
           </Col>
         </Row>
 
-        <Button variant="secondary" type="submit" >Ajouter Company</Button>
+        <Button variant="secondary" type="submit" >Confirmer</Button>
       </Form>
     )
   }

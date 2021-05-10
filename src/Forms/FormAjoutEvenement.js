@@ -117,7 +117,7 @@ updatepassword(id) {
                <Form.Check 
                  type={type}
                  id={`default-${type}`}
-                 label="En ligne"
+                 label="En ligne" name="" value=""
                />
              </div>
            ))}
@@ -134,7 +134,7 @@ updatepassword(id) {
             </Col>
             </Row>
                       
-          <Button variant="secondary" type="submit">Ajouter Evenement</Button>
+          <Button variant="secondary" type="submit">Confirmer</Button>
         </Form>
         </Container>
         )

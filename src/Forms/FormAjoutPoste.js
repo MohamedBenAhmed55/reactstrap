@@ -102,7 +102,7 @@ class FormAjoutPoste extends Component {
           </Col>
         </Row>
 
-        <Button variant="secondary" type="submit" >Ajouter poste</Button>
+        <Button variant="secondary" type="submit" >Confirmer</Button>
       </Form>
     )
   }

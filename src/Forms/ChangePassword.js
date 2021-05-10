@@ -76,7 +76,7 @@ class ChangePassword extends Component {
           </Col>
         </Row>
 
-        <Button variant="secondary" type="submit" >Modifier Password</Button>
+        <Button variant="secondary" type="submit" >Confirmer</Button>
       </Form>
     )
   }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-
-
+import { Route, Switch, Redirect, Link, withRouter } from 'react-router-dom';
 import FormAjoutCompany from '../Forms/FormAjoutCompany'
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
+import jwtdecode from 'jwt-decode';
 
 class Company extends Component {
 
@@ -14,6 +14,8 @@ class Company extends Component {
             companies: [],
             show: false,
             setShow: false,
+            redirect: false,
+            role:jwtdecode(localStorage.getItem('token')).roles[0],
         };
         this.refreshPage = this.refreshPage.bind(this);
         this.deleteCompany = this.deleteCompany.bind(this);
@@ -22,11 +24,15 @@ class Company extends Component {
 
     componentDidMount() {
         this.getCompanies();
+        if(this.state.role !="ROLE_ADMIN"){
+            this.setState({redirect:true})
+        }
 
     }
 
     refreshPage = () => {
         window.location.reload();
+        
 
     }
 
@@ -46,6 +52,9 @@ class Company extends Component {
 
 
     render() {
+        if (this.state.redirect) {
+            return (<Redirect to={'/dashboard'}/>)
+          }
 
 
         return (

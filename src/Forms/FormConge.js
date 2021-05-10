@@ -9,15 +9,18 @@ class FormConge extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Conges:[],
-            CompanyId:jwt_decode(localStorage.getItem('token')).company,
-             UserId:jwt_decode(localStorage.getItem('token')).UserId,
+            Conges: [],
+            CompanyId: jwt_decode(localStorage.getItem('token')).company,
+            UserId: jwt_decode(localStorage.getItem('token')).UserId,
             "dateDeb": "",
             "dateFin": "",
             "dateReprise": "",
             "Type": "",
+            "isHalfDay":false,
             "isValidated": false,
             "user": "",
+            "conge": props.data,
+            "id": props.modify,
 
         }
 
@@ -27,33 +30,20 @@ class FormConge extends Component {
     }
 
     componentDidMount() {
-        this.getUsernames();
-        if(this.state.tache){
+        if (this.state.conge) {
             this.setFields();
         }
     }
 
-    getUsernames() {
-        axios.get(`http://localhost:8000/api/users_Names`).then(response => {
-            this.setState({ Usernames: response.data['data'] })
-            console.log('Usernames', {
-                "Usernames": this.state.Usernames,
-            });
-        }).catch(err => {
-            alert("l'opération a échoué ")
-        })
-    }
 
     setFields() {
-        
+
         this.setState({
-            "dateDeb": "",
-            "dateFin": "",
-            "dateReprise": "",
-            "Type": "",
-            "isValidated":"" ,
-            "user":"",
-            "company":"" ,
+            "dateDeb": this.state.conge.dateDeb,
+            "dateFin": this.state.conge.dateFin,
+            "dateReprise": this.state.conge.dateReprise,
+            "isHalfDay":this.state.conge.isHalfDay,
+            "Type": this.state.conge.Type,
         })
     }
 
@@ -64,43 +54,40 @@ class FormConge extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        let uid = this.getUserId();
-        if (this.state.tache) {
-            this.modifyTache(this.state.id, uid);
+        if (this.state.conge) {
+            this.modifyConge(this.state.id);
         }
         else {
-            axios.post(`http://localhost:8000/api/taches`,
+            axios.post(`http://localhost:8000/api/conges`,
                 {
-                    "company": "/api/companies/" + this.state.company,
-                    "libelle": this.state.libelle,
+                    "company": "/api/companies/" + this.state.CompanyId,
                     "dateDeb": this.state.dateDeb,
                     "dateFin": this.state.dateFin,
-                    "description": this.state.description,
-                    "Priorite": this.state.Priorite,
+                    "dateReprise": this.state.dateReprise,
+                    "Type": this.state.Type,
                     "isValidated": this.state.isValidated,
-                    "userDestinataire": "/api/users/" + uid,
+                    "isHalfDay":this.state.isHalfDay,
+                    "user": "/api/users" + this.state.UserId,
                 })
                 .then(res => {
-                    window.location.reload()
+                    window.location.reload();
+                    alert("succès ! ")
                 }).catch(err => {
                     alert("l'opération a échoué")
                 });
         }
     }
 
-    modifyTache(id, uid) {
+    modifyConge(id) {
 
         axios({
             method: 'patch',
             url: `http://localhost:8000/api/taches/${id}`,
             data: {
-                "company": "/api/companies/" + this.state.company,
-                "libelle": this.state.libelle,
+                "dateReprise": this.state.dateReprise,
                 "dateDeb": this.state.dateDeb,
                 "dateFin": this.state.dateFin,
-                "description": this.state.description,
-                "Priorite": this.state.Priorite,
-                "userDestinataire": "/api/users/" + uid,
+                "Type": this.state.Type,
 
             },
             headers: {
@@ -114,93 +101,86 @@ class FormConge extends Component {
 
     }
 
-    getUserId() {
-        let uid;
-        for (let i = 0; i < this.state.Usernames.length; i++) {
-            if (this.state.Usernames[i].name.localeCompare(this.state.userDestinataire) == 0) {
-                uid = this.state.Usernames[i].id;
-                break;
-            }
-        }
-        return uid;
-    }
+    // getUserId() {
+    //     let uid;
+    //     for (let i = 0; i < this.state.Usernames.length; i++) {
+    //         if (this.state.Usernames[i].name.localeCompare(this.state.userDestinataire) == 0) {
+    //             uid = this.state.Usernames[i].id;
+    //             break;
+    //         }
+    //     }
+    //     return uid;
+    // }
 
-    getUserdest(){
-        let uid;
-        for (let i = 0; i < this.state.Usernames.length; i++) {
-            if (this.state.Usernames[i].id.localeCompare(this.state.userDestinataire.substr(11,this.state.userDestinataire.length - 11 )) == 0) {
-                uid = this.state.Usernames[i].name;
-                break;
-            }
-        }   
-        return uid;
-    }
+    // getUserdest() {
+    //     let uid;
+    //     for (let i = 0; i < this.state.Usernames.length; i++) {
+    //         if (this.state.Usernames[i].id.localeCompare(this.state.userDestinataire.substr(11, this.state.userDestinataire.length - 11)) == 0) {
+    //             uid = this.state.Usernames[i].name;
+    //             break;
+    //         }
+    //     }
+    //     return uid;
+    // }
 
 
     render() {
         return (
             <Form onSubmit={this.handleSubmit}>
-                <Row>
-                    <Col md>
-                        <Form.Group controlId="formCompanyName">
-                            <Form.Label>libelle</Form.Label>
-                            <Form.Control type="text" value={this.state.libelle} name="libelle" onChange={this.onChange} />
-                        </Form.Group>
-                    </Col>
 
-                    <Col md>
-                        <Form.Group as={Col} >
-                            <Form.Label>Employé concerné</Form.Label>
-                            <Form.Control as="select" value={this.state.userDestinataire} name="userDestinataire" onChange={this.onChange}>
-                                {this.state.Usernames.map(user =>
-                                    <option>{user.name}</option>)
-                                }
-                            </Form.Control>
-                        </Form.Group>
-                    </Col>
-
-
-                </Row>
                 <Row>
                     <Col md>
                         <Form.Group controlId="formDateDeb">
                             <Form.Label>Date début</Form.Label>
-                            <Form.Control type="date" name="dateDeb" value={this.state.dateDeb} onChange={this.onChange} />
+                            <Form.Control type="date" name="dateDeb" value={this.state.dateDeb} onChange={this.onChange} required />
                         </Form.Group>
 
                     </Col>
 
+
+                </Row>
+                <Row>
                     <Col md>
                         <Form.Group controlId="formDateDelai">
-                            <Form.Label>Date délai</Form.Label>
-                            <Form.Control type="date" name="dateFin" value={this.state.dateFin} onChange={this.onChange} />
+                            <Form.Label>Date Fin</Form.Label>
+                            <Form.Control type="date" name="dateFin" value={this.state.dateFin} onChange={this.onChange} required />
                         </Form.Group>
 
                     </Col>
                 </Row>
+
+                <Row>
+                    <Col md>
+                        <Form.Group controlId="formDateDelai">
+                            <Form.Label>Date de reprise</Form.Label>
+                            <Form.Control type="date" name="dateReprise" value={this.state.dateReprise} onChange={this.onChange} required />
+                        </Form.Group>
+                    </Col>
+                </Row>
+
                 <Col md>
-                    <Form.Group as={Col} controlId="formSalleId">
-                        <Form.Label>Priorité</Form.Label>
-                        <Form.Control as="select" defaultValue="01">
-                            <option>Elevé</option>
-                            <option>Moyenne</option>
-                            <option>Faible</option>
+                    <Form.Group as={Col} controlId="formCongeType">
+                        <Form.Label>Type</Form.Label>
+                        <Form.Control as="select" defaultValue="01" name="Type" value={this.state.Type} onChange={this.onChange} required >
+                            <option>Annuel</option>
+                            <option>Maladie</option>
+                            <option>Maternet</option>
                         </Form.Control>
                     </Form.Group>
 
                 </Col>
 
-                <Row>
-
-
-                    <Col md>
-                        <Form.Group controlId="formPosteName">
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control type="textarea" value={this.state.description} name="description" onChange={this.onChange} />
-                        </Form.Group>
-
-                    </Col>
-                </Row>
+                <Form>
+                    {['checkbox'].map((type) => (
+                        <div key={`default-${type}`} >
+                            <Form.Check
+                                type={type}
+                                id={`default-${type}`}
+                                label="demi journee" name="isHalfDay" value={this.state.isHalfDay} onChange={this.onChange} required
+                            />
+                        </div>
+                    ))}
+                </Form>
 
                 <Button variant="secondary" type="submit" >Confirmer</Button>
             </Form>

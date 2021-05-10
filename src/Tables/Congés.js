@@ -2,13 +2,12 @@ import React from 'react';
 import { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import ModalEntity from '../ModalEntity';
-import Forms from '../Forms/FormTache';
-import validate from '../images/tick.png'
+import Forms from '../Forms/FormConge';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 
 
-class Taches extends Component{
+class Conges extends Component{
 
     constructor(props){
         super(props);
@@ -36,7 +35,7 @@ class Taches extends Component{
         })
     }
 
-    Validatetache(id){
+    ValidateConge(id){
         axios({
             method: 'patch',
             url: `http://localhost:8000/api/conges/${id}`,
@@ -50,12 +49,12 @@ class Taches extends Component{
             alert("L'opération a échoué");
         })}
 
-        deletetache(id) {
+        deleteConge(id) {
         let del = window.confirm("êtes vous sûr ?");
         if (del) {
             axios.delete(`http://localhost:8000/api/conges/${id}`).then(res => {
                 alert("élément supprimé!");
-                this.getJoursFeries();
+                this.getConges();
             }
             )
         }
@@ -92,16 +91,15 @@ class Taches extends Component{
 
                                 <tbody>
                                     {this.state.Conges.map(conge =>
-                                        ( conge.user.substr(11,tache.user.length-11) == this.state.UserId ?     
+                                        ( conge.user.substr(11,conge.user.length-11) == this.state.UserId ?     
                                             <tr class="table-light" key={conge.id}>                                           
-                                            <td>{conge.libelle}</td>
                                             <td>{conge.dateDeb.substr(0,10)}</td>
                                             <td>{conge.dateFin.substr(0,10)}</td>
-                                            <td>{conge.Priorite}</td>
-                                            <td>{conge.description}</td>
+                                            <td>{conge.dateReprise.substr(0,10)}</td>
+                                            <td>{conge.Type}</td>
                                             { conge.isValidated  ? <td>Validé</td> : <td>Non validé</td>}                                                 
-                                            <td><ModalEntity Buttontitle="Modifier" title="Modifier Tache" body={<Forms body={tache} modify={tache.id} />} /></td>
-                                            <td><Button onClick={() => this.deletetache(tache.id)} >Supprimer</Button></td>                               
+                                            <td><ModalEntity Buttontitle="Modifier" title="Modifier Conge" body={<Forms body={conge} modify={conge.id} />} /></td>
+                                            <td><Button onClick={() => this.deletetache(conge.id)} >Supprimer</Button></td>                               
                                         </tr> : null) )}
 
                                 </tbody>
@@ -111,11 +109,11 @@ class Taches extends Component{
                 </div>
             </section>
             <div className="container">
-                <ModalEntity Buttontitle="Ajouter Tache" title="Ajouter Tache" body={<Forms />} />
+                <ModalEntity Buttontitle="Ajouter Conge" title="Ajouter Conge" body={<Forms />} />
             </div>
         </div>             
         )
     }
 }
 
-export default Taches;
+export default Conges;
