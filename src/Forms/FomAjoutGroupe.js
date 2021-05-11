@@ -20,19 +20,16 @@ class FormAjoutGroupe extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
-
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-
-
   handleSubmit(e) {
     e.preventDefault();
     let message = this.fieldsControl();
-    console.log(message);
-    if(message== ""){
+    if(message){
+      alert(message)}
+      {
     if (this.props.data){
       this.updateGroup(this.state.id);
     }
@@ -54,8 +51,6 @@ class FormAjoutGroupe extends Component {
         alert("l'opération a échoué ")
       })
   }
-}else {
-  alert(message);
 }
 }
 
@@ -96,12 +91,7 @@ class FormAjoutGroupe extends Component {
           message = message + " le nom du groupe ne doit pas être un nombre!  " + 
           this.setState({name: this.state.name})
       }
-      
-          // if (!this.state.name[0].isNaN){
-          //     message = message + "le nom du groupe ne doit pas contenir un nombre !" + " / "
-          //     this.setState({name: this.state.name}) 
-          // }
-          
+                     
       return message;
  }
 

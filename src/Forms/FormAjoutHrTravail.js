@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
-import './Forms.css'
+import jwt_decode from "jwt-decode";
 
 class FormAjoutHrTravail extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-
-      "companyId": "",
+      "company": jwt_decode(localStorage.getItem('token')).company,
       "heure_deb": "",
       "heure_fin": "",
       "heure_deb_pause": "",
       "heure_fin_pause": "",
-      "is_seance_unique": "",
+      "is_seance_unique": false,
+      "id":props.modify,
+      "data":props.data,
     };
+
     this.onChange = this.onChange.bind(this);
+    this.handleSubmit= this.handleSubmit.bind(this);
 
   }
 
@@ -33,52 +36,52 @@ class FormAjoutHrTravail extends Component {
 
   }
 
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  onChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    this.setState({ [event.target.name]: value });
   }
 
   handleSubmit(e) {
     e.preventDefault();
+    console.log('test',{
+        "company": "/api/companies/" +this.state.company,
+        "heureDeb": this.state.heure_deb,
+        "heureFin": this.state.heure_fin,
+        "heureDebPause": this.state.heure_deb_pause,
+        "heureFinPause": this.state.heure_fin_pause,
+        "isSeanceUnique": this.state.is_seance_unique,
 
-    const data = {
-
-      "companyId": this.state.companyId,
-      "heure_deb": this.state.heure_deb,
-      "heure_fin": this.state.heure_fin,
-      "heure_deb_pause": this.state.heure_deb_pause,
-      "heure_fin_pause": this.state.heure_fin_pause,
-      "is_seance_unique": this.state.is_seance_unique,
-    };
-
-    axios.post(`http://localhost:8000/api/companies`,
+    })
+    
+    
+    axios.post(`http://localhost:8000/api/heures_travails`,
       {
-        "name": this.state.name,
-        "companyId": this.state.companyId,
+        "company": "/api/companies/" +this.state.company,
+        "heureDeb": this.state.heure_deb,
+        "heureFin": this.state.heure_fin,
+        "heureDebPause": this.state.heure_deb_pause,
+        "heureFinPause": this.state.heure_fin_pause,
+        "isSeanceUnique": this.state.is_seance_unique,
+      })
+      .then(res => {
+        console.log("succès !");
+      }).catch( err => {
+        console.log("echec de l'opération")
+      })
+  }
+
+
+  updatehrtravail(id) {
+    axios({
+      method: 'patch',
+      url: `http://localhost:8000/api/heures_travails/${id}`,
+      data: {
         "heure_deb": this.state.heure_deb,
         "heure_fin": this.state.heure_fin,
         "heure_deb_pause": this.state.heure_deb_pause,
         "heure_fin_pause": this.state.heure_fin_pause,
         "is_seance_unique": this.state.is_seance_unique,
-      })
-      .then(res => {
-        console.log({
-          "companyId": this.state.companyId,
-          "heure_deb": this.state.heure_deb,
-          "heure_fin": this.state.heure_fin,
-          "heure_deb_pause": this.state.heure_deb_pause,
-          "heure_fin_pause": this.state.heure_fin_pause,
-          "is_seance_unique": this.state.is_seance_unique,
-        });
-      });
-  }
-
-
-  updatepassword(id) {
-    axios({
-      method: 'patch',
-      url: `http://localhost:8000/api/users/${id}`,
-      data: {
-        "password": this.state.password,
       },
       headers: {
         "Content-Type": 'application/merge-patch+json'
@@ -90,13 +93,7 @@ class FormAjoutHrTravail extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Row>
-          <Col md>
-            <Form.Group controlId="formcompanyId">
-              <Form.Label>Nom du companie</Form.Label>
-              <Form.Control type="text" value={this.state.companyId} name="companyId" onChange={this.onChange} />
-            </Form.Group>
-          </Col>
+        <Row>         
 
           <Col md>
             <Form.Group controlId="formheure_deb">
@@ -139,8 +136,7 @@ class FormAjoutHrTravail extends Component {
             </Form.Group>
 
           </Col>
-
-
+=
         </Row>
 
         <Button variant="secondary" type="submit" >Confirmer</Button>

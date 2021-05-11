@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FomAjoutGroupe'
 import ModalEntity from '../ModalEntity';
 
@@ -34,7 +34,10 @@ class Groupes extends Component {
 
         return (
 
-            <div>
+            <div style={{marginTop:70}}>
+            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
+                    <h1 className="display-3">La Liste Des Groupes</h1>                    
+                </Jumbotron>
                 <section className="row-section">
 
                     <div className="container">
@@ -59,7 +62,7 @@ class Groupes extends Component {
                                                     <td>{groupe.name}</td>
                                                     <td>{groupe.chef}</td>
                                                     <td>  <ModalEntity Buttontitle="Modifier" title="Modifer un groupe" body={<Forms />} modify={groupe.id} data={groupe} /></td>
-                                                    <td><Button onClick={() => this.deleteGroup(groupe.id)} >supprimer</Button></td>
+                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteGroup(groupe.id)} >supprimer</button></td>
 
                                                 </tr>)}
 

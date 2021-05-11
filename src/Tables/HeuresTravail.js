@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
-import Popup from "reactjs-popup";
+import { Button , Jumbotron} from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutHrTravail'
 import axios from 'axios';
 import 'reactjs-popup/dist/index.css';
+import ModalEntity from '../ModalEntity';
+
 
 class HeuresTravail extends Component {
 
@@ -21,25 +22,22 @@ class HeuresTravail extends Component {
     getHeures() {
         axios.get(`http://localhost:8000/api/heures_travails/`).then(response => {
             this.setState({ Heures: response.data['hydra:member'] })
-            // console.log(response.data['hydra:member']);
         })
     }
 
     deleteHeure(id) {
         let confirm = window.confirm("êtes-vous sûr ?")
         if (confirm) {
-            axios.delete(`http://localhost:8000/api/companies/${id}`).then(res => { alert("élément supprimé!"); this.getHeures() });
+            axios.delete(`http://localhost:8000/api/heures_travails/${id}`).then(res => { alert("élément supprimé!"); this.getHeures() });
         }
     }
 
-    modifyHeure(id) {
-        axios.put(`http://localhost:8000/api/companies/${id}`);
-    }
-
-
     render() {
         return (
-            <div>
+            <div style={{marginTop:70}}>
+            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
+                    <h1 className="display-3">La Liste Des heures du travail</h1>                    
+                </Jumbotron>
                 <section className="row-section">
 
                     <div className="container">
@@ -51,8 +49,6 @@ class HeuresTravail extends Component {
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-
-
                                                 <th scope="col">Heure_deb</th>
                                                 <th scope="col">Heure_fin</th>
                                                 <th scope="col">Heure_deb_pause</th>
@@ -73,8 +69,8 @@ class HeuresTravail extends Component {
                                                     <td>{heure.heureDebPause.substr(11, 8)}</td>
                                                     <td>{heure.heureFinPause.substr(11, 8)}</td>
                                                     <td>{heure.isSeanceUnique ? "Oui" : "Non"}</td>
-                                                    <td><Button onClick={() => this.modifyHeure(heure.id)} >Modify</Button></td>
-                                                    <td><Button onClick={() => this.deleteHeure(heure.id)} >Remove</Button></td>
+                                                    <td><ModalEntity Buttontitle="Modifier" title="Modifier heures du travail" body={<Forms />} /></td>
+                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteHeure(heure.id)} >Remove</button></td>
                                                 </tr>)}
                                         </tbody>
                                     </table>
@@ -90,9 +86,7 @@ class HeuresTravail extends Component {
                 <div className="container">
                     <div className={'row'}>
                         <div className="col-md-10 offset-md-1 row-block" >
-                            <Popup trigger={<Button> Add Jour ferie</Button>} position="right center">
-                                <Forms />
-                            </Popup>
+                        <ModalEntity Buttontitle="Ajouter heures du travail" title="Ajouter utilisateur" body={<Forms />} />
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect, Link, withRouter } from 'react-router-dom';
 import FormAjoutCompany from '../Forms/FormAjoutCompany'
-import { Button } from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
 import jwtdecode from 'jwt-decode';
@@ -58,7 +58,10 @@ class Company extends Component {
 
 
         return (
-            <div>
+            <div style={{marginTop:70}}>
+            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
+                    <h1 className="display-3">La Liste Des compagnies clientes</h1>                    
+                </Jumbotron>
                 <section className="row-section">
 
                     <div className="container">
@@ -93,7 +96,7 @@ class Company extends Component {
                                                 <td>{company.secteurActivite}</td>
                                                 <td>{company.phone}</td>
                                                 <td> <ModalEntity Buttontitle="Modifier" title="Modifier société" body={<FormAjoutCompany data={company} modify={company.id} />} /></td>
-                                                <td><Button onClick={() => this.deleteCompany(company.id)} >Supprimer</Button></td>
+                                                <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteCompany(company.id)} >Supprimer</button></td>
                                             </tr>)}
 
                                     </tbody>

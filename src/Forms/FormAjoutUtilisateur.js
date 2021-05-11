@@ -19,23 +19,24 @@ class FormAjoutUtilisateur extends Component {
       "dateEmbauche": "",
       "Genre": "",
       "Adresse": "",
-      "Salaire": 1000,
+      "Salaire": "",
       "phone": "",
       "Fax": "",
       "Pays": "",
-      "image": "",
+      "image": "default",
       "etatPresence": "",
       "matricule": "",
       "company": "",
-      "groupe": "/api/groupes/2",
+      "groupe": "",
       "user": "",
       "id": props.modify,
       "show": props.show,
-      "message": "",
+      "company": jwt_decode(localStorage.getItem('token')).company,
+      "groupes": [],
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.onRoleschange = this.onRoleschange.bind(this);
+    // this.onRoleschange = this.onRoleschange.bind(this);
     this.setFields = this.setFields.bind(this);
     this.fieldsControl = this.fieldsControl.bind(this);
 
@@ -47,10 +48,10 @@ class FormAjoutUtilisateur extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onRoleschange(e) {
-    this.setState({ roles: [].slice.call(e.target.selectedOptions).map(item => item.value) })
-    console.log(this.state.roles);
-  }
+  // onRoleschange(e) {
+  //   this.setState({ roles: [].slice.call(e.target.selectedOptions).map(item => item.value) })
+  //   console.log(this.state.roles);
+  // }
 
 
   updateUser(id) {
@@ -86,6 +87,7 @@ class FormAjoutUtilisateur extends Component {
       alert("Utilisateur modifié")
     }).catch(err => {
       alert("Opération non aboutie")
+      console.log(err);
     })
   }
 
@@ -93,45 +95,69 @@ class FormAjoutUtilisateur extends Component {
   handleSubmit(e) {
     e.preventDefault();
     let message = this.fieldsControl();
-    console.log(message);
-    if(message == ""){
-    if (this.state.id) {
-      this.updateUser(this.state.id);
+    if (message) {
+      alert(message)
     }
-    else {
-      axios.post(`http://localhost:8000/api/users`, {
+    {
+      if (this.state.id) {
+        this.updateUser(this.state.id);
+      }
+      else {
+        let gid = this.getGrouId();
+        // console.log('data', {
+        //   "username": this.state.username,
+        //   "roles": [this.state.roles],
+        //   "password": this.state.password,
+        //   "email": this.state.email,
+        //   "cin": this.state.cin,
+        //   "nom": this.state.nom,
+        //   "prenom": this.state.prenom,
+        //   "dateNai": this.state.dateNai,
+        //   "dateEmbauche": this.state.dateEmbauche,
+        //   "Genre": this.state.Genre,
+        //   "Adresse": this.state.Adresse,
+        //   "Salaire": parseInt(this.state.Salaire),
+        //   "phone": this.state.phone,
+        //   "Fax": this.state.Fax,
+        //   "Pays": this.state.Pays,
+        //   "image": this.state.image,
+        //   "etatPresence": this.state.etatPresence,
+        //   "matricule": this.state.matricule,
+        //   "company": "/api/companies/" + this.state.company,
+        //   "groupe": "/api/groupes/" + gid,
+        // })
 
-        "username": this.state.username,
-        "roles": this.state.roles,
-        "password": this.state.password,
-        "email": this.state.email,
-        "cin": this.state.cin,
-        "nom": this.state.nom,
-        "prenom": this.state.prenom,
-        "dateNai": this.state.dateNai,
-        "dateEmbauche": this.state.dateEmbauche,
-        "Genre": this.state.Genre,
-        "Adresse": this.state.Adresse,
-        "Salaire": this.state.Salaire,
-        "phone": this.state.phone,
-        "Fax": this.state.Fax,
-        "Pays": this.state.Pays,
-        "image": this.state.image,
-        "etatPresence": this.state.etatPresence,
-        "matricule": this.state.matricule,
-        "company": this.state.company,
-        "groupe": this.state.groupe,
-      })
-        .then(res => {
-          alert("Utilisateur ajouté")
-        }).catch(err => {
-          alert("Opération no aboutie")
+        axios.post(`http://localhost:8000/api/users`, {
+
+          "username": this.state.username,
+          "roles": [this.state.roles],
+          "password": this.state.password,
+          "email": this.state.email,
+          "cin": this.state.cin,
+          "nom": this.state.nom,
+          "prenom": this.state.prenom,
+          "dateNai": this.state.dateNai,
+          "dateEmbauche": this.state.dateEmbauche,
+          "Genre": this.state.Genre,
+          "Adresse": this.state.Adresse,
+          "Salaire": parseInt(this.state.Salaire),
+          "phone": this.state.phone,
+          "Fax": this.state.Fax,
+          "Pays": this.state.Pays,
+          "image": this.state.image,
+          "etatPresence": this.state.etatPresence,
+          "matricule": this.state.matricule,
+          "company": "/api/companies/" + this.state.company,
+          "groupe": "/api/groupes/" + gid,
         })
+          .then(res => {
+            alert("Utilisateur ajouté")
+          }).catch(err => {
+            alert("Opération no aboutie")
+          })
+      }
     }
-  }else{
-    alert(message);
   }
-}
 
 
 
@@ -161,70 +187,75 @@ class FormAjoutUtilisateur extends Component {
   }
 
   componentDidMount() {
-    this.setFields();
-    this.setState({ company: "/api/companies/" + jwt_decode(localStorage.getItem('token')).company });
-    console.log(this.state.show);
-    // alert("Hello again! This is how we \n add line breaks to an alert box!")
+    if (this.state.id) { this.setFields(); }
+    this.getGroupNames();
   }
 
   fieldsControl() {
     let message = "";
-    this.setState({ erreur: false, message: [] });
 
-    if (isNaN(this.state.username)== false) {
+    if (isNaN(this.state.username) == false) {
       message = message + " le username ne doit pas être un nombre! \n "
-      this.setState({ username: this.state.user.username })
     }
 
-    if(this.state.username.localeCompare("") != 0){
-      let array =this.state.username.split;
-    for (let i = 0; i < array.length; i++) {
-      if (!(isNaN(array[i]))) {
-         message = message +"le username ne doit pas contenir un nombre ! \n "
-        this.setState({ username: this.state.user.username })
-        break;
+    var test1 = this.state.username.split("")
+    for (let i = 0; i < test1.length; i++) {
+      if (!isNaN(test1[i])) {
+        message = message + "le username ne peut pas contenir un nombre ! \n"
       }
-    }}
-
-    if (!(isNaN(this.state.nom))) {
-       message = message +" le nom ne doit pas être un nombre ! \n"
-      this.setState({ nom: this.state.user.nom })
     }
 
-    
-    // for (let i = 0; i < this.state.nom.length; i++) {
-    //   if (!(this.state.nom[i].isNaN)) {
-    //      message = message +"le nom ne doit pas contenir un nombre ! \n "
-    //     this.setState({ nom: this.state.user.nom })
-    //     break;
+    if (!isNaN(this.state.nom)) {
+      message = message + " le nom ne doit pas être un nombre ! \n"
+    }
+
+    // var test2 = this.state.nom.split("");
+    // for (let i = 0; i < test2.length; i++) {
+    //   if (!isNaN(test2[i])) {
+    //     message = message + "le nom ne peut pas contenir un nombre ! \n"
     //   }
     // }
 
     if (!isNaN(this.state.prenom)) {
-       message = message +" le prenom ne doit pas être un nombre ! \n"
-      this.setState({ prenom: this.state.user.prenom })
+      message = message + " le prenom ne doit pas être un nombre ! \n"
     }
 
-    // if(this.state.prenom){
-    // for (let i = 0; i < this.state.prenom.length; i++) {
-    //   if (!(this.state.prenom[i].isNaN)) {
-    //      message = message +"le prenom ne doit pas contenir un nombre ! \n "
-    //     this.setState({ prenom: this.state.user.prenom })
-    //     break;
-    //   }
-    // }}
-
-    // if (this.state.email.indexOf("@") == -1 || this.state.email.indexOf(".") == -1) {
-    //    message = message +"mail invalide ! \n"
-    //   this.setState({ email: this.state.user.email })
-    // }
+    var test3 = this.state.prenom.split("")
+    for (let i = 0; i < test3.length; i++) {
+      if (!isNaN(test3[i])) {
+        message = message + "le prenom ne peut pas contenir un nombre ! \n"
+      }
+    }
 
     if (!isNaN(this.state.Adresse)) {
-       message = message +" l'adresse ne peux pas être un nombre ! \n"
-      this.setState({ Adresse: this.state.user.Adresse })
+      message = message + " l'adresse ne peux pas être un nombre ! \n"
     }
 
     return message;
+  }
+
+  getGroupNames() {
+    axios.get(`http://localhost:8000/api/groupes_Names`).then(response => {
+      this.setState({ groupes: response.data['data'] })
+      console.log('groupes', {
+        "groupes": this.state.groupes,
+
+      });
+
+    }).catch(err => {
+      alert("l'opération a échoué ")
+    })
+  }
+
+  getGrouId() {
+    let uid;
+    for (let i = 0; i < this.state.groupes.length; i++) {
+      if (this.state.groupes[i].name.localeCompare(this.state.groupe) == 0) {
+        uid = this.state.groupes[i].id;
+        break;
+      }
+    }
+    return uid;
   }
 
 
@@ -242,7 +273,7 @@ class FormAjoutUtilisateur extends Component {
           {this.state.show ? <Col md>
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange} required   />
+              <Form.Control type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.onChange} required />
             </Form.Group>
 
           </Col> : null}
@@ -294,13 +325,16 @@ class FormAjoutUtilisateur extends Component {
             </Form.Group>
 
           </Col>
-          <Form.Group as={Col} >
-            <Form.Label>Genre</Form.Label>
-            <Form.Control as="select" name="Genre" value={this.state.Genre} onChange={this.onChange} required>
-              <option>M</option>
-              <option>F</option>
-            </Form.Control>
-          </Form.Group>
+          <Col md>
+            <Form.Group as={Col} controlId="formSalleId">
+              <Form.Label>Genre</Form.Label>
+              <Form.Control as="select" defaultValue="01" name="Genre" value={this.state.Genre} onChange={this.onChange}>
+                <option>M</option>
+                <option>F</option>
+              </Form.Control>
+            </Form.Group>
+
+          </Col>
         </Row>
 
         <Row>
@@ -356,16 +390,14 @@ class FormAjoutUtilisateur extends Component {
 
         </Row>
 
-        {/* <Row>
-        <Col md>
+        <Row>
+          <Col md>
             <Form.Group controlId="formSalaire">
               <Form.Label>Salaire</Form.Label>
-              <Form.Control type="text" placeholder="montant," name="Salaire" value={this.state.Salaire} onChange={this.onChange} />
+              <Form.Control type="number" placeholder="montant" name="Salaire" value={this.state.Salaire} onChange={this.onChange} />
             </Form.Group>
           </Col>
-        </Row> */}
 
-        <Row>
           <Form.Group as={Col} >
             <Form.Label>Etat présence</Form.Label>
             <Form.Control as="select" name="etatPresence" value={this.state.etatPresence} onChange={this.onChange} required>
@@ -376,13 +408,25 @@ class FormAjoutUtilisateur extends Component {
             </Form.Control>
           </Form.Group>
         </Row>
+
         <Row>
           <Form.Group as={Col} controlId="my_multiselect_field">
             <Form.Label>Roles</Form.Label>
-            <Form.Control as="select" value={this.state.roles} onChange={this.onRoleschange} name="roles">
-              <option >ROLE_USER</option>
-              <option >ROLE_ADMIN</option>
-              
+            <Form.Control as="select" name="roles" value={this.state.roles} onChange={this.onChange} required>
+              <option>ROLE_USER</option>
+              <option>ROLE_LEAD</option>
+              <option>ROLE_CLIENT</option>
+              <option>ROLE_ADMIN</option>
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group as={Col} controlId="formSalleId">
+            <Form.Label>Groupe</Form.Label>
+            <Form.Control as="select" name="groupe" value={this.state.groupe} onChange={this.onChange} required>
+              {this.state.groupes.map(group =>
+                <option >{group.name} </option>)
+              }
+              <option>Test</option>
             </Form.Control>
           </Form.Group>
         </Row>

@@ -10,7 +10,7 @@ class FormAjoutPoste extends Component {
     this.state = {
 
       "name": "",
-      "company": "",
+      "company": jwt_decode(localStorage.getItem('token')).company,
       "id": props.modify,
 
     };
@@ -51,7 +51,7 @@ class FormAjoutPoste extends Component {
     else {
       axios.post(`http://localhost:8000/api/postes`, {
         "name": this.state.name,
-        "company": "/api/companies/" + this.state.company_id,
+        "company": "/api/companies/" + this.state.company,
       })
         .then(res => {
           console.log({
@@ -70,7 +70,7 @@ class FormAjoutPoste extends Component {
       url: `http://localhost:8000/api/postes/${id}`,
       data: {
         "name": this.state.name,
-        "company_id": this.state.company_id,
+        "company": "/api/companies/" + this.state.company,
       },
       headers: {
         "Content-Type": 'application/merge-patch+json'
@@ -85,14 +85,7 @@ class FormAjoutPoste extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Row>
-          <Col md>
-            <Form.Group controlId="formCompanyName">
-              <Form.Label>Nom du companie</Form.Label>
-              <Form.Control type="text" value={this.state.company_id} name="company_id" onChange={this.onChange} />
-            </Form.Group>
-          </Col>
-
+        <Row>       
           <Col md>
             <Form.Group controlId="formPosteName">
               <Form.Label>Nom du poste</Form.Label>

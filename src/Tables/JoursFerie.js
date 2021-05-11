@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutJrFer'
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
@@ -44,7 +44,10 @@ class JourFerie extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{marginTop:70}}>
+            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
+                    <h1 className="display-3">La Liste Des Jours fériés</h1>                    
+                </Jumbotron>
                 <section className="row-section">
 
                     <div className="container">
@@ -71,7 +74,7 @@ class JourFerie extends Component {
                                                     <td>{jour.titre}</td>
                                                     <td>{jour.date.substr(0, 10)}</td>
                                                     <td><ModalEntity Buttontitle="Modifier" title="Modifier un jour ferié" body={<Forms body={jour} modify={jour.id} />} /></td>
-                                                    <td><Button onClick={() => this.deleteJour(jour.id)} >Remove</Button></td>
+                                                    <td><button  className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteJour(jour.id)} >Remove</button></td>
                                                 </tr>)}
 
                                         </tbody>

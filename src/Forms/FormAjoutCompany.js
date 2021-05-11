@@ -47,6 +47,11 @@ class FormAjoutCompany extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    let message = this.formControl();
+    if(message){
+      alert(message);
+    }
+    else{
     if (this.props.data) {
       this.UpdateCompany(this.state.id);
     }
@@ -62,7 +67,7 @@ class FormAjoutCompany extends Component {
       "phone": this.state.phone,
     }).catch(err => {
       alert("l'opération a échoué ")
-    })
+    })}
     // .then(res => {
     //   console.log({
     //     "name": this.state.name,
@@ -124,14 +129,38 @@ class FormAjoutCompany extends Component {
 
   formControl(){
     let message="";
-   if (isNaN(this.state.postalcode)){
-     message = message + " le code postal doit être un nombre";
+
+   if(!isNaN(this.state.city)){
+     message = message + "le nom de la ville ne peut pas être un nombre ! \n"
    }
 
-   if(isNaN(this.state.number) || this.state.number.toString.length !=8){
-     message= message +" veuillez saisir le numéro correctement"
+   if(!isNaN(this.state.name)){
+    message = message + "le nom de la société ne peut pas être un nombre ! \n"
+  }
 
-   }
+  if(!isNaN(this.state.secteurActivite)){
+    message = message + "le secteur d'activité de la société ne peut pas être un nombre ! \n"
+  }
+
+  if(!isNaN(this.state.matriculeFiscale)){
+    message = message + "la matricule fiscale de la société ne peut pas être un nombre ! \n"
+  }
+
+  var test = this.state.secteurActivite.split("")
+  for(let i=0;i<test.length;i++){
+    if (!isNaN(test[i])){
+      message = message + "le secteur d'activité de la société ne peut pas contenir un nombre ! \n"
+    }
+  }
+
+  var test = this.state.name.split("")
+  for(let i=0;i<test.length;i++){
+    if (!isNaN(test[i])){
+      message = message + "le nom de la société ne peut pas contenir un nombre ! \n"
+    }
+  }
+
+  return message;
 
   }
 
@@ -168,7 +197,7 @@ class FormAjoutCompany extends Component {
           <Col md>
             <Form.Group controlId="formPostalCode">
               <Form.Label>code postal</Form.Label>
-              <Form.Control type="text" placeholder="postalcode" value={this.state.postalcode} name="postalcode" onChange={this.onChange} required/>
+              <Form.Control type="number" placeholder="postalcode" min="0001" max="9999" value={this.state.postalcode} name="postalcode" onChange={this.onChange} required/>
             </Form.Group>
 
           </Col>
@@ -198,7 +227,7 @@ class FormAjoutCompany extends Component {
           <Col md>
             <Form.Group controlId="formPhone">
               <Form.Label>Numero de telephone</Form.Label>
-              <Form.Control type="text" value={this.state.phone} name="phone" onChange={this.onChange} required/>
+              <Form.Control type="number" value={this.state.phone} min="00000001" max="99999999" name="phone" onChange={this.onChange} required/>
             </Form.Group>
 
           </Col>

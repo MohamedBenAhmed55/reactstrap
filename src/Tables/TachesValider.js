@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import ModalEntity from '../ModalEntity';
 import Forms from '../Forms/FormTache';
 import validate from '../images/tick.png'
@@ -59,7 +59,10 @@ class TachesValider extends Component{
     render(){
         return(
             
-            <div>
+            <div style={{marginTop:70}}>
+            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
+                    <h1 className="display-3">La Liste Des Tâches à valider</h1>                    
+                </Jumbotron>
             <section className="row-section">
 
                 <div className="container">
@@ -90,7 +93,7 @@ class TachesValider extends Component{
                                             <td>{tache.Priorite}</td>
                                             <td>{tache.description}</td>
                                             { tache.isValidated  ? <td>Validée</td> : <td>Non validée</td>}                     
-                                            <td><Button onClick={() => this.Validatetache(tache.id)} >Valider</Button></td>
+                                            <td><button class="btn btn-success" onClick={() => this.Validatetache(tache.id)} >Valider</button></td>
                                         </tr> : null) )}
 
                                 </tbody>

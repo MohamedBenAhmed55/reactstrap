@@ -42,7 +42,7 @@ class HomePage extends Component {
 
     render() {
         return (
-            <Container>
+            <Container style={{marginTop:70}}>
             
             
             

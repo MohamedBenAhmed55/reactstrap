@@ -13,9 +13,9 @@ class FormAjoutJrFer extends Component {
       "date": "",
       "titre": "",
       "CompanyNames": [],
-      "jour":props.body,
-      "id":props.modify,
-      "cid":jwt_decode(localStorage.getItem('token')).company,
+      "jour": props.body,
+      "id": props.modify,
+      "cid": jwt_decode(localStorage.getItem('token')).company,
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,21 +24,28 @@ class FormAjoutJrFer extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    if(this.state.jour){
-      this.modifyJour(this.state.id);
+    let message = this.formControl();
+    if (message) {
+      alert("message");
     }
-    else{
-    axios.post(`http://localhost:8000/api/jours_feries`,
-      {
-        "company":"/api/companies/" + this.state.cid,
-        "date": this.state.date,
-        "titre": this.state.titre,
-      })
-      .then(res => {
-        window.location.reload()
-      }).catch(err => {
-        alert("Opération non aboutie")
-      });
+    else {
+      if (this.state.jour) {
+        this.modifyJour(this.state.id);
+      }
+      else {
+        axios.post(`http://localhost:8000/api/jours_feries`,
+          {
+            "company": "/api/companies/" + this.state.cid,
+            "date": this.state.date,
+            "titre": this.state.titre,
+          })
+          .then(res => {
+            alert("succès !")
+            // window.location.reload()
+          }).catch(err => {
+            alert("Opération non aboutie")
+          });
+      }
     }
   }
 
@@ -46,63 +53,69 @@ class FormAjoutJrFer extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  getCompanyNames() {
-    axios.get(`http://localhost:8000/api/company_Names`).then(response => {
-      this.setState({ CompanyNames: response.data['data'] })
+  // getCompanyNames() {
+  //   axios.get(`http://localhost:8000/api/company_Names`).then(response => {
+  //     this.setState({ CompanyNames: response.data['data'] })
 
-    })
-  }
+  //   })
+  // }
 
   componentDidMount() {
-    this.getCompanyNames();
+    // this.getCompanyNames();
     this.setFields();
   }
 
-  
-  modifyJour(id) {  
+
+  modifyJour(id) {
     axios({
       method: 'patch',
       url: `http://localhost:8000/api/jours_feries/${id}`,
       data: {
-        "company":"/api/companies/" + this.state.cid ,
+        "company": "/api/companies/" + this.state.cid,
         "date": this.state.date,
         "titre": this.state.titre,
       },
       headers: {
         "Content-Type": 'application/merge-patch+json'
       }
-    }).then(res =>{
+    }).then(res => {
       alert("Jour férié modifié !");
       window.location.reload()
     }).catch(err => {
       alert("Opération non aboutie")
     })
-}
-
-// getCompanyId(){
-//   let cid
-//   for(let i=0;i<this.state.CompanyNames.length;i++){
-//     if(this.state.companyId.localeCompare(this.state.CompanyNames[i].name) == 0){
-//          cid = this.state.CompanyNames[i].id;
-//     }
-//   }
-//   return cid;
-// }
-
-setFields(){
-  if(this.state.jour){
-    this.setState({ titre: this.state.jour.titre , date: this.state.jour.date})
   }
-}
+
+  setFields() {
+    if (this.state.jour) {
+      this.setState({ titre: this.state.jour.titre, date: this.state.jour.date })
+    }
+  }
+
+  formControl() {
+    let message = ""
+    if (!isNaN(this.state.titre)) {
+      message = message + "le titre du jour férié ne peut pas être un nombre ! \n"
+    }
+
+    var test = this.state.titre.split("")
+    for (let i = 0; i < test.length; i++) {
+      if (!isNaN(test[i])) {
+        message = message + "le titre du jour férié ne peut pas contenir un nombre ! \n"
+      }
+    }
+
+    return message;
+  }
 
 
-  
+
 
   render() {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Row>        
+        <Row>
           <Col md>
             <Form.Group controlId="FormTitre">
               <Form.Label>Titre</Form.Label>

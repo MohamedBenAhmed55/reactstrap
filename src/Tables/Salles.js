@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutSalle'
 import ModalEntity from '../ModalEntity'
 
@@ -27,7 +27,12 @@ class Salles extends Component {
     deleteSalle(id) {
         let confirm = window.confirm("veuillez confirmer")
         if (confirm) {
-            axios.delete(`http://localhost:8000/api/companies/${id}`).then(res => { alert("élément supprimé!"); this.getSalles() });
+            axios.delete(`http://localhost:8000/api/salles/${id}`).then(res => {
+                alert("élément supprimé!");
+                this.getSalles()
+            }).catch(err => {
+                alert("échec de l'opération")
+            });
         }
     }
 
@@ -37,7 +42,10 @@ class Salles extends Component {
 
 
         return (
-            <div>
+            <div style={{ marginTop: 70 }}>
+                <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold" }}>
+                    <h1 className="display-3">La Liste Des Salles</h1>
+                </Jumbotron>
                 <section className="row-section">
 
                     <div className="container">
@@ -62,7 +70,7 @@ class Salles extends Component {
                                                 <td>{Salle.nom}</td>
                                                 <td>{Salle.Etage}</td>
                                                 <td><ModalEntity Buttontitle="Modifier" title="Modifier salle" body={<Forms body={Salle} modify={Salle.id} />} /></td>
-                                                <td><Button onClick={() => this.deleteSalle(Salle.id)} >Remove</Button></td>
+                                                <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteSalle(Salle.id)} >Remove</button></td>
                                             </tr>)}
 
                                     </tbody>

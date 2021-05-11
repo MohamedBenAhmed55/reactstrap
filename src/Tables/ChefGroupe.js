@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutChefGroupe';
 import ModalEntity from '../ModalEntity';
 import { Redirect } from 'react-router-dom';
@@ -44,7 +44,10 @@ class ChefGroupe extends Component {
 
         return (
 
-            <div>
+            <div style={{marginTop:70}}>
+            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
+                    <h1 className="display-3">La Liste Des chefs de groupe</h1>                    
+                </Jumbotron>
                 <section className="row-section">
 
                     <div className="container">
@@ -72,14 +75,12 @@ class ChefGroupe extends Component {
                                                     <td>{chef.dateFin.substr(0, 10)}</td>
                                                     <td>{chef.groupes[0]}</td>
                                                     <td><Button onClick={() => this.modifyChef(chef.id)} >Modify</Button></td>
-                                                    <td><Button onClick={() => this.deleteChef(chef.id)} >Remove</Button></td>
+                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteChef(chef.id)} >Remove</button></td>
                                                 </tr>)}
 
                                         </tbody>
                                     </table>
                                 </div>
-
-
 
                             </div>
                         }

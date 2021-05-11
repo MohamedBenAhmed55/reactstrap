@@ -18,7 +18,7 @@ class FormTache extends Component {
             "Priorite": "",
             "isValidated": false,
             "userDestinataire": "",
-            "user_dest":"",
+            "user_dest": "",
             "company": jwt_decode(localStorage.getItem('token')).company,
             "user": jwt_decode(localStorage.getItem('token')).UserId,
             "Usernames": [],
@@ -31,7 +31,7 @@ class FormTache extends Component {
 
     componentDidMount() {
         this.getUsernames();
-        if(this.state.tache){
+        if (this.state.tache) {
             this.setFields();
         }
     }
@@ -85,13 +85,13 @@ class FormTache extends Component {
                 {
                     "company": "/api/companies/" + this.state.company,
                     "libelle": this.state.libelle,
-                    "dateDeb": "05-02-2021",
-                    "dateFin": "05-03-2021",
+                    "dateDeb": this.state.dateDeb,
+                    "dateFin": this.state.dateFin,
                     "description": this.state.description,
                     "Priorite": this.state.Priorite,
                     "isValidated": this.state.isValidated,
                     "userDestinataire": "/api/users/" + uid,
-                    "userId":""+ this.state.user,
+                    "userId": "" + this.state.user,
                 })
                 .then(res => {
                     window.location.reload();
@@ -140,14 +140,14 @@ class FormTache extends Component {
         return uid;
     }
 
-    getUserdest(){
+    getUserdest() {
         let uid;
         for (let i = 0; i < this.state.Usernames.length; i++) {
-            if (this.state.Usernames[i].id.localeCompare(this.state.userDestinataire.substr(11,this.state.userDestinataire.length - 11 )) == 0) {
+            if (this.state.Usernames[i].id.localeCompare(this.state.userDestinataire.substr(11, this.state.userDestinataire.length - 11)) == 0) {
                 uid = this.state.Usernames[i].name;
                 break;
             }
-        }   
+        }
         return uid;
     }
 
@@ -177,17 +177,17 @@ class FormTache extends Component {
                 </Row>
                 <Row>
                     <Col md>
-                        <Form.Group controlId="formDateDeb">
+                        <Form.Group controlId="formDateEmbauche">
                             <Form.Label>Date début</Form.Label>
-                            <Form.Control type="date" name="dateDeb" value={this.state.dateDeb} onChange={this.onChange} />
+                            <Form.Control type="date" name="dateDeb" value={this.state.dateDeb} onChange={this.onChange} required />
                         </Form.Group>
 
                     </Col>
 
                     <Col md>
-                        <Form.Group controlId="formDateDelai">
-                            <Form.Label>Date délai</Form.Label>
-                            <Form.Control type="date" name="dateFin" value={this.state.dateFin} onChange={this.onChange} />
+                        <Form.Group controlId="formDateEmbauche">
+                            <Form.Label>Date delai</Form.Label>
+                            <Form.Control type="date" name="dateFin" value={this.state.dateFin} onChange={this.onChange} required />
                         </Form.Group>
 
                     </Col>

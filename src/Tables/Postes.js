@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutPoste';
 import ModalEntity from '../ModalEntity';
 import jwt_decode from "jwt-decode";
@@ -38,7 +38,10 @@ class Postes extends Component {
 
         return (
 
-            <div>
+            <div style={{marginTop:70}}>
+            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
+                    <h1 className="display-3">La Liste Des postes</h1>                    
+                </Jumbotron>
                 <section className="row-section">
 
                     <div className="container">
@@ -51,7 +54,6 @@ class Postes extends Component {
                                         <thead>
                                             <tr>
                                                 <th scope="col">Name</th>
-                                                <th scope="col">Company</th>
                                                 <th scope="col"></th>
                                                 <th scope="col"></th>
                                             </tr>
@@ -61,10 +63,9 @@ class Postes extends Component {
                                             {this.state.Postes.map(poste =>
                                                 <tr class="table-light" key={poste.id} >
 
-                                                    <td>{poste.name}</td>
-                                                    <td>{poste.company}</td>
+                                                    <td>{poste.name}</td>                                                   
                                                     <td><ModalEntity Buttontitle="Modify" title="Modifier poste" body={<Forms modify={poste.id} data={poste} />} /></td>
-                                                    <td><Button onClick={() => this.deletePoste(poste.id)} >Remove</Button></td>
+                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deletePoste(poste.id)} >Remove</button></td>
                                                 </tr>)}
 
                                         </tbody>
@@ -81,7 +82,7 @@ class Postes extends Component {
                 <div className="container">
                     <div className={'row'}>
                         <div className="col-md-10 offset-md-1 row-block" >
-                            <ModalEntity Buttontitle="Add Poste" title="Ajouter Poste" body={<Forms />} />
+                            <ModalEntity Buttontitle="Ajouter poste" title="Ajouter Poste" body={<Forms />} />
                         </div>
                     </div>
                 </div>

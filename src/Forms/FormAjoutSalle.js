@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 class FormAjoutSalle extends Component {
 
@@ -9,9 +10,10 @@ class FormAjoutSalle extends Component {
     this.state = {
 
       "name": "",
-      "company_id": "",
+      "company_id": jwtDecode(localStorage.getItem('token')).company,
       "etage": "",
       "id": props.modify,
+      "data":props.data,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -20,9 +22,8 @@ class FormAjoutSalle extends Component {
 
   addPoste() {
     axios.post(`http://localhost:8000/api/salles`, {
-
       "name": this.state.name,
-      "company_id": this.state.company_id,
+      "company": "/api/companies/" +this.state.company_id,
       "etage": this.state.etage,
     })
 
@@ -34,8 +35,7 @@ class FormAjoutSalle extends Component {
       url: `http://localhost:8000/api/salles/${id}`,
       data: {
         "name": this.state.name,
-        "company_id": this.state.company_id,
-        "etage": this.state.etage,
+        "etage": parseInt(this.state.etage),
       },
       headers: {
         "Content-Type": 'application/merge-patch+json'
@@ -57,25 +57,51 @@ class FormAjoutSalle extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
+    let message =this.formControl();
+    if(message){
+      alert(message)
+    }
+    else{
     if (this.state.id) {
       this.updateSalle(this.state.id);
     }
     else {
+      console.log('test',{
+        "nom": this.state.name,
+        "company": "/api/companies/" +this.state.company_id,
+        "Etage": parseInt(this.state.etage),
+      })
       axios.post(`http://localhost:8000/api/salles`, {
 
-        "name": this.state.name,
-        "company_id": this.state.company_id,
-        "etage": this.state.etage,
+        "nom": this.state.name,
+        "company": "/api/companies/" +this.state.company_id,
+        "Etage": parseInt(this.state.etage),
       })
         .then(res => {
-          console.log({
-            "name": this.state.name,
-            "company_id": this.state.company_id,
-            "etage": this.state.etage,
-          });
+          alert("succès !");
+        }).catch(err =>{
+          alert("échec de l'opération")
         })
+    }}
+  }
+
+  formControl(){
+    let message=""
+    if(!isNaN(this.state.name)){
+      message = message + "le nom de la salle ne peut pas être un nombre ! \n"
     }
+  
+    var test = this.state.name.split("")
+    for(let i=0;i<test.length;i++){
+      if (!isNaN(test[i])){
+        message = message + "le nom de la salle ne peut pas contenir un nombre ! \n"
+      }
+    }
+    return message;
+  }
+
+  componentDidMount(){
+    this.setFields();
   }
 
 
@@ -85,12 +111,6 @@ class FormAjoutSalle extends Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <Row>
-          <Col md>
-            <Form.Group controlId="formCompanyName">
-              <Form.Label>Nom du companie</Form.Label>
-              <Form.Control type="text" value={this.state.company_id} name="company_id" onChange={this.onChange} />
-            </Form.Group>
-          </Col>
 
           <Col md>
             <Form.Group controlId="formSalleName">
@@ -103,7 +123,7 @@ class FormAjoutSalle extends Component {
           <Col md>
             <Form.Group controlId="formSalleEtage">
               <Form.Label>Etage</Form.Label>
-              <Form.Control type="text" value={this.state.etage} name="etage" onChange={this.onChange} />
+              <Form.Control type="number" value={this.state.etage} name="etage" onChange={this.onChange} />
             </Form.Group>
 
           </Col>

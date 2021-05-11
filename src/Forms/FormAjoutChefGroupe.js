@@ -83,7 +83,6 @@ class FormAjoutChefGroupe extends Component {
       method: 'patch',
       url: `http://localhost:8000/api/chef_groupes/${id}`,
       data: {
-        "name": this.state.name,
         "chef": this.state.chef,
         "groupe": this.state.groupId,
         "userId": this.state.UserID,
@@ -101,7 +100,6 @@ class FormAjoutChefGroupe extends Component {
   setFields() {
     if (this.props.data) {
       this.setState({
-        "name": this.data.props.name,
         "chef": this.data.props.chef,
         "groupes": this.data.props.groupes,
         "userId": this.data.props.UserId,
@@ -121,6 +119,50 @@ class FormAjoutChefGroupe extends Component {
       this.addChef();
   }
 }
+
+getUserId() {
+  let uid;
+  for (let i = 0; i < this.state.Usernames.length; i++) {
+      if (this.state.Usernames[i].name.localeCompare(this.state.UserID) == 0) {
+          uid = this.state.Usernames[i].id;
+          break;
+      }
+  }
+  return uid;
+}
+
+getUserdest(){
+  let uid;
+  for (let i = 0; i < this.state.Usernames.length; i++) {
+      if (this.state.Usernames[i].id.localeCompare(this.state.userId.substr(11,this.state.userDestinataire.length - 11 )) == 0) {
+          uid = this.state.Usernames[i].name;
+          break;
+      }
+  }   
+  return uid;
+}
+
+// getGroupId() {
+//   let uid;
+//   for (let i = 0; i < this.state.Usernames.length; i++) {
+//       if (this.state.Usernames[i].name.localeCompare(this.state.userDestinataire) == 0) {
+//           uid = this.state.Usernames[i].id;
+//           break;
+//       }
+//   }
+//   return uid;
+// }
+
+// getGroupdest(){
+//   let uid;
+//   for (let i = 0; i < this.state.Usernames.length; i++) {
+//       if (this.state.Usernames[i].id.localeCompare(this.state.userDestinataire.substr(11,this.state.userDestinataire.length - 11 )) == 0) {
+//           uid = this.state.Usernames[i].name;
+//           break;
+//       }
+//   }   
+//   return uid;
+// }
 
 
 

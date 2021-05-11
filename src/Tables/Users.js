@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button,Jumbotron, Row, Col } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutUtilisateur'
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
@@ -10,12 +10,12 @@ class Users extends Component {
 
     constructor() {
         super();
-        this.state = { users: [], company:"" };
+        this.state = { users: [], company: "" };
     }
 
     componentDidMount() {
         this.getUsers();
-        this.setState({company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company});
+        this.setState({ company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company });
         console.log("/api/companies/" + jwtDecode(localStorage.getItem('token')).company)
 
     }
@@ -47,9 +47,13 @@ class Users extends Component {
         //   }
 
         return (
-            <div>
-                <section className="row-section">
+            <div style={{marginTop:70}}>
+                  <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold" , position:'relative'}}>
+                    <h1 className="display-3">La Liste Des utilisateurs</h1>                    
+                </Jumbotron>
 
+                <section className="row-section">  
+                                    
                     {
                         <div className={'row'}>
 
@@ -74,7 +78,7 @@ class Users extends Component {
 
                                     <tbody>
                                         {this.state.users.map(user =>
-                                        ( this.state.company == user.company ?
+                                        (this.state.company == user.company ?
                                             <tr class="table-light" >
                                                 <td>{user.nom}</td>
                                                 <td>{user.prenom}</td>
@@ -87,27 +91,24 @@ class Users extends Component {
                                                 <td>{user.Pays}</td>
                                                 <td>{user.email}</td>
                                                 <td><ModalEntity Buttontitle="Modifier" title="Modifier utilisateur" body={<Forms data={user} modify={user.id} show={false} />} /></td>
-                                                <td><Button onClick={() => this.deleteUser(user.id)} >Remove</Button></td>
+                                                <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteUser(user.id)} >Supprimer</button></td>
                                             </tr> : null))}
 
                                     </tbody>
                                 </table>
                             </div>
-
-
-
                         </div>
                     }
 
 
                 </section>
-                <div className="container">
-                    <div className={'row'}>
-                        <div className="col-md-10 offset-md-1 row-block" >
-                            <ModalEntity Buttontitle="Add User" title="Ajouter utilisateur" body={<Forms show={true} />} />
+                
+                    
+                        <div style={{marginLeft:170}} >
+                            <ModalEntity Buttontitle="Ajouter un utilisateur" title="Ajouter utilisateur" body={<Forms show={true} />} />
                         </div>
-                    </div>
-                </div>
+                    
+                
             </div>
         )
     }

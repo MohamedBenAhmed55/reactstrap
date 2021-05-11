@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import ModalEntity from '../ModalEntity';
 import Forms from '../Forms/FormTache';
 import axios from 'axios';
@@ -57,7 +57,10 @@ class CongesValider extends Component {
     render() {
         return (
 
-            <div>
+            <div style={{marginTop:70}}>
+            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
+                    <h1 className="display-3">La Liste Des congés à valider</h1>                    
+                </Jumbotron>
                 <section className="row-section">
 
                     <div className="container">
@@ -89,8 +92,8 @@ class CongesValider extends Component {
                                                 <td>{conge.Priorite}</td>
                                                 <td>{conge.description}</td>
                                                 {conge.isValidated ? <td>Validé</td> : <td>Non validé</td>}
-                                                <td><Button onClick={() => this.deleteconge(conge.id)} >Supprimer</Button></td>
-                                                <td><Button onClick={() => this.Validaconge(conge.id)} >Valider</Button></td>
+                                                <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteconge(conge.id)} >Supprimer</button></td>
+                                                <td><button className="btn btn-success my-2 my-sm-0" onClick={() => this.Validaconge(conge.id)} >Valider</button></td>
                                             </tr> : null))}
                                     </tbody>
                                 </table>

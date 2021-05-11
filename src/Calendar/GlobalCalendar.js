@@ -30,7 +30,7 @@ class GlobalCalendar extends Component {
   render() {
 
     return (  
-      <table class="table table-hover">
+      <table class="table table-hover" style={{marginTop:70}}>
       <thead>
         <tr>
           <th scope="col">Utilisateur</th>

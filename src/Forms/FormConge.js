@@ -16,7 +16,7 @@ class FormConge extends Component {
             "dateFin": "",
             "dateReprise": "",
             "Type": "",
-            "isHalfDay":false,
+            "isHalfDay": false,
             "isValidated": false,
             "user": "",
             "conge": props.data,
@@ -42,7 +42,7 @@ class FormConge extends Component {
             "dateDeb": this.state.conge.dateDeb,
             "dateFin": this.state.conge.dateFin,
             "dateReprise": this.state.conge.dateReprise,
-            "isHalfDay":this.state.conge.isHalfDay,
+            "isHalfDay": this.state.conge.isHalfDay,
             "Type": this.state.conge.Type,
         })
     }
@@ -66,7 +66,7 @@ class FormConge extends Component {
                     "dateReprise": this.state.dateReprise,
                     "Type": this.state.Type,
                     "isValidated": this.state.isValidated,
-                    "isHalfDay":this.state.isHalfDay,
+                    "isHalfDay": this.state.isHalfDay,
                     "user": "/api/users" + this.state.UserId,
                 })
                 .then(res => {
@@ -100,28 +100,6 @@ class FormConge extends Component {
         })
 
     }
-
-    // getUserId() {
-    //     let uid;
-    //     for (let i = 0; i < this.state.Usernames.length; i++) {
-    //         if (this.state.Usernames[i].name.localeCompare(this.state.userDestinataire) == 0) {
-    //             uid = this.state.Usernames[i].id;
-    //             break;
-    //         }
-    //     }
-    //     return uid;
-    // }
-
-    // getUserdest() {
-    //     let uid;
-    //     for (let i = 0; i < this.state.Usernames.length; i++) {
-    //         if (this.state.Usernames[i].id.localeCompare(this.state.userDestinataire.substr(11, this.state.userDestinataire.length - 11)) == 0) {
-    //             uid = this.state.Usernames[i].name;
-    //             break;
-    //         }
-    //     }
-    //     return uid;
-    // }
 
 
     render() {
