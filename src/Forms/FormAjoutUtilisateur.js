@@ -170,8 +170,8 @@ class FormAjoutUtilisateur extends Component {
         "cin": this.props.data.cin,
         "nom": this.props.data.nom,
         "prenom": this.props.data.prenom,
-        "dateNai": this.props.data.dateNai,
-        "dateEmbauche": this.props.data.dateEmbauche,
+        "dateNai": this.props.data.dateNai.substr(0,10),
+        "dateEmbauche": this.props.data.dateEmbauche.substr(0,10),
         "Genre": this.props.data.Genre,
         "Adresse": this.props.data.Adresse,
         "Salaire": this.props.data.Salaire,
@@ -198,7 +198,7 @@ class FormAjoutUtilisateur extends Component {
       message = message + " le username ne doit pas être un nombre! \n "
     }
 
-    var test1 = this.state.username.split("")
+    var test1 = this.state.username.split("", " ")
     for (let i = 0; i < test1.length; i++) {
       if (!isNaN(test1[i])) {
         message = message + "le username ne peut pas contenir un nombre ! \n"
@@ -209,18 +209,18 @@ class FormAjoutUtilisateur extends Component {
       message = message + " le nom ne doit pas être un nombre ! \n"
     }
 
-    // var test2 = this.state.nom.split("");
-    // for (let i = 0; i < test2.length; i++) {
-    //   if (!isNaN(test2[i])) {
-    //     message = message + "le nom ne peut pas contenir un nombre ! \n"
-    //   }
-    // }
+    var test2 = this.state.nom.split("", " ");
+    for (let i = 0; i < test2.length; i++) {
+      if (!isNaN(test2[i])) {
+        message = message + "le nom ne peut pas contenir un nombre ! \n"
+      }
+    }
 
     if (!isNaN(this.state.prenom)) {
       message = message + " le prenom ne doit pas être un nombre ! \n"
     }
 
-    var test3 = this.state.prenom.split("")
+    var test3 = this.state.prenom.split("", " ")
     for (let i = 0; i < test3.length; i++) {
       if (!isNaN(test3[i])) {
         message = message + "le prenom ne peut pas contenir un nombre ! \n"

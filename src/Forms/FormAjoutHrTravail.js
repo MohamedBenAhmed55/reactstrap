@@ -14,25 +14,12 @@ class FormAjoutHrTravail extends Component {
       "heure_deb_pause": "",
       "heure_fin_pause": "",
       "is_seance_unique": false,
-      "id":props.modify,
-      "data":props.data,
+      "id": props.modify,
+      "data": props.data,
     };
 
     this.onChange = this.onChange.bind(this);
-    this.handleSubmit= this.handleSubmit.bind(this);
-
-  }
-
-  addHr() {
-    axios.post(`http://localhost:8000/api/companies`, {
-
-      "companyId": this.state.companyId,
-      "heure_deb": this.state.heure_deb,
-      "heure_fin": this.state.heure_fin,
-      "heure_deb_pause": this.state.heure_deb_pause,
-      "heure_fin_pause": this.state.heure_fin_pause,
-      "is_seance_unique": this.state.is_seance_unique,
-    })
+    this.handleSubmit = this.handleSubmit.bind(this);
 
   }
 
@@ -44,20 +31,25 @@ class FormAjoutHrTravail extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('test',{
-        "company": "/api/companies/" +this.state.company,
-        "heureDeb": this.state.heure_deb,
-        "heureFin": this.state.heure_fin,
-        "heureDebPause": this.state.heure_deb_pause,
-        "heureFinPause": this.state.heure_fin_pause,
-        "isSeanceUnique": this.state.is_seance_unique,
+    if(this.state.id){
+      this.updatehrtravail(this.state.id)
+    }else{
+
+    
+    console.log('test', {
+      "company": "/api/companies/" + this.state.company,
+      "heureDeb": this.state.heure_deb,
+      "heureFin": this.state.heure_fin,
+      "heureDebPause": this.state.heure_deb_pause,
+      "heureFinPause": this.state.heure_fin_pause,
+      "isSeanceUnique": this.state.is_seance_unique,
 
     })
-    
-    
+
+
     axios.post(`http://localhost:8000/api/heures_travails`,
       {
-        "company": "/api/companies/" +this.state.company,
+        "company": "/api/companies/" + this.state.company,
         "heureDeb": this.state.heure_deb,
         "heureFin": this.state.heure_fin,
         "heureDebPause": this.state.heure_deb_pause,
@@ -65,10 +57,11 @@ class FormAjoutHrTravail extends Component {
         "isSeanceUnique": this.state.is_seance_unique,
       })
       .then(res => {
-        console.log("succès !");
-      }).catch( err => {
-        console.log("echec de l'opération")
+        alert("succès update !");
+      }).catch(err => {
+        alert("échec de l'opération")
       })
+    }
   }
 
 
@@ -77,23 +70,44 @@ class FormAjoutHrTravail extends Component {
       method: 'patch',
       url: `http://localhost:8000/api/heures_travails/${id}`,
       data: {
-        "heure_deb": this.state.heure_deb,
-        "heure_fin": this.state.heure_fin,
-        "heure_deb_pause": this.state.heure_deb_pause,
-        "heure_fin_pause": this.state.heure_fin_pause,
-        "is_seance_unique": this.state.is_seance_unique,
+        "heureDeb": this.state.heure_deb,
+        "heureFin": this.state.heure_fin,
+        "heureDebPause": this.state.heure_deb_pause,
+        "heureFinPause": this.state.heure_fin_pause,
+        "isSeanceUnique": this.state.is_seance_unique,
       },
       headers: {
         "Content-Type": 'application/merge-patch+json'
       }
+    }).then(res => {
+      alert("Succès de l'opération !")
+    }).catch(err =>{
+      alert("Echec de l'opération !")
     })
   }
+
+  setFields() {
+    this.setState({
+      "heureDeb": this.state.data.heureDeb.substr(10,14),
+      "heureFin": this.state.data.heureFin,
+      "heureDebPause": this.state.data.heureDebPause,
+      "heureFinPause": this.state.data.heureFinPause,
+      "isSeanceUnique": this.state.data.isSeanceUnique,
+    })
+  }
+
+  componentDidMount(){
+    if(this.state.id){
+      this.setFields();
+    }
+  }
+  
 
   render() {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Row>         
+        <Row>
 
           <Col md>
             <Form.Group controlId="formheure_deb">

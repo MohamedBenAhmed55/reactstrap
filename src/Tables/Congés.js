@@ -80,13 +80,11 @@ class Conges extends Component{
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col">dateDeb</th>
-                                        <th scope="col">dateFin</th>
-                                        <th scope="col">dateReprise</th>
+                                        <th scope="col">Date de debut</th>
+                                        <th scope="col">Date de fin</th>
+                                        <th scope="col">Date du reprise</th>
                                         <th scope="col">Type</th>
-                                        <th scope="col">isValidated</th>                                        
-                                        <th scope="col">validée</th>
-                                        <th scope="col"></th>
+                                        <th scope="col">Etat</th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
                                     </tr>

@@ -26,7 +26,7 @@ class FormAjoutJrFer extends Component {
     e.preventDefault();
     let message = this.formControl();
     if (message) {
-      alert("message");
+      alert(message);
     }
     else {
       if (this.state.jour) {
@@ -88,7 +88,7 @@ class FormAjoutJrFer extends Component {
 
   setFields() {
     if (this.state.jour) {
-      this.setState({ titre: this.state.jour.titre, date: this.state.jour.date })
+      this.setState({ titre: this.state.jour.titre, date: this.state.jour.date.substr(0,10) })
     }
   }
 
@@ -98,7 +98,7 @@ class FormAjoutJrFer extends Component {
       message = message + "le titre du jour férié ne peut pas être un nombre ! \n"
     }
 
-    var test = this.state.titre.split("")
+    var test = this.state.titre.split("", " ")
     for (let i = 0; i < test.length; i++) {
       if (!isNaN(test[i])) {
         message = message + "le titre du jour férié ne peut pas contenir un nombre ! \n"

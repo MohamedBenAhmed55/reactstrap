@@ -22,6 +22,8 @@ class HeuresTravail extends Component {
     getHeures() {
         axios.get(`http://localhost:8000/api/heures_travails/`).then(response => {
             this.setState({ Heures: response.data['hydra:member'] })
+            
+        console.log(response.data['hydra:member'])
         })
     }
 
@@ -69,7 +71,7 @@ class HeuresTravail extends Component {
                                                     <td>{heure.heureDebPause.substr(11, 8)}</td>
                                                     <td>{heure.heureFinPause.substr(11, 8)}</td>
                                                     <td>{heure.isSeanceUnique ? "Oui" : "Non"}</td>
-                                                    <td><ModalEntity Buttontitle="Modifier" title="Modifier heures du travail" body={<Forms />} /></td>
+                                                    <td><ModalEntity Buttontitle="Modifier" title="Modifier heures du travail" body={<Forms modify={heure.id} data={heure} />} /></td>
                                                     <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteHeure(heure.id)} >Remove</button></td>
                                                 </tr>)}
                                         </tbody>

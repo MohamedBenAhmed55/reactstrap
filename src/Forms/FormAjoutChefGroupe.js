@@ -103,8 +103,8 @@ class FormAjoutChefGroupe extends Component {
         "chef": this.data.props.chef,
         "groupes": this.data.props.groupes,
         "userId": this.data.props.UserId,
-        "dateDeb": this.data.props.dateDeb,
-        "dateFin": this.data.props.dateFin,
+        "dateDeb": this.data.props.dateDeb.substr(0,10),
+        "dateFin": this.data.props.dateFin.substr(0,10),
       });
 
     }

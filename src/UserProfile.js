@@ -44,7 +44,6 @@ class UserProfile extends Component {
             this.setState({ datenais: this.state.user.datenais.date, dateemb: this.state.user.dateemb.date });
             console.log(this.state.user.id);
 
-
         })
     }
 
