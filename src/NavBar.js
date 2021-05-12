@@ -19,6 +19,8 @@ import Taches from './Tables/Taches'
 import jwtdecode from 'jwt-decode';
 import TachesValider from './Tables/TachesValider';
 import Conges from './Tables/Congés';
+import CongesValider from './Tables/Congesvalider'
+import PersonalEvents from './Tables/PersonalEvents'
 
 
 class Navbar extends Component {
@@ -73,6 +75,10 @@ class Navbar extends Component {
 
                                 <li className="nav-item">
                                     <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Conges"}> Conges </Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/personalEvents"}> Evénements peronnels </Link>
                                 </li>
 
 
@@ -135,6 +141,8 @@ class Navbar extends Component {
                     <Route path="/dashboard/Taches" component={Taches} />
                     <Route path="/dashboard/Tachesvalider" component={TachesValider} />
                     <Route path="/dashboard/Conges" component={Conges} />
+                    <Route path="/dashboard/Congesvalider" component={CongesValider} />
+                    <Route path="/dashboard/personalEvents" component={PersonalEvents} />
 
                 </Switch>
                 {this.state.redirect ? <Redirect to="/login" /> : null}

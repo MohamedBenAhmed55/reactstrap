@@ -74,7 +74,7 @@ class ChefGroupe extends Component {
                                                     <td>{chef.dateDeb.substr(0, 10)}</td>
                                                     <td>{chef.dateFin.substr(0, 10)}</td>
                                                     <td>{chef.groupes[0]}</td>
-                                                    <td><Button onClick={() => this.modifyChef(chef.id)} >Modify</Button></td>
+                                                    <td><ModalEntity Buttontitle="Modifier" title="Modifier chef" body={<Forms id={chef.id} data={chef} />} /></td>
                                                     <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteChef(chef.id)} >Remove</button></td>
                                                 </tr>)}
 

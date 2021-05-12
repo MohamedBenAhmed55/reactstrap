@@ -57,9 +57,9 @@ class CongesValider extends Component {
     render() {
         return (
 
-            <div style={{marginTop:70}}>
-            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">La Liste Des congés à valider</h1>                    
+            <div style={{ marginTop: 70 }}>
+                <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold" }}>
+                    <h1 className="display-3">La Liste Des congés à valider</h1>
                 </Jumbotron>
                 <section className="row-section">
 
@@ -71,12 +71,11 @@ class CongesValider extends Component {
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th scope="col">libelle</th>
-                                            <th scope="col">dateDeb</th>
-                                            <th scope="col">Delai</th>
-                                            <th scope="col">Priorite</th>
-                                            <th scope="col">description</th>
-                                            <th scope="col">validée</th>
+                                            <th scope="col">Date de debut</th>
+                                            <th scope="col">Date de fin</th>
+                                            <th scope="col">Date du reprise</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Etat</th>
                                             <th scope="col"></th>
                                             <th scope="col"></th>
                                         </tr>
@@ -84,16 +83,15 @@ class CongesValider extends Component {
 
                                     <tbody>
                                         {this.state.Conges.map(conge =>
-                                        (conge.isValidated ==false ?
+                                        (conge.isValidated == false ?
                                             <tr class="table-light" key={conge.id}>
-                                                <td>{conge.libelle}</td>
                                                 <td>{conge.dateDeb.substr(0, 10)}</td>
                                                 <td>{conge.dateFin.substr(0, 10)}</td>
-                                                <td>{conge.Priorite}</td>
-                                                <td>{conge.description}</td>
+                                                <td>{conge.dateReprise.substr(0, 10)}</td>
+                                                <td>{conge.Type}</td>
                                                 {conge.isValidated ? <td>Validé</td> : <td>Non validé</td>}
-                                                <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteconge(conge.id)} >Supprimer</button></td>
                                                 <td><button className="btn btn-success my-2 my-sm-0" onClick={() => this.Validaconge(conge.id)} >Valider</button></td>
+                                                <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteconge(conge.id)} >Supprimer</button></td>                                
                                             </tr> : null))}
                                     </tbody>
                                 </table>
@@ -101,7 +99,7 @@ class CongesValider extends Component {
                         }
                     </div>
                 </section>
-                
+
             </div>
         )
     }

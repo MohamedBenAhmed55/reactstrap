@@ -5,9 +5,10 @@ import './calendar.css';
 import ModalEntity from '../ModalEntity';
 import axios from 'axios';
 import Forms from '../Forms/FormAjoutEvenement';
+import FormsPersonal from '../Forms/FormPersonalEvent';
 import interactionPlugin from "@fullcalendar/interaction";
 
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal,Row, Col } from 'react-bootstrap';
 import jwtDecode from 'jwt-decode';
 
 class EventCalendar extends Component {
@@ -82,9 +83,17 @@ class EventCalendar extends Component {
                         initialView="dayGridMonth"
                         events={this.state.conges}
                     />
-                    <br />
+                    <br /> 
 
+                    <Row>
+                    <Col md>
                     <ModalEntity Buttontitle="Add Event" title="Ajouter evenement" body={<Forms />} />
+                    </Col>
+                    <Col md>
+                    <ModalEntity Buttontitle="Ajouter un événement personnel" title="Ajouter un événement personnel" body={<FormsPersonal />} />
+                    </Col>
+                    </Row>
+
                 </div>
 
             </div>

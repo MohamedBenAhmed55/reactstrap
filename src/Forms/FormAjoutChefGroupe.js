@@ -10,41 +10,51 @@ class FormAjoutChefGroupe extends Component {
 
       "name": "",
       "chef": "",
+      "groupe": "",
       "groupes": [],
       "userId": "",
       "dateDeb": "",
       "dateFin": "",
       "usersnames": [],
-      "id":props.modify,
-      "groupId":"",
+      "id": props.modify,
+      "data":props.data,
+      "groupId": "",
     };
 
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addChef = this.addChef.bind(this);
     this.updatechef = this.updatechef.bind(this);
-    this.storeGrId= this.storeGrId.bind(this);
+    this.storeGrId = this.storeGrId.bind(this);
 
   }
 
-  addChef() {
-    axios.post(`http://localhost:8000/api/chef_groupes`, {
+  addChef(uid,gid) {
+    console.log('info',{
       "name": this.state.name,
       "chef": this.state.chef,
-      "groupes": this.state.groupeId,
-      "userId": this.state.UserID,
+      "groupe": "/api/groupes/" + gid,
+      "userId": "/api/users/" + uid,
       "dateDeb": this.state.dateDeb,
       "dateFin": this.state.dateFin,
-    }).catch(err => {
-      alert("l'opération a échoué ")
     })
+    // axios.post(`http://localhost:8000/api/chef_groupes`, {
+    //   "name": this.state.name,
+    //   "chef": this.state.chef,
+    //   "groupe": "/api/groupes/" + gid,
+    //   "userId": "/api/users/" + uid,
+    //   "dateDeb": this.state.dateDeb,
+    //   "dateFin": this.state.dateFin,
+    // }).catch(err => {
+    //   alert("l'opération a échoué ")
+    // })
   }
 
 
   getUserNames() {
     axios.get(`http://localhost:8000/api/users_Names`).then(response => {
       this.setState({ usersnames: response.data['data'] })
-     
+
 
     }).catch(err => {
       alert("l'opération a échoué ")
@@ -57,15 +67,15 @@ class FormAjoutChefGroupe extends Component {
       console.log('groupes', {
         "groupes": this.state.groupes,
 
-        });
+      });
 
     }).catch(err => {
       alert("l'opération a échoué ")
     })
   }
 
-  storeGrId(id){
-    this.setState({groupId: id})
+  storeGrId(id) {
+    this.setState({ groupId: id })
   }
 
   componentDidMount() {
@@ -78,14 +88,14 @@ class FormAjoutChefGroupe extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  updatechef(id) {
+  updatechef(id, uid, gid) {
     axios({
       method: 'patch',
       url: `http://localhost:8000/api/chef_groupes/${id}`,
       data: {
         "chef": this.state.chef,
-        "groupe": this.state.groupId,
-        "userId": this.state.UserID,
+        "groupe": "/api/groupes/" + gid,
+        "userId": "/api/users/" + uid,
         "dateDeb": this.state.dateDeb,
         "dateFin": this.state.dateFin,
       },
@@ -100,11 +110,10 @@ class FormAjoutChefGroupe extends Component {
   setFields() {
     if (this.props.data) {
       this.setState({
-        "chef": this.data.props.chef,
-        "groupes": this.data.props.groupes,
+        "groupe": this.data.props.groupe,
         "userId": this.data.props.UserId,
-        "dateDeb": this.data.props.dateDeb.substr(0,10),
-        "dateFin": this.data.props.dateFin.substr(0,10),
+        "dateDeb": this.data.props.dateDeb.substr(0, 10),
+        "dateFin": this.data.props.dateFin.substr(0, 10),
       });
 
     }
@@ -112,57 +121,38 @@ class FormAjoutChefGroupe extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    if (this.props.data){
-      this.updatechef(this.state.id);
+    let uid = this.getUserId();
+    let gid = this.getGroupId();
+    if (this.props.data) {
+      this.updatechef(this.state.id,uid,gid);
     }
-    else{
-      this.addChef();
+    else {
+      this.addChef(uid,gid);
+    }
   }
-}
 
-getUserId() {
-  let uid;
-  for (let i = 0; i < this.state.Usernames.length; i++) {
-      if (this.state.Usernames[i].name.localeCompare(this.state.UserID) == 0) {
-          uid = this.state.Usernames[i].id;
-          break;
+  getUserId() {
+    let uid;
+    for (let i = 0; i < this.state.usersnames.length; i++) {
+      if (this.state.usersnames[i].name.localeCompare(this.state.userId) == 0) {
+        uid = this.state.usersnames[i].id;
+        break;
       }
+    }
+    return uid;
   }
-  return uid;
-}
 
-getUserdest(){
-  let uid;
-  for (let i = 0; i < this.state.Usernames.length; i++) {
-      if (this.state.Usernames[i].id.localeCompare(this.state.userId.substr(11,this.state.userDestinataire.length - 11 )) == 0) {
-          uid = this.state.Usernames[i].name;
-          break;
+  getGroupId() {
+    let uid;
+    for (let i = 0; i < this.state.groupes.length; i++) {
+      if (this.state.groupes[i].name.localeCompare(this.state.groupe) == 0) {
+        uid = this.state.groupes[i].id;
+        break;
       }
-  }   
-  return uid;
-}
+    }
+    return uid;
+  }
 
-// getGroupId() {
-//   let uid;
-//   for (let i = 0; i < this.state.Usernames.length; i++) {
-//       if (this.state.Usernames[i].name.localeCompare(this.state.userDestinataire) == 0) {
-//           uid = this.state.Usernames[i].id;
-//           break;
-//       }
-//   }
-//   return uid;
-// }
-
-// getGroupdest(){
-//   let uid;
-//   for (let i = 0; i < this.state.Usernames.length; i++) {
-//       if (this.state.Usernames[i].id.localeCompare(this.state.userDestinataire.substr(11,this.state.userDestinataire.length - 11 )) == 0) {
-//           uid = this.state.Usernames[i].name;
-//           break;
-//       }
-//   }   
-//   return uid;
-// }
 
 
 
@@ -172,26 +162,26 @@ getUserdest(){
         <Row>
 
           <Col md>
-            <Form.Group as={Col} controlId="formSalleId"> 
+            <Form.Group as={Col} controlId="formSalleId">
               <Form.Label>User</Form.Label>
-              <Form.Control as="select" defaultValue="01" required>
+              <Form.Control as="select" defaultValue="01" required name="userId" value={this.state.userId} onChange={this.onChange} >
                 {this.state.usersnames.map(user =>
-                  <option>{user.id}</option>)
+                  <option>{user.name}</option>)
                 }
               </Form.Control>
             </Form.Group>
 
           </Col>
 
-          </Row>
-          <Row>
+        </Row>
+        <Row>
 
           <Col md>
             <Form.Group as={Col} controlId="formSalleId">
               <Form.Label>Groupe</Form.Label>
-              <Form.Control as="select" defaultValue="01" required>
+              <Form.Control as="select" defaultValue="01" required name="groupe" value={this.state.groupe} onChange={this.onChange}>
                 {this.state.groupes.map(group =>
-                  <option >{group.id} </option>)
+                  <option >{group.name} </option>)
                 }
               </Form.Control>
             </Form.Group>
@@ -203,7 +193,7 @@ getUserdest(){
           <Col md>
             <Form.Group controlId="formDateDeb">
               <Form.Label>Date début</Form.Label>
-              <Form.Control type="datetime-local" value={this.state.dateDeb} name="dateDeb" required onChange={this.onChange} />
+              <Form.Control type="date" value={this.state.dateDeb} name="dateDeb" required onChange={this.onChange} />
             </Form.Group>
 
           </Col>
@@ -211,7 +201,7 @@ getUserdest(){
           <Col md>
             <Form.Group controlId="formDateFin">
               <Form.Label>Date Fin</Form.Label>
-              <Form.Control type="datetime-local" value={this.state.dateemb} name="dateemb" onChange={this.onChange} />
+              <Form.Control type="date" value={this.state.dateFin} name="dateFin" onChange={this.onChange} />
             </Form.Group>
 
           </Col>
