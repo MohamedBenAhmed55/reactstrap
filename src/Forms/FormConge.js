@@ -19,7 +19,7 @@ class FormConge extends Component {
             "isHalfDay": false,
             "isValidated": false,
             "user": "",
-            "conge": props.data,
+            "conge": props.body,
             "id": props.modify,
 
         }
@@ -39,9 +39,9 @@ class FormConge extends Component {
     setFields() {
 
         this.setState({
-            "dateDeb": this.state.conge.dateDeb,
-            "dateFin": this.state.conge.dateFin,
-            "dateReprise": this.state.conge.dateReprise,
+            "dateDeb": this.state.conge.dateDeb.substr(0,10),
+            "dateFin": this.state.conge.dateFin.substr(0,10),
+            "dateReprise": this.state.conge.dateReprise.substr(0,10),
             "isHalfDay": this.state.conge.isHalfDay,
             "Type": this.state.conge.Type,
         })
@@ -114,7 +114,6 @@ class FormConge extends Component {
                         </Form.Group>
 
                     </Col>
-
 
                 </Row>
                 <Row>

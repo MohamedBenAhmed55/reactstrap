@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 class FormAjoutChefGroupe extends Component {
 
@@ -17,8 +18,9 @@ class FormAjoutChefGroupe extends Component {
       "dateFin": "",
       "usersnames": [],
       "id": props.modify,
-      "data":props.data,
+      "data": props.data,
       "groupId": "",
+      "company": jwtDecode(localStorage.getItem('token')).company,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -29,26 +31,32 @@ class FormAjoutChefGroupe extends Component {
 
   }
 
-  addChef(uid,gid) {
-    console.log('info',{
-      "name": this.state.name,
-      "chef": this.state.chef,
-      "groupe": "/api/groupes/" + gid,
+  addChef(uid, gid) {
+    console.log('info', {
+      "company": "/api/companies/" + this.state.company,
+      "name": this.state.userId,
+      "groupes": ["/api/groupes/" + gid],
       "userId": "/api/users/" + uid,
       "dateDeb": this.state.dateDeb,
       "dateFin": this.state.dateFin,
+      "groupname": this.state.groupe
     })
-    // axios.post(`http://localhost:8000/api/chef_groupes`, {
-    //   "name": this.state.name,
-    //   "chef": this.state.chef,
-    //   "groupe": "/api/groupes/" + gid,
-    //   "userId": "/api/users/" + uid,
-    //   "dateDeb": this.state.dateDeb,
-    //   "dateFin": this.state.dateFin,
-    // }).catch(err => {
-    //   alert("l'opération a échoué ")
-    // })
+    axios.post(`http://localhost:8000/api/chef_groupes`, {
+      "company": "/api/companies/" + this.state.company,
+      "name": this.state.userId,
+      "groupes": ["/api/groupes/" + gid],
+      "userId": "/api/users/" + uid,
+      "dateDeb": this.state.dateDeb,
+      "dateFin": this.state.dateFin,
+      "groupname": this.state.groupe
+    }).then(res => {
+      alert("Succès !")
+    }).catch(err => {
+      alert("l'opération a échoué ")
+    })
   }
+
+
 
 
   getUserNames() {
@@ -93,11 +101,13 @@ class FormAjoutChefGroupe extends Component {
       method: 'patch',
       url: `http://localhost:8000/api/chef_groupes/${id}`,
       data: {
-        "chef": this.state.chef,
-        "groupe": "/api/groupes/" + gid,
+        "company": "/api/companies/" + this.state.company,
+        "name": this.state.userId,
+        "groupes": ["/api/groupes/" + gid],
         "userId": "/api/users/" + uid,
         "dateDeb": this.state.dateDeb,
         "dateFin": this.state.dateFin,
+        "groupname": this.state.groupe
       },
       headers: {
         "Content-Type": 'application/merge-patch+json'
@@ -110,10 +120,10 @@ class FormAjoutChefGroupe extends Component {
   setFields() {
     if (this.props.data) {
       this.setState({
-        "groupe": this.data.props.groupe,
-        "userId": this.data.props.UserId,
-        "dateDeb": this.data.props.dateDeb.substr(0, 10),
-        "dateFin": this.data.props.dateFin.substr(0, 10),
+        "groupe": this.state.data.groupes,
+        "userId": this.state.data.UserId,
+        "dateDeb": this.state.data.dateDeb.substr(0, 10),
+        "dateFin": this.state.data.dateFin.substr(0, 10),
       });
 
     }
@@ -124,10 +134,10 @@ class FormAjoutChefGroupe extends Component {
     let uid = this.getUserId();
     let gid = this.getGroupId();
     if (this.props.data) {
-      this.updatechef(this.state.id,uid,gid);
+      this.updatechef(this.state.id, uid, gid);
     }
     else {
-      this.addChef(uid,gid);
+      this.addChef(uid, gid);
     }
   }
 

@@ -41,6 +41,9 @@ class TachesValider extends Component{
             headers: {
                 "Content-Type": 'application/merge-patch+json'
             }
+        }).then(res =>{
+            alert("Tache validée !")
+            this.getTaches();
         }).catch(err => {
             alert("L'opération a échoué");
         })}

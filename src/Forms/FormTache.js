@@ -50,8 +50,8 @@ class FormTache extends Component {
     setFields() {
         this.setState({
             "libelle": this.state.tache.libelle,
-            "dateDeb": this.state.tache.dateDeb,
-            "dateFin": this.state.tache.dateFin,
+            "dateDeb": this.state.tache.dateDeb.substr(0, 10),
+            "dateFin": this.state.tache.dateFin.substr(0, 10),
             "description": this.state.tache.description,
             "Priorite": this.state.tache.Priorite,
             "userDestinataire": this.state.tache.user_dest,

@@ -30,7 +30,9 @@ class ChefGroupe extends Component {
             axios.delete(`http://localhost:8000/api/chef_groupes/${id}`).then(res => {
                 alert("chef supprimé!");
                 this.getChefGroupe();
-            });
+            }).catch(err =>{
+                alert("Echec de l'opération ! ")
+            })
         }
 
 
@@ -44,9 +46,9 @@ class ChefGroupe extends Component {
 
         return (
 
-            <div style={{marginTop:70}}>
-            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">La Liste Des chefs de groupe</h1>                    
+            <div style={{ marginTop: 70 }}>
+                <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold" }}>
+                    <h1 className="display-3">La Liste Des chefs de groupe</h1>
                 </Jumbotron>
                 <section className="row-section">
 
@@ -59,6 +61,7 @@ class ChefGroupe extends Component {
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
+                                                <th scope="col">Nom du chef</th>
                                                 <th scope="col">Date Debut</th>
                                                 <th scope="col">Date Fin</th>
                                                 <th scope="col">Groupe</th>
@@ -71,9 +74,10 @@ class ChefGroupe extends Component {
                                         <tbody>
                                             {this.state.Chefs.map(chef =>
                                                 <tr class="table-light" >
+                                                    <td>{chef.name}</td>
                                                     <td>{chef.dateDeb.substr(0, 10)}</td>
                                                     <td>{chef.dateFin.substr(0, 10)}</td>
-                                                    <td>{chef.groupes[0]}</td>
+                                                    <td>{chef.groupname}</td>
                                                     <td><ModalEntity Buttontitle="Modifier" title="Modifier chef" body={<Forms id={chef.id} data={chef} />} /></td>
                                                     <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteChef(chef.id)} >Remove</button></td>
                                                 </tr>)}
