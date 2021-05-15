@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutSalle'
 import ModalEntity from '../ModalEntity'
+import ReactPaginate from 'react-paginate';
 
 import axios from 'axios';
 
@@ -9,7 +10,15 @@ class Salles extends Component {
 
     constructor() {
         super();
-        this.state = { Salles: [] };
+        this.state = {
+            Salles: [],
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 5,
+            currentPage: 0,
+        };
+        this.handlePageClick = this.handlePageClick.bind(this);
 
     }
 
@@ -20,7 +29,14 @@ class Salles extends Component {
 
     getSalles() {
         axios.get(`http://localhost:8000/api/salles`).then(response => {
-            this.setState({ Salles: response.data['hydra:member'] })
+            // this.setState({ Salles: response.data['hydra:member'] })
+            var tdata = response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
+            })
         })
     }
 
@@ -34,6 +50,30 @@ class Salles extends Component {
                 alert("échec de l'opération")
             });
         }
+    }
+
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+        const data = this.state.orgtableData;
+
+        const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.setState({
+            pageCount: Math.ceil(data.length / this.state.perPage),
+            tableData: slice
+        })
+
     }
 
 
@@ -53,43 +93,46 @@ class Salles extends Component {
                         {
                             <div className={'row'}>
 
+                                <div className="col-md-10 offset-md-1 row-block" >
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Nom</th>
+                                                <th scope="col">Etage</th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
 
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nom</th>
-                                            <th scope="col">Etage</th>
-                                            <th scope="col"></th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                    </thead>
+                                        <tbody>
+                                            {this.state.tableData.map((Salle, i) =>
+                                                <tr class="table-light" key={Salle.id}>
+                                                    <td>{Salle.nom}</td>
+                                                    <td>{Salle.Etage}</td>
+                                                    <td><ModalEntity Buttontitle="Modifier" title="Modifier salle" body={<Forms body={Salle} modify={Salle.id} />} /></td>
+                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteSalle(Salle.id)} >Remove</button></td>
+                                                </tr>)}
 
-                                    <tbody>
-                                        {this.state.Salles.map(Salle =>
-                                            <tr class="table-light" key={Salle.id}>
-                                                <td>{Salle.nom}</td>
-                                                <td>{Salle.Etage}</td>
-                                                <td><ModalEntity Buttontitle="Modifier" title="Modifier salle" body={<Forms body={Salle} modify={Salle.id} />} /></td>
-                                                <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteSalle(Salle.id)} >Remove</button></td>
-                                            </tr>)}
-
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                    <ReactPaginate
+                                        previousLabel={"🠔"}
+                                        nextLabel={"🠖"}
+                                        breakLabel={"..."}
+                                        breakClassName={"break-me"}
+                                        pageCount={this.state.pageCount}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick}
+                                        containerClassName={"pagination"}
+                                        subContainerClassName={"pages pagination"}
+                                        activeClassName={"active"} />
+                                    <ModalEntity Buttontitle="Ajouter Salle" title="Ajouter Salle" body={<Forms />} />
+                                </div>
                             </div>
-
-
-
-
                         }
-
                     </div>
                 </section>
-                <div className="container">
-
-                    <ModalEntity Buttontitle="Ajouter Salle" title="Ajouter Salle" body={<Forms />} />
-
-
-                </div>
             </div>
         )
     }

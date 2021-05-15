@@ -6,6 +6,7 @@ import Forms from '../Forms/FormTache';
 import validate from '../images/tick.png'
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
+import ReactPaginate from 'react-paginate';
 
 
 class TachesValider extends Component{
@@ -17,7 +18,13 @@ class TachesValider extends Component{
             Tachesres:[],
             CompanyId:jwt_decode(localStorage.getItem('token')).company,
             UserId:jwt_decode(localStorage.getItem('token')).UserId,
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 10,
+            currentPage: 0,
         }
+        this.handlePageClick = this.handlePageClick.bind(this);
 
     }
 
@@ -27,7 +34,14 @@ class TachesValider extends Component{
 
     getTaches() {
         axios.get(`http://localhost:8000/api/taches`).then(response => {
-            this.setState({ Taches: response.data['hydra:member'] })
+            // this.setState({ Taches: response.data['hydra:member'] })
+            var tdata=response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
+        })
         })
     }
 
@@ -59,6 +73,30 @@ class TachesValider extends Component{
         }
     }
 
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+		const data = this.state.orgtableData;
+		
+		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+		this.setState({
+			pageCount: Math.ceil(data.length / this.state.perPage),
+			tableData:slice
+		})
+	
+    }
+
     render(){
         return(
             
@@ -71,6 +109,7 @@ class TachesValider extends Component{
                 <div className="container">
                     {
                         <div className={'row'}>
+                        <div className="col-md-10 offset-md-1 row-block" >
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -87,7 +126,7 @@ class TachesValider extends Component{
                                 </thead>
 
                                 <tbody>
-                                    {this.state.Taches.map(tache =>
+                                    {this.state.tableData.map((tache,i) =>
                                         ( tache.isValidated == false ?     
                                             <tr class="table-light" key={tache.id}>                                           
                                             <td>{tache.libelle}</td>
@@ -101,6 +140,19 @@ class TachesValider extends Component{
 
                                 </tbody>
                             </table>
+                            <ReactPaginate
+                                    previousLabel={"🠔"}
+                                    nextLabel={"🠖"}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={this.state.pageCount}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    onPageChange={this.handlePageClick}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"} />
+                        </div>
                         </div>
                     }
                 </div>

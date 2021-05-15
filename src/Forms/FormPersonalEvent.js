@@ -82,7 +82,7 @@ class FormPersonalEvent extends Component {
                 "Content-Type": 'application/merge-patch+json'
             }
         }).then(res => {
-            alert("Jour férié modifié !");
+            alert("Evenement modifié !");
             window.location.reload()
         }).catch(err => {
             alert("Opération non aboutie")

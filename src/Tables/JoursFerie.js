@@ -3,6 +3,7 @@ import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutJrFer'
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
+import ReactPaginate from 'react-paginate';
 
 
 class JourFerie extends Component {
@@ -10,8 +11,14 @@ class JourFerie extends Component {
     constructor() {
         super();
         this.state = {
-            jours: []
+            jours: [],
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 5,
+            currentPage: 0,
         };
+        this.handlePageClick = this.handlePageClick.bind(this);
     }
 
     componentDidMount() {
@@ -21,7 +28,15 @@ class JourFerie extends Component {
 
     getJoursFeries() {
         axios.get(`http://localhost:8000/api/jours_feries`).then(response => {
-            this.setState({ jours: response.data['hydra:member'] })
+            // this.setState({ jours: response.data['hydra:member'] })
+            var tdata=response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
+        })
+            
         })
     }
 
@@ -37,8 +52,28 @@ class JourFerie extends Component {
         }
     }
 
-    modifyJour(id) {
-        axios.put(`http://localhost:8000/api/jours_feries/${id}`);
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+		const data = this.state.orgtableData;
+		
+		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+		this.setState({
+			pageCount: Math.ceil(data.length / this.state.perPage),
+			tableData:slice
+		})
+	
     }
 
 
@@ -68,7 +103,7 @@ class JourFerie extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.jours.map(jour =>
+                                            {this.state.tableData.map((jour,i) =>
                                                 <tr class="table-light" key={jour.id}>
 
                                                     <td>{jour.titre}</td>
@@ -79,6 +114,18 @@ class JourFerie extends Component {
 
                                         </tbody>
                                     </table>
+                                    <ReactPaginate
+                                    previousLabel={"🠔"}
+                                    nextLabel={"🠖"}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={this.state.pageCount}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    onPageChange={this.handlePageClick}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"} />
                                 </div>
 
 

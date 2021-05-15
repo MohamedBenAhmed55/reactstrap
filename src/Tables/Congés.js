@@ -5,6 +5,7 @@ import ModalEntity from '../ModalEntity';
 import Forms from '../Forms/FormConge';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
+import ReactPaginate from 'react-paginate';
 
 
 class Conges extends Component{
@@ -21,7 +22,13 @@ class Conges extends Component{
             "Type": "",
             "isValidated": false,
             "user": "",
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 5,
+            currentPage: 0,
         }
+        this.handlePageClick = this.handlePageClick.bind(this);
 
     }
 
@@ -31,7 +38,14 @@ class Conges extends Component{
 
     getConges() {
         axios.get(`http://localhost:8000/api/conges`).then(response => {
-            this.setState({ Conges: response.data['hydra:member'] })
+            // this.setState({ Conges: response.data['hydra:member'] })
+            var tdata=response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
+        })
         })
     }
 
@@ -60,6 +74,30 @@ class Conges extends Component{
         }
     }
 
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+		const data = this.state.orgtableData;
+		
+		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+		this.setState({
+			pageCount: Math.ceil(data.length / this.state.perPage),
+			tableData:slice
+		})
+	
+    }
+
 
 
     render(){
@@ -76,7 +114,7 @@ class Conges extends Component{
                     {
                         <div className={'row'}>
 
-
+                        <div className="col-md-10 offset-md-1 row-block" >
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -91,7 +129,7 @@ class Conges extends Component{
                                 </thead>
 
                                 <tbody>
-                                    {this.state.Conges.map(conge =>
+                                    {this.state.tableData.map((conge,i) =>
                                         ( conge.user.substr(11,conge.user.length-11) == this.state.UserId ?     
                                             <tr class="table-light" key={conge.id}>                                           
                                             <td>{conge.dateDeb.substr(0,10)}</td>
@@ -105,6 +143,19 @@ class Conges extends Component{
 
                                 </tbody>
                             </table>
+                            <ReactPaginate
+                                    previousLabel={"🠔"}
+                                    nextLabel={"🠖"}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={this.state.pageCount}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    onPageChange={this.handlePageClick}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"} />
+                        </div>
                         </div>
                     }
                 </div>

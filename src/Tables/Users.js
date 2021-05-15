@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
-import { Button,Jumbotron, Row, Col } from 'react-bootstrap';
+import { Button, Jumbotron, Row, Col } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutUtilisateur'
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
 import jwtDecode from 'jwt-decode';
 import { Redirect } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+
 
 class Users extends Component {
 
     constructor() {
         super();
-        this.state = { users: [], company: "" };
+        this.state = {
+            users: [],
+            company: "",
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 5,
+            currentPage: 0,
+        };
+        this.handlePageClick = this.handlePageClick.bind(this);
     }
 
     componentDidMount() {
@@ -22,9 +33,41 @@ class Users extends Component {
 
     getUsers() {
         axios.get(`http://localhost:8000/api/users`).then(response => {
-            this.setState({ users: response.data['hydra:member'] })
+            // this.setState({ users: response.data['hydra:member'] })
             // console.log(response.data['hydra:member']);
+            var tdata=response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
         })
+        console.log(this.state.tabledata)
+        })
+    }
+
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+		const data = this.state.orgtableData;
+		
+		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+		this.setState({
+			pageCount: Math.ceil(data.length / this.state.perPage),
+			tableData:slice
+		})
+	
     }
 
     deleteUser(id) {
@@ -47,13 +90,13 @@ class Users extends Component {
         //   }
 
         return (
-            <div style={{marginTop:70}}>
-                  <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold" , position:'relative'}}>
-                    <h1 className="display-3">La Liste Des utilisateurs</h1>                    
+            <div style={{ marginTop: 70 }}>
+                <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold", position: 'relative' }}>
+                    <h1 className="display-3">La Liste Des utilisateurs</h1>
                 </Jumbotron>
 
-                <section className="row-section">  
-                                    
+                <section className="row-section">
+
                     {
                         <div className={'row'}>
 
@@ -77,7 +120,7 @@ class Users extends Component {
                                     </thead>
 
                                     <tbody>
-                                        {this.state.users.map(user =>
+                                        {this.state.tableData.map((user,i) =>
                                         (this.state.company == user.company ?
                                             <tr class="table-light" >
                                                 <td>{user.nom}</td>
@@ -96,19 +139,31 @@ class Users extends Component {
 
                                     </tbody>
                                 </table>
+                                <ReactPaginate
+                                    previousLabel={"🠔"}
+                                    nextLabel={"🠖"}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={this.state.pageCount}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    onPageChange={this.handlePageClick}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"} />
                             </div>
                         </div>
                     }
 
 
                 </section>
-                
-                    
-                        <div style={{marginLeft:170}} >
-                            <ModalEntity Buttontitle="Ajouter un utilisateur" title="Ajouter utilisateur" body={<Forms show={true} />} />
-                        </div>
-                    
-                
+
+
+                <div style={{ marginLeft: 170 }} >
+                    <ModalEntity Buttontitle="Ajouter un utilisateur" title="Ajouter utilisateur" body={<Forms show={true} />} />
+                </div>
+
+
             </div>
         )
     }

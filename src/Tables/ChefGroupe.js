@@ -4,12 +4,22 @@ import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutChefGroupe';
 import ModalEntity from '../ModalEntity';
 import { Redirect } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 
 class ChefGroupe extends Component {
 
     constructor() {
         super();
-        this.state = { Chefs: [], redirect: false };
+        this.state = {
+            Chefs: [],
+            redirect: false,
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 5,
+            currentPage: 0,
+        };
+        this.handlePageClick = this.handlePageClick.bind(this);
     }
     componentDidMount() {
         // this.setState({redirect: localStorage.getItem("isLoggedout")})
@@ -20,7 +30,14 @@ class ChefGroupe extends Component {
 
     getChefGroupe() {
         axios.get(`http://localhost:8000/api/chef_groupes`).then(response => {
-            this.setState({ Chefs: response.data['hydra:member'] })
+            // this.setState({ Chefs: response.data['hydra:member'] })
+            var tdata=response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
+        })
         })
     }
 
@@ -30,7 +47,7 @@ class ChefGroupe extends Component {
             axios.delete(`http://localhost:8000/api/chef_groupes/${id}`).then(res => {
                 alert("chef supprimé!");
                 this.getChefGroupe();
-            }).catch(err =>{
+            }).catch(err => {
                 alert("Echec de l'opération ! ")
             })
         }
@@ -38,8 +55,28 @@ class ChefGroupe extends Component {
 
     }
 
-    modifyChef(id) {
-        axios.put(`http://localhost:8000/api/chef_groupes/${id}`);
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+        const data = this.state.orgtableData;
+
+        const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.setState({
+            pageCount: Math.ceil(data.length / this.state.perPage),
+            tableData: slice
+        })
+
     }
 
     render() {
@@ -72,7 +109,7 @@ class ChefGroupe extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.Chefs.map(chef =>
+                                            {this.state.tableData.map((chef,i) =>
                                                 <tr class="table-light" >
                                                     <td>{chef.name}</td>
                                                     <td>{chef.dateDeb.substr(0, 10)}</td>
@@ -84,6 +121,18 @@ class ChefGroupe extends Component {
 
                                         </tbody>
                                     </table>
+                                    <ReactPaginate
+                                        previousLabel={"🠔"}
+                                        nextLabel={"🠖"}
+                                        breakLabel={"..."}
+                                        breakClassName={"break-me"}
+                                        pageCount={this.state.pageCount}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick}
+                                        containerClassName={"pagination"}
+                                        subContainerClassName={"pages pagination"}
+                                        activeClassName={"active"} />
                                 </div>
 
                             </div>

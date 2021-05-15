@@ -21,6 +21,7 @@ import TachesValider from './Tables/TachesValider';
 import Conges from './Tables/Congés';
 import CongesValider from './Tables/Congesvalider'
 import PersonalEvents from './Tables/PersonalEvents'
+import Paginate from './Tables/PaginationExample'
 
 
 class Navbar extends Component {
@@ -66,7 +67,7 @@ class Navbar extends Component {
                                 </li>
 
                                 <li className="nav-item">
-                                    <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/eventcalendar"}> My Calendar </Link>
+                                    <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/eventcalendar"}> Calendrier personnel </Link>
                                 </li>
 
                                 <li className="nav-item">
@@ -80,6 +81,10 @@ class Navbar extends Component {
                                 <li className="nav-item">
                                     <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/personalEvents"}> Evénements peronnels </Link>
                                 </li>
+
+                                {/* <li className="nav-item">
+                                    <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/paginate"}> Paginate </Link>
+                                </li> */}
 
 
                                 {this.state.role == "ROLE_LEAD" | this.state.role == "ROLE_ADMIN" ?
@@ -143,6 +148,8 @@ class Navbar extends Component {
                     <Route path="/dashboard/Conges" component={Conges} />
                     <Route path="/dashboard/Congesvalider" component={CongesValider} />
                     <Route path="/dashboard/personalEvents" component={PersonalEvents} />
+                    {/* <Route path="/dashboard/paginate" component={Paginate} /> */}
+
 
                 </Switch>
                 {this.state.redirect ? <Redirect to="/login" /> : null}

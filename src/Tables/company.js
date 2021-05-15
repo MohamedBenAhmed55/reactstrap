@@ -5,6 +5,7 @@ import { Button, Jumbotron } from 'react-bootstrap';
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
 import jwtdecode from 'jwt-decode';
+import ReactPaginate from 'react-paginate';
 
 class Company extends Component {
 
@@ -16,9 +17,15 @@ class Company extends Component {
             setShow: false,
             redirect: false,
             role:jwtdecode(localStorage.getItem('token')).roles[0],
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 5,
+            currentPage: 0,
         };
         this.refreshPage = this.refreshPage.bind(this);
         this.deleteCompany = this.deleteCompany.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
 
     }
 
@@ -38,7 +45,14 @@ class Company extends Component {
 
     getCompanies() {
         axios.get(`http://localhost:8000/api/companies`).then(response => {
-            this.setState({ companies: response.data['hydra:member'] })
+            // this.setState({ companies: response.data['hydra:member'] })
+            var tdata=response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
+        })
         })
     }
 
@@ -48,6 +62,30 @@ class Company extends Component {
             axios.delete(`http://localhost:8000/api/companies/${id}`).then(res => { this.getCompanies() });
         }
 
+    }
+
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+		const data = this.state.orgtableData;
+		
+		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+		this.setState({
+			pageCount: Math.ceil(data.length / this.state.perPage),
+			tableData:slice
+		})
+	
     }
 
 
@@ -68,6 +106,7 @@ class Company extends Component {
 
                         {
                             <div className={'row'}>
+                            
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -85,7 +124,7 @@ class Company extends Component {
                                     </thead>
 
                                     <tbody>
-                                        {this.state.companies.map(company =>
+                                        {this.state.tableData.map((company,i) =>
                                             <tr class="table-light" key={company.id} >
                                                 <td>{company.name}</td>
                                                 <td>{company.city}</td>
@@ -101,7 +140,22 @@ class Company extends Component {
 
                                     </tbody>
                                 </table>
+                                
+                                <ReactPaginate
+                                    previousLabel={"🠔"}
+                                    nextLabel={"🠖"}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={this.state.pageCount}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    onPageChange={this.handlePageClick}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"} />
                             </div>
+                            
+                            
                         }
 
                     </div>

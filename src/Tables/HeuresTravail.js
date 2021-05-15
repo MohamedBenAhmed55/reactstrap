@@ -4,13 +4,22 @@ import Forms from '../Forms/FormAjoutHrTravail'
 import axios from 'axios';
 import 'reactjs-popup/dist/index.css';
 import ModalEntity from '../ModalEntity';
+import ReactPaginate from 'react-paginate';
 
 
 class HeuresTravail extends Component {
 
     constructor() {
         super();
-        this.state = { Heures: [] };
+        this.state = { 
+            Heures: [],
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 5,
+            currentPage: 0, 
+        };
+        this.handlePageClick = this.handlePageClick.bind(this);
 
     }
 
@@ -21,7 +30,14 @@ class HeuresTravail extends Component {
 
     getHeures() {
         axios.get(`http://localhost:8000/api/heures_travails/`).then(response => {
-            this.setState({ Heures: response.data['hydra:member'] })
+            // this.setState({ Heures: response.data['hydra:member'] })
+            var tdata=response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
+        })
             
         console.log(response.data['hydra:member'])
         })
@@ -32,6 +48,30 @@ class HeuresTravail extends Component {
         if (confirm) {
             axios.delete(`http://localhost:8000/api/heures_travails/${id}`).then(res => { alert("élément supprimé!"); this.getHeures() });
         }
+    }
+
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+		const data = this.state.orgtableData;
+		
+		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+		this.setState({
+			pageCount: Math.ceil(data.length / this.state.perPage),
+			tableData:slice
+		})
+	
     }
 
     render() {
@@ -62,7 +102,7 @@ class HeuresTravail extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.Heures.map(heure =>
+                                            {this.state.tableData.map((heure,i) =>
                                                 <tr class="table-light" key={heure.id}>
 
 
@@ -76,6 +116,18 @@ class HeuresTravail extends Component {
                                                 </tr>)}
                                         </tbody>
                                     </table>
+                                    <ReactPaginate
+                                    previousLabel={"🠔"}
+                                    nextLabel={"🠖"}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={this.state.pageCount}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    onPageChange={this.handlePageClick}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"} />
                                 </div>
 
 

@@ -3,12 +3,21 @@ import axios from 'axios';
 import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FomAjoutGroupe'
 import ModalEntity from '../ModalEntity';
+import ReactPaginate from 'react-paginate';
 
 class Groupes extends Component {
 
     constructor() {
         super();
-        this.state = { Groupes: [] };
+        this.state = { 
+            Groupes: [],
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 5,
+            currentPage: 0, 
+        };
+        this.handlePageClick = this.handlePageClick.bind(this);
     }
 
     componentDidMount() {
@@ -18,7 +27,14 @@ class Groupes extends Component {
 
     getGroupes() {
         axios.get(`http://localhost:8000/api/groupes`).then(response => {
-            this.setState({ Groupes: response.data['hydra:member'] })
+            // this.setState({ Groupes: response.data['hydra:member'] })
+            var tdata=response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
+        })
         })
     }
 
@@ -27,6 +43,30 @@ class Groupes extends Component {
         if (confirm) {
             axios.delete(`http://localhost:8000/api/groupes/${id}`).then(res => { alert("group supprimé!"); this.getGroupes() });
         }
+    }
+
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+		const data = this.state.orgtableData;
+		
+		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+		this.setState({
+			pageCount: Math.ceil(data.length / this.state.perPage),
+			tableData:slice
+		})
+	
     }
 
 
@@ -57,7 +97,7 @@ class Groupes extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.Groupes.map(groupe =>
+                                            {this.state.tableData.map((groupe,i) =>
                                                 <tr class="table-light" >
                                                     <td>{groupe.name}</td>
                                                     <td>{groupe.chef}</td>
@@ -68,6 +108,18 @@ class Groupes extends Component {
 
                                         </tbody>
                                     </table>
+                                    <ReactPaginate
+                                    previousLabel={"🠔"}
+                                    nextLabel={"🠖"}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={this.state.pageCount}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    onPageChange={this.handlePageClick}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"} />
                                 </div>
 
 

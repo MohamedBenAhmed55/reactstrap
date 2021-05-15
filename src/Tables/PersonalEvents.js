@@ -4,6 +4,7 @@ import Forms from '../Forms/FormPersonalEvent';
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
 import jwtDecode from 'jwt-decode';
+import ReactPaginate from 'react-paginate';
 
 
 class PersonalEvents extends Component {
@@ -13,7 +14,13 @@ class PersonalEvents extends Component {
         this.state = {
             jours: [],
             UserId:jwtDecode(localStorage.getItem('token')).UserId,
+            offset: 0,
+            tableData: [],
+            orgtableData: [],
+            perPage: 5,
+            currentPage: 0,
         };
+        this.handlePageClick = this.handlePageClick.bind(this);
     }
 
     componentDidMount() {
@@ -23,7 +30,14 @@ class PersonalEvents extends Component {
 
     getPersonalEvents() {
         axios.get(`http://localhost:8000/api/personal_events`).then(response => {
-            this.setState({ jours: response.data['hydra:member'] })
+            // this.setState({ jours: response.data['hydra:member'] })
+            var tdata=response.data['hydra:member'];
+            var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.setState({
+                pageCount: Math.ceil(tdata.length / this.state.perPage),
+                orgtableData: tdata,
+                tableData: slice
+        })
         })
     }
 
@@ -39,10 +53,29 @@ class PersonalEvents extends Component {
         }
     }
 
-    modifyJour(id) {
-        axios.put(`http://localhost:8000/api/jours_feries/${id}`);
-    }
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
 
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.loadMoreData()
+        });
+
+    };
+
+    loadMoreData() {
+		const data = this.state.orgtableData;
+		
+		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+		this.setState({
+			pageCount: Math.ceil(data.length / this.state.perPage),
+			tableData:slice
+		})
+	
+    }
 
     render() {
         return (
@@ -70,7 +103,7 @@ class PersonalEvents extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.jours.map(event =>
+                                            {this.state.tableData.map((event,i) =>
                                                 ( event.user.substr(11,event.user.length-11) == this.state.UserId ?
                                                 <tr class="table-light" key={event.id}>
                                                 
@@ -83,6 +116,18 @@ class PersonalEvents extends Component {
 
                                         </tbody>
                                     </table>
+                                    <ReactPaginate
+                                    previousLabel={"🠔"}
+                                    nextLabel={"🠖"}
+                                    breakLabel={"..."}
+                                    breakClassName={"break-me"}
+                                    pageCount={this.state.pageCount}
+                                    marginPagesDisplayed={2}
+                                    pageRangeDisplayed={5}
+                                    onPageChange={this.handlePageClick}
+                                    containerClassName={"pagination"}
+                                    subContainerClassName={"pages pagination"}
+                                    activeClassName={"active"} />
                                 </div>
 
 
