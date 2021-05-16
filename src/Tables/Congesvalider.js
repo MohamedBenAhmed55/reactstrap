@@ -21,6 +21,7 @@ class CongesValider extends Component {
             orgtableData: [],
             perPage: 5,
             currentPage: 0,
+            group:jwt_decode(localStorage.getItem('token')).group,
         }
         this.handlePageClick = this.handlePageClick.bind(this);
     }
@@ -121,7 +122,7 @@ class CongesValider extends Component {
 
                                     <tbody>
                                         {this.state.tableData.map((conge,i) =>
-                                        (conge.isValidated == false ?
+                                        (conge.groupee == this.state.group ? (conge.isValidated == false ?
                                             <tr class="table-light" key={conge.id}>
                                                 <td>{conge.dateDeb.substr(0, 10)}</td>
                                                 <td>{conge.dateFin.substr(0, 10)}</td>
@@ -130,7 +131,7 @@ class CongesValider extends Component {
                                                 {conge.isValidated ? <td>Validé</td> : <td>Non validé</td>}
                                                 <td><button className="btn btn-success my-2 my-sm-0" onClick={() => this.Validaconge(conge.id)} >Valider</button></td>
                                                 <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteconge(conge.id)} >Supprimer</button></td>                                
-                                            </tr> : null))}
+                                            </tr> : null):null))}
                                     </tbody>
                                 </table>
                                 <ReactPaginate

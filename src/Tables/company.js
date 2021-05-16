@@ -114,7 +114,6 @@ class Company extends Component {
                                             <th scope="col">City</th>
                                             <th scope="col">postalCode</th>
                                             <th scope="col">email</th>
-                                            <th scope="col">logo</th>
                                             <th scope="col">matriculeFiscale</th>
                                             <th scope="col">secteurActivite</th>
                                             <th scope="col">phone</th>
@@ -130,7 +129,6 @@ class Company extends Component {
                                                 <td>{company.city}</td>
                                                 <td>{company.postalcode}</td>
                                                 <td>{company.email}</td>
-                                                <td>{company.logo}</td>
                                                 <td>{company.matriculeFiscale}</td>
                                                 <td>{company.secteurActivite}</td>
                                                 <td>{company.phone}</td>
@@ -161,7 +159,7 @@ class Company extends Component {
                     </div>
                 </section>
                 <div className="container">
-                    <ModalEntity Buttontitle="Add Company" title="Ajouter Comapany" body={<FormAjoutCompany />} />
+                    <ModalEntity Buttontitle="Ajouter compagnie" title="Ajouter une compagnie" body={<FormAjoutCompany />} />
 
                 </div>
             </div>

@@ -1,58 +1,58 @@
 import React from 'react';
 import { Component } from 'react';
-import { Button , Jumbotron} from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import ModalEntity from '../ModalEntity';
-import Forms from '../Forms/FormConge';
+import Forms from '../Forms/FormTache';
+import validate from '../images/tick.png'
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import ReactPaginate from 'react-paginate';
 
 
-class Conges extends Component{
+class Events extends Component{
 
     constructor(props){
         super(props);
         this.state={
-            Conges:[],
+            Events:[],
+            Tachesres:[],
             CompanyId:jwt_decode(localStorage.getItem('token')).company,
             UserId:jwt_decode(localStorage.getItem('token')).UserId,
-            "dateDeb": "",
-            "dateFin": "",
-            "dateReprise": "",
-            "Type": "",
-            "isValidated": false,
-            "user": "",
             offset: 0,
             tableData: [],
             orgtableData: [],
-            perPage: 5,
+            perPage: 15,
             currentPage: 0,
+            // size:0,
         }
         this.handlePageClick = this.handlePageClick.bind(this);
 
     }
 
     componentDidMount(){
-        this.getConges();       
+        this.getTaches();
     }
 
-    getConges() {
-        axios.get(`http://localhost:8000/api/conges`).then(response => {
-            // this.setState({ Conges: response.data['hydra:member'] })
+    getTaches() {
+        axios.get(`http://localhost:8000/api/taches`).then(response => {
+            // this.setState({ Taches: response.data['hydra:member'] })
             var tdata=response.data['hydra:member'];
+            console.log(tdata.length);
+           
             var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
             this.setState({
                 pageCount: Math.ceil(tdata.length / this.state.perPage),
                 orgtableData: tdata,
-                tableData: slice
+                tableData: slice,
+                // size:size,
         })
         })
     }
 
-    ValidateConge(id){
+    Validatetache(id){
         axios({
             method: 'patch',
-            url: `http://localhost:8000/api/conges/${id}`,
+            url: `http://localhost:8000/api/taches/${id}`,
             data: {
                 "isValidated":true,
             },
@@ -63,14 +63,14 @@ class Conges extends Component{
             alert("L'opération a échoué");
         })}
 
-        deleteConge(id) {
+        deletetache(id) {
         let del = window.confirm("êtes vous sûr ?");
         if (del) {
-            axios.delete(`http://localhost:8000/api/conges/${id}`).then(res => {
+            axios.delete(`http://localhost:8000/api/taches/${id}`).then(res => {
                 alert("élément supprimé!");
-                this.getConges();
+                this.getTaches();
             }
-            )
+            );
         }
     }
 
@@ -98,50 +98,49 @@ class Conges extends Component{
 	
     }
 
-
-
     render(){
         return(
             
             <div style={{marginTop:70}}>
             <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">Vos congés</h1>                    
+                    <h1 className="display-3">La Liste Des Tâches</h1>                    
                 </Jumbotron>
             <section className="row-section">
 
                 <div className="container">
-
                     {
                         <div className={'row'}>
-
                         <div className="col-md-10 offset-md-1 row-block" >
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Date de debut</th>
-                                        <th scope="col">Date de fin</th>
-                                        <th scope="col">Date du reprise</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Etat</th>
+                                        <th scope="col">libelle</th>
+                                        <th scope="col">dateDeb</th>
+                                        <th scope="col">Delai</th>
+                                        <th scope="col">Priorite</th>
+                                        <th scope="col">description</th>                                        
+                                        <th scope="col">validée</th>
+                                        <th scope="col"></th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
-
+                                {this.state.tableData.map((tache,i) =>
+                                        ( tache.userDestinataire.substr(11,tache.userDestinataire.length-11) == this.state.UserId ?
                                 <tbody>
-                                    {this.state.tableData.map((conge,i) =>
-                                        ( conge.user.substr(11,conge.user.length-11) == this.state.UserId ?     
-                                            <tr class="table-light" key={conge.id}>                                           
-                                            <td>{conge.dateDeb.substr(0,10)}</td>
-                                            <td>{conge.dateFin.substr(0,10)}</td>
-                                            <td>{conge.dateReprise.substr(0,10)}</td>
-                                            <td>{conge.Type}</td>
-                                            { conge.isValidated  ? <td>Validé</td> : <td>Non validé</td>}                                                 
-                                            <td><ModalEntity Buttontitle="Modifier" title="Modifier Conge" body={<Forms body={conge} modify={conge.id} />} /></td>
-                                            <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deletetache(conge.id)} >Supprimer</button></td>                               
-                                        </tr> : null) )}
+                                         
+                                            <tr class="table-light" key={tache.id}>                                           
+                                            <td>{tache.libelle}</td>
+                                            <td>{tache.dateDeb.substr(0,10)}</td>
+                                            <td>{tache.dateFin.substr(0,10)}</td>
+                                            <td>{tache.Priorite}</td>
+                                            <td>{tache.description}</td>
+                                            { tache.isValidated  ? <td>Validée</td> : <td>Non validée</td>}                                                 
+                                            <td><ModalEntity Buttontitle="Modifier" title="Modifier Tache" body={<Forms body={tache} modify={tache.id} />} /></td>
+                                            <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deletetache(tache.id)} >Supprimer</button></td>
+                                        </tr> 
 
-                                </tbody>
+                                </tbody>: null) )}
                             </table>
                             <ReactPaginate
                                     previousLabel={"🠔"}
@@ -155,15 +154,17 @@ class Conges extends Component{
                                     containerClassName={"pagination"}
                                     subContainerClassName={"pages pagination"}
                                     activeClassName={"active"} />
-                                    <ModalEntity Buttontitle="Ajouter Conge" title="Ajouter Conge" body={<Forms />} />
                         </div>
                         </div>
                     }
                 </div>
             </section>
+            <div className="container">
+                <ModalEntity Buttontitle="Ajouter Tache" title="Ajouter Tache" body={<Forms />} />
+            </div>
         </div>             
         )
     }
 }
 
-export default Conges;
+export default Events;

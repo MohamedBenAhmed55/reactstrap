@@ -5,6 +5,7 @@ import Forms from '../Forms/FormAjoutChefGroupe';
 import ModalEntity from '../ModalEntity';
 import { Redirect } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
+import jwtDecode from 'jwt-decode';
 
 class ChefGroupe extends Component {
 
@@ -18,12 +19,14 @@ class ChefGroupe extends Component {
             orgtableData: [],
             perPage: 5,
             currentPage: 0,
+            company: "",
         };
         this.handlePageClick = this.handlePageClick.bind(this);
     }
     componentDidMount() {
         // this.setState({redirect: localStorage.getItem("isLoggedout")})
         this.getChefGroupe();
+        this.setState({ company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company });
 
 
     }
@@ -110,6 +113,7 @@ class ChefGroupe extends Component {
 
                                         <tbody>
                                             {this.state.tableData.map((chef,i) =>
+                                            (chef.company == this.state.company ?
                                                 <tr class="table-light" >
                                                     <td>{chef.name}</td>
                                                     <td>{chef.dateDeb.substr(0, 10)}</td>
@@ -117,7 +121,7 @@ class ChefGroupe extends Component {
                                                     <td>{chef.groupname}</td>
                                                     <td><ModalEntity Buttontitle="Modifier" title="Modifier chef" body={<Forms id={chef.id} data={chef} />} /></td>
                                                     <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteChef(chef.id)} >Remove</button></td>
-                                                </tr>)}
+                                                </tr>:null))}
 
                                         </tbody>
                                     </table>

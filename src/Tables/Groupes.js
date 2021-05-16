@@ -4,6 +4,7 @@ import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FomAjoutGroupe'
 import ModalEntity from '../ModalEntity';
 import ReactPaginate from 'react-paginate';
+import jwtDecode from 'jwt-decode';
 
 class Groupes extends Component {
 
@@ -16,12 +17,14 @@ class Groupes extends Component {
             orgtableData: [],
             perPage: 5,
             currentPage: 0, 
+            company:"",
         };
         this.handlePageClick = this.handlePageClick.bind(this);
     }
 
     componentDidMount() {
         this.getGroupes();
+        this.setState({ company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company });
 
     }
 
@@ -98,13 +101,13 @@ class Groupes extends Component {
 
                                         <tbody>
                                             {this.state.tableData.map((groupe,i) =>
-                                                <tr class="table-light" >
+                                                (groupe.company == this.state.company ? <tr class="table-light" >
                                                     <td>{groupe.name}</td>
                                                     <td>{groupe.chef}</td>
                                                     <td>  <ModalEntity Buttontitle="Modifier" title="Modifer un groupe" body={<Forms />} modify={groupe.id} data={groupe} /></td>
                                                     <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteGroup(groupe.id)} >supprimer</button></td>
 
-                                                </tr>)}
+                                                </tr>:null))}
 
                                         </tbody>
                                     </table>

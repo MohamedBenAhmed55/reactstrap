@@ -84,7 +84,7 @@ class EventCalendar extends Component {
                         events={this.state.conges}
                         eventClick={
                             function (arg) {
-                                alert(arg.event.title)
+                                alert("titre: " + arg.event.title)
                                 // alert(arg.event.start)                               
                             }
                         }
@@ -99,7 +99,14 @@ class EventCalendar extends Component {
                     <ModalEntity Buttontitle="Ajouter un événement personnel" title="Ajouter un événement personnel" body={<FormsPersonal />} />
                     </Col>
                     </Row> */}
+                    <Row>
+                    <Col>
                     <ModalEntity Buttontitle="Ajouter un événement personnel" title="Ajouter un événement personnel" body={<FormsPersonal />} />
+                    </Col>
+                    <Col style={{marginLeft:-300}}>
+                    <ModalEntity Buttontitle="Add Event" title="Ajouter evenement" body={<Forms />} />
+                    </Col>
+                    </Row>
 
                 </div>
 

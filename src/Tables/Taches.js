@@ -163,14 +163,13 @@ class Taches extends Component{
                                     containerClassName={"pagination"}
                                     subContainerClassName={"pages pagination"}
                                     activeClassName={"active"} />
+                        <ModalEntity Buttontitle="Ajouter Tache" title="Ajouter Tache" body={<Forms />} />
                         </div>
                         </div>
                     }
                 </div>
             </section>
-            <div className="container">
-                <ModalEntity Buttontitle="Ajouter Tache" title="Ajouter Tache" body={<Forms />} />
-            </div>
+          
         </div>             
         )
     }

@@ -12,7 +12,7 @@ class FormAjoutCompany extends Component {
       "city": "",
       "postalcode": "",
       "email": "",
-      "logo": "",
+      "logo": "test",
       "matriculeFiscale": "",
       "secteurActivite": "",
       "phone": "",
@@ -65,6 +65,8 @@ class FormAjoutCompany extends Component {
       "matriculeFiscale": this.state.matriculeFiscale,
       "secteurActivite": this.state.secteurActivite,
       "phone": this.state.phone,
+    }).then(res=>{
+      alert("Compagnie ajoutée")
     }).catch(err => {
       alert("l'opération a échoué ")
     })}
@@ -89,7 +91,6 @@ class FormAjoutCompany extends Component {
         "city": this.props.data.city,
         "postalcode": this.props.data.postalcode,
         "email": this.props.data.email,
-        "logo": this.props.data.logo,
         "matriculeFiscale": this.props.data.matriculeFiscale,
         "secteurActivite": this.props.data.secteurActivite,
         "phone": this.props.data.phone,
@@ -114,7 +115,6 @@ class FormAjoutCompany extends Component {
         "city": this.state.city,
         "postalcode": this.state.postalcode,
         "email": this.state.email,
-        "logo": this.state.logo,
         "matriculeFiscale": this.state.matriculeFiscale,
         "secteurActivite": this.state.secteurActivite,
         "phone": this.state.phone,
@@ -122,6 +122,8 @@ class FormAjoutCompany extends Component {
       headers: {
         "Content-Type": 'application/merge-patch+json'
       }
+    }).then(res=>{
+      alert("succès de l'opération")
     }).catch(err => {
       alert("l'opération a échoué ")
     })
@@ -146,14 +148,14 @@ class FormAjoutCompany extends Component {
     message = message + "la matricule fiscale de la société ne peut pas être un nombre ! \n"
   }
 
-  var test = this.state.secteurActivite.split("")
+  var test = this.state.secteurActivite.split(""," ")
   for(let i=0;i<test.length;i++){
     if (!isNaN(test[i])){
       message = message + "le secteur d'activité de la société ne peut pas contenir un nombre ! \n"
     }
   }
 
-  var test = this.state.name.split("")
+  var test = this.state.name.split(""," ")
   for(let i=0;i<test.length;i++){
     if (!isNaN(test[i])){
       message = message + "le nom de la société ne peut pas contenir un nombre ! \n"
@@ -232,7 +234,7 @@ class FormAjoutCompany extends Component {
 
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
 
           <Col md>
             <Form.Group controlId="formLogo">
@@ -241,7 +243,7 @@ class FormAjoutCompany extends Component {
             </Form.Group>
 
           </Col>
-        </Row>
+        </Row> */}
 
         <Button variant="secondary" type="submit" >Confirmer</Button>
       </Form>

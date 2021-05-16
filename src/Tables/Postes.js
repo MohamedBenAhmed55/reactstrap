@@ -104,8 +104,8 @@ class Postes extends Component {
                                                 <tr class="table-light" key={poste.id} >
 
                                                     <td>{poste.name}</td>
-                                                    <td><ModalEntity Buttontitle="Modify" title="Modifier poste" body={<Forms modify={poste.id} data={poste} />} /></td>
-                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deletePoste(poste.id)} >Remove</button></td>
+                                                    <td><ModalEntity Buttontitle="Modifier" title="Modifier poste" body={<Forms modify={poste.id} data={poste} />} /></td>
+                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deletePoste(poste.id)} >Supprimer</button></td>
                                                 </tr>)}
 
                                         </tbody>

@@ -21,7 +21,7 @@ class TachesValider extends Component{
             offset: 0,
             tableData: [],
             orgtableData: [],
-            perPage: 10,
+            perPage: 12,
             currentPage: 0,
         }
         this.handlePageClick = this.handlePageClick.bind(this);
@@ -127,7 +127,7 @@ class TachesValider extends Component{
 
                                 <tbody>
                                     {this.state.tableData.map((tache,i) =>
-                                        ( tache.isValidated == false ?     
+                                        (tache.userId == this.state.UserId ?( tache.isValidated == false ?     
                                             <tr class="table-light" key={tache.id}>                                           
                                             <td>{tache.libelle}</td>
                                             <td>{tache.dateDeb.substr(0,10)}</td>
@@ -136,7 +136,7 @@ class TachesValider extends Component{
                                             <td>{tache.description}</td>
                                             { tache.isValidated  ? <td>Validée</td> : <td>Non validée</td>}                     
                                             <td><button class="btn btn-success" onClick={() => this.Validatetache(tache.id)} >Valider</button></td>
-                                        </tr> : null) )}
+                                        </tr> : null):null) )}
 
                                 </tbody>
                             </table>
