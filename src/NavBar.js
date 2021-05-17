@@ -91,13 +91,13 @@ class Navbar extends Component {
                                 </li> */}
 
 
-                                {this.state.role == "ROLE_LEAD" | this.state.role == "ROLE_ADMIN" | this.state.role == "ROLE_CLIENT" ?
+                               
                                     
                                         <li className="nav-item">
                                             <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Tachesvalider"}> Taches à valider </Link>
-                                        </li> : null}
+                                        </li> 
                                        
-                                        {this.state.role == "ROLE_LEAD" | this.state.role == "ROLE_ADMIN" ?
+                                        {this.state.role == "ROLE_LEAD" | this.state.role == "ROLE_ADMIN" | this.state.role == "ROLE_CLIENT" ?
 
                                         <li className="nav-item">
                                             <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Congesvalider"}> Congés à valider </Link>
