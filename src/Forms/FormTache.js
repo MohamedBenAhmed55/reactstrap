@@ -22,6 +22,7 @@ class FormTache extends Component {
             "company": jwt_decode(localStorage.getItem('token')).company,
             "user": jwt_decode(localStorage.getItem('token')).UserId,
             "Usernames": [],
+            "show":this.props.show,
 
         }
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -91,7 +92,8 @@ class FormTache extends Component {
                     "Priorite": this.state.Priorite,
                     "isValidated": this.state.isValidated,
                     "userDestinataire": "/api/users/" + uid,
-                    "userId": "" + this.state.user,
+                    "userId": "" + this.state.user, 
+                    "Etat":"En cours"
                 })
                 .then(res => {
                     window.location.reload();
@@ -162,7 +164,7 @@ class FormTache extends Component {
                         </Form.Group>
                     </Col>
 
-                    <Col md>
+                   { this.state.show ? <Col md>
                         <Form.Group as={Col} >
                             <Form.Label>Employé concerné</Form.Label>
                             <Form.Control as="select" value={this.state.userDestinataire} name="userDestinataire" onChange={this.onChange}>
@@ -171,8 +173,7 @@ class FormTache extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                    </Col>
-
+                    </Col>:null}
 
                 </Row>
                 <Row>
@@ -186,7 +187,7 @@ class FormTache extends Component {
 
                     <Col md>
                         <Form.Group controlId="formDateEmbauche">
-                            <Form.Label>Date delai</Form.Label>
+                            <Form.Label>Date limite</Form.Label>
                             <Form.Control type="date" name="dateFin" value={this.state.dateFin} onChange={this.onChange} required />
                         </Form.Group>
 

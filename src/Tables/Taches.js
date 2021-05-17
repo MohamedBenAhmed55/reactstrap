@@ -107,6 +107,23 @@ class Taches extends Component{
 	
     }
 
+    Terminertache(id){
+        axios({
+            method: 'patch',
+            url: `http://localhost:8000/api/taches/${id}`,
+            data: {
+                "Etat":"Terminée",
+            },
+            headers: {
+                "Content-Type": 'application/merge-patch+json'
+            }
+        }).then(res =>{
+            alert("Tache terminée !")
+            this.getTaches();
+        }).catch(err => {
+            alert("L'opération a échoué");
+        })}
+
     render(){
         return(
             
@@ -124,18 +141,19 @@ class Taches extends Component{
                                 <thead>
                                     <tr>
                                         <th scope="col">libelle</th>
-                                        <th scope="col">dateDeb</th>
-                                        <th scope="col">Delai</th>
+                                        <th scope="col">Début</th>
+                                        <th scope="col">Limite</th>
                                         <th scope="col">Priorite</th>
-                                        <th scope="col">description</th>                                        
-                                        <th scope="col">validée</th>
+                                        <th scope="col">description</th>  
+                                        <th scope="col">Etat</th>                                    
+                                        <th scope="col">validation</th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 {this.state.tableData.map((tache,i) =>
-                                        ( tache.userDestinataire.substr(11,tache.userDestinataire.length-11) == this.state.UserId ?
+                                        ( tache.userDestinataire.substr(11,tache.userDestinataire.length-11)  == this.state.UserId & tache.isValidated == false  ?
                                 <tbody>
                                          
                                             <tr class="table-light" key={tache.id}>                                           
@@ -144,9 +162,9 @@ class Taches extends Component{
                                             <td>{tache.dateFin.substr(0,10)}</td>
                                             <td>{tache.Priorite}</td>
                                             <td>{tache.description}</td>
+                                            <td>{tache.Etat}</td>
                                             { tache.isValidated  ? <td>Validée</td> : <td>Non validée</td>}                                                 
-                                            <td><ModalEntity Buttontitle="Modifier" title="Modifier Tache" body={<Forms body={tache} modify={tache.id} />} /></td>
-                                            <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deletetache(tache.id)} >Supprimer</button></td>
+                                            <td><button class="btn btn-success" onClick={() => this.Terminertache(tache.id)} >Terminer</button></td>
                                         </tr> 
 
                                 </tbody>: null) )}

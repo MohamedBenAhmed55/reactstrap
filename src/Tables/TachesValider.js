@@ -21,7 +21,7 @@ class TachesValider extends Component{
             offset: 0,
             tableData: [],
             orgtableData: [],
-            perPage: 12,
+            perPage: 15,
             currentPage: 0,
         }
         this.handlePageClick = this.handlePageClick.bind(this);
@@ -117,7 +117,8 @@ class TachesValider extends Component{
                                         <th scope="col">dateDeb</th>
                                         <th scope="col">Delai</th>
                                         <th scope="col">Priorite</th>
-                                        <th scope="col">description</th>                                        
+                                        <th scope="col">description</th> 
+                                        <th scope="col">Etat</th>                                       
                                         <th scope="col">validée</th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
@@ -127,15 +128,18 @@ class TachesValider extends Component{
 
                                 <tbody>
                                     {this.state.tableData.map((tache,i) =>
-                                        (tache.userId == this.state.UserId ?( tache.isValidated == false ?     
+                                        (tache.userId == this.state.UserId ?( tache.isValidated == false & tache.Etat == "Terminée"?     
                                             <tr class="table-light" key={tache.id}>                                           
                                             <td>{tache.libelle}</td>
                                             <td>{tache.dateDeb.substr(0,10)}</td>
                                             <td>{tache.dateFin.substr(0,10)}</td>
                                             <td>{tache.Priorite}</td>
                                             <td>{tache.description}</td>
+                                            <td>{tache.Etat}</td>
                                             { tache.isValidated  ? <td>Validée</td> : <td>Non validée</td>}                     
                                             <td><button class="btn btn-success" onClick={() => this.Validatetache(tache.id)} >Valider</button></td>
+                                            <td><ModalEntity Buttontitle="Modifier" title="Modifier Tache" body={<Forms body={tache} modify={tache.id} show={true} />} /></td>
+                                            <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deletetache(tache.id)} >Supprimer</button></td>
                                         </tr> : null):null) )}
 
                                 </tbody>

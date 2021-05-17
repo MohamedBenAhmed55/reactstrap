@@ -62,7 +62,7 @@ class UserProfile extends Component {
                                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150" />
                                         <div class="mt-3">
                                             <h4>{this.state.user.name} {this.state.user.lastname}</h4>
-                                            <p class="text-secondary mb-1">Full Stack Developer</p>
+                                            {/* <p class="text-secondary mb-1">Full Stack Developer</p> */}
                                             <p class="text-muted font-size-sm">{this.state.user.adresse}</p>
                                             <ModalEntity Buttontitle="Modifier mot de passe" title="Modifier mot de passe" body={<Forms modify={this.state.id} />} />
                                             <hr />

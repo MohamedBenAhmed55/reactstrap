@@ -45,7 +45,7 @@ class Navbar extends Component {
 
 
     render() {
-        
+
         return (
             <div >
                 <nav class="navbar navbar-expand-lg navbar-light bg-dark fixed-top mb-10">
@@ -59,7 +59,7 @@ class Navbar extends Component {
                             <ul className="navbar-nav mr-auto">
 
                                 <li className="nav-item">
-                                    <Link  style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Profile"}> Profile </Link>
+                                    <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Profile"}> Profile </Link>
                                 </li>
 
                                 <li className="nav-item">
@@ -71,12 +71,23 @@ class Navbar extends Component {
                                 </li>
 
                                 <li className="nav-item">
-                                    <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Taches"}> Taches </Link>
+                                    <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Taches"}> Taches à faire </Link>
+                                </li>
+
+
+                                <li className="nav-item">
+                                    <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Tachesvalider"}> Taches à valider </Link>
                                 </li>
 
                                 <li className="nav-item">
                                     <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Conges"}> Conges </Link>
                                 </li>
+
+                                {this.state.role == "ROLE_LEAD" | this.state.role == "ROLE_ADMIN" | this.state.role == "ROLE_CLIENT" ?
+
+                                    <li className="nav-item">
+                                        <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Congesvalider"}> Congés à valider </Link>
+                                    </li> : null}
 
                                 <li className="nav-item">
                                     <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/personalEvents"}> Evénements peronnels </Link>
@@ -91,18 +102,9 @@ class Navbar extends Component {
                                 </li> */}
 
 
-                               
-                                    
-                                        <li className="nav-item">
-                                            <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Tachesvalider"}> Taches à valider </Link>
-                                        </li> 
-                                       
-                                        {this.state.role == "ROLE_LEAD" | this.state.role == "ROLE_ADMIN" | this.state.role == "ROLE_CLIENT" ?
 
-                                        <li className="nav-item">
-                                            <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Congesvalider"}> Congés à valider </Link>
-                                        </li> : null }
-                                                                       
+
+
                             </ul>
 
                             {(this.state.role == "ROLE_ADMIN" | this.state.role == "ROLE_CLIENT")
@@ -113,15 +115,15 @@ class Navbar extends Component {
                 </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/users"}> Users </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/users"}> Users </Link></Dropdown.Item>
                                             {this.state.role == "ROLE_ADMIN" | this.state.role == "ROLE_CLIENT" ? <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/statistics"}> Statistiques </Link></Dropdown.Item> : null}
-                                            <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link></Dropdown.Item>
                                             {this.state.role == "ROLE_ADMIN" ? <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link></Dropdown.Item> : null}
-                                            <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/heures-travail"}> Heures Travail </Link></Dropdown.Item>
-                                            <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/Salles"}> Salles </Link></Dropdown.Item>
-                                            <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/Postes"}> Postes </Link></Dropdown.Item>
-                                            <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/Groupes"}> Groupes </Link></Dropdown.Item>
-                                            <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/ChefGroup"}> Chefs Group </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/heures-travail"}> Heures Travail </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Salles"}> Salles </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Postes"}> Postes </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/Groupes"}> Groupes </Link></Dropdown.Item>
+                                            <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/ChefGroup"}> Chefs Group </Link></Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
 
