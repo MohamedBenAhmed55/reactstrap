@@ -56,7 +56,7 @@ class HomePage extends Component {
                 </div>
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
-                        <p className={classes.textCenter}>Bienveunue {this.state.user.name} {this.state.user.lastname}</p>
+                        <p className={classes.textCenter}>Bienvenue {this.state.user.name} {this.state.user.lastname}</p>
                         <p><Time></Time></p>
                         {/* <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer> */}
                     </blockquote>

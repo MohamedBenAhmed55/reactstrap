@@ -22,7 +22,7 @@ import Conges from './Tables/Congés';
 import CongesValider from './Tables/Congesvalider'
 import PersonalEvents from './Tables/PersonalEvents'
 import Paginate from './Tables/PaginationExample'
-
+import Chart from './Statistics/PieChart'
 
 class Navbar extends Component {
 
@@ -40,7 +40,7 @@ class Navbar extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state.role == "ROLE_ADMIN")
+        // console.log(this.state.role == "ROLE_ADMIN")
     }
 
 
@@ -86,6 +86,10 @@ class Navbar extends Component {
                                     <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/paginate"}> Paginate </Link>
                                 </li> */}
 
+                                {/* <li className="nav-item">
+                                    <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/statistics"}> Statistiques </Link>
+                                </li> */}
+
 
                                 {this.state.role == "ROLE_LEAD" | this.state.role == "ROLE_ADMIN" | this.state.role == "ROLE_CLIENT" ?
                                     
@@ -110,6 +114,7 @@ class Navbar extends Component {
 
                                         <Dropdown.Menu>
                                             <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/users"}> Users </Link></Dropdown.Item>
+                                            {this.state.role == "ROLE_ADMIN" | this.state.role == "ROLE_CLIENT" ? <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/statistics"}> Statistiques </Link></Dropdown.Item> : null}
                                             <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/Jours-Feries"}> JoursF </Link></Dropdown.Item>
                                             {this.state.role == "ROLE_ADMIN" ? <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/company"}> Company </Link></Dropdown.Item> : null}
                                             <Dropdown.Item> <Link  className={"nav-link"} to={"/dashboard/heures-travail"}> Heures Travail </Link></Dropdown.Item>
@@ -147,6 +152,7 @@ class Navbar extends Component {
                     <Route path="/dashboard/Congesvalider" component={CongesValider} />
                     <Route path="/dashboard/personalEvents" component={PersonalEvents} />
                     {/* <Route path="/dashboard/paginate" component={Paginate} /> */}
+                    <Route path="/dashboard/statistics" component={Chart} />
 
 
                 </Switch>

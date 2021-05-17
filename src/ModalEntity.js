@@ -50,12 +50,12 @@ class ModalEntity extends Component {
         <Modal.Body>
           {this.state.body}
         </Modal.Body>
-        <Modal.Footer>
+        {/* <Modal.Footer>
           <Button variant="secondary" onClick={this.handleClose}>
-            Close
+            Fermer
           </Button>
-          {/* <Button variant="primary">Understood</Button> */}
-        </Modal.Footer>
+          <Button variant="primary">Understood</Button>
+        </Modal.Footer> */}
       </Modal>
       </div>
   )}

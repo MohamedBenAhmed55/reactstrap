@@ -111,7 +111,7 @@ class PersonalEvents extends Component {
                                                     <td>{event.title}</td>
                                                     <td>{event.date.substr(0, 10)}</td>
                                                     <td><ModalEntity Buttontitle="Modifier" title="Modifier un événement personnel" body={<Forms body={event} modify={event.id} />} /></td>
-                                                    <td><button  className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteJour(event.id)} >Remove</button></td>
+                                                    <td><button  className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteJour(event.id)} >Supprimer</button></td>
                                                 </tr>: null) )}
 
                                         </tbody>

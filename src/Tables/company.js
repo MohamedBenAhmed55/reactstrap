@@ -112,11 +112,11 @@ class Company extends Component {
                                         <tr>
                                             <th scope="col">Name</th>
                                             <th scope="col">City</th>
-                                            <th scope="col">postalCode</th>
+                                            <th scope="col">Code postak</th>
                                             <th scope="col">email</th>
-                                            <th scope="col">matriculeFiscale</th>
-                                            <th scope="col">secteurActivite</th>
-                                            <th scope="col">phone</th>
+                                            <th scope="col">Matricule Fiscale</th>
+                                            <th scope="col">Secteur d'activité</th>
+                                            <th scope="col">N°tel</th>
                                             <th scope="col"></th>
                                             <th scope="col"></th>
                                         </tr>

@@ -103,9 +103,9 @@ class EventCalendar extends Component {
                     <Col>
                     <ModalEntity Buttontitle="Ajouter un événement personnel" title="Ajouter un événement personnel" body={<FormsPersonal />} />
                     </Col>
-                    <Col style={{marginLeft:-300}}>
-                    <ModalEntity Buttontitle="Add Event" title="Ajouter evenement" body={<Forms />} />
-                    </Col>
+                    {/* <Col style={{marginLeft:-200}}>
+                    <ModalEntity Buttontitle="Ajouter un événement" title="Ajouter evenement" body={<Forms />} />
+                    </Col> */}
                     </Row>
 
                 </div>
