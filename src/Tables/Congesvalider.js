@@ -98,7 +98,7 @@ class CongesValider extends Component {
 
             <div style={{ marginTop: 70 }}>
                 <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold" }}>
-                    <h1 className="display-3">La Liste Des congés à valider</h1>
+                    <h1 className="display-3">Liste des congés à valider</h1>
                 </Jumbotron>
                 <section className="row-section">
 

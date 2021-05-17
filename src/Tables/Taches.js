@@ -129,7 +129,7 @@ class Taches extends Component{
             
             <div style={{marginTop:70}}>
             <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">La Liste Des Tâches</h1>                    
+                    <h1 className="display-3">Liste des Tâches</h1>                    
                 </Jumbotron>
             <section className="row-section">
 
@@ -137,8 +137,8 @@ class Taches extends Component{
                     {
                         <div className={'row'}>
                         <div className="col-md-10 offset-md-1 row-block" >
-                            <table class="table table-hover">
-                                <thead>
+                            <table class="table table-hover" style={{width:1100, marginLeft:-50}} >
+                                <thead >
                                     <tr>
                                         <th scope="col">libelle</th>
                                         <th scope="col">Début</th>
@@ -181,7 +181,7 @@ class Taches extends Component{
                                     containerClassName={"pagination"}
                                     subContainerClassName={"pages pagination"}
                                     activeClassName={"active"} />
-                        <ModalEntity Buttontitle="Ajouter Tache" title="Ajouter Tache" body={<Forms />} />
+                        <ModalEntity Buttontitle="Ajouter Tache" title="Ajouter Tache" body={<Forms show={true} />} />
                         </div>
                         </div>
                     }

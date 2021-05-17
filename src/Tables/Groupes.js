@@ -79,7 +79,7 @@ class Groupes extends Component {
 
             <div style={{marginTop:70}}>
             <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">La Liste Des Groupes</h1>                    
+                    <h1 className="display-3">Liste des Groupes</h1>                    
                 </Jumbotron>
                 <section className="row-section">
 

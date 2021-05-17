@@ -98,7 +98,7 @@ class Company extends Component {
         return (
             <div style={{marginTop:70}}>
             <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">La Liste Des compagnies clientes</h1>                    
+                    <h1 className="display-3">Liste des compagnies clientes</h1>                    
                 </Jumbotron>
                 <section className="row-section">
 

@@ -102,7 +102,7 @@ class TachesValider extends Component{
             
             <div style={{marginTop:70}}>
             <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">La Liste Des Tâches à valider</h1>                    
+                    <h1 className="display-3">Liste des Tâches à valider</h1>                    
                 </Jumbotron>
             <section className="row-section">
 
@@ -119,7 +119,7 @@ class TachesValider extends Component{
                                         <th scope="col">Priorite</th>
                                         <th scope="col">description</th> 
                                         <th scope="col">Etat</th>                                       
-                                        <th scope="col">validée</th>
+                                        <th scope="col">Validation</th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>

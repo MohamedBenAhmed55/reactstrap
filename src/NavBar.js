@@ -62,9 +62,9 @@ class Navbar extends Component {
                                     <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/Profile"}> Profile </Link>
                                 </li>
 
-                                <li className="nav-item">
+                                {/* <li className="nav-item">
                                     <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/globalCalendar"}> Calendrier Global </Link>
-                                </li>
+                                </li> */}
 
                                 <li className="nav-item">
                                     <Link style={{ color: '#FFF' }} className={"nav-link"} to={"/dashboard/eventcalendar"}> Calendrier personnel </Link>
@@ -112,7 +112,7 @@ class Navbar extends Component {
                                     <Dropdown>
                                         <Dropdown.Toggle variant="secondary" id="dropdown-basic">
                                             Configuration du compagnie
-                </Dropdown.Toggle>
+                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
                                             <Dropdown.Item> <Link className={"nav-link"} to={"/dashboard/users"}> Users </Link></Dropdown.Item>
