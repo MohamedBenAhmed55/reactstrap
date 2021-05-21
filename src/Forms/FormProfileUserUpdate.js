@@ -37,8 +37,9 @@ class FormProfileUserUpdate extends Component {
 
     updateUser(id) {
         let message = this.fieldsControl();
-        console.log(message);
-        if(message== [])
+        if(message){
+            alert(message);
+        }else
        { axios({
             method: 'patch',
             url: `http://localhost:8000/api/users/${id}`,
@@ -54,12 +55,11 @@ class FormProfileUserUpdate extends Component {
             headers: {
                 "Content-Type": 'application/merge-patch+json'
             }
+        }).then(res =>{
+            alert("succès")
         }).catch(err => {
             alert("L'opération a échoué");
         })}
-        else{
-            this.setState({erreur: true})
-        }
     }
 
     handleSubmit(e) {
@@ -111,77 +111,42 @@ class FormProfileUserUpdate extends Component {
     }
 
     fieldsControl() {
-       let message=[];
-       this.setState({erreur:false, message: []});
-       
-       if (isNaN(this.state.Fax) || this.state.phone.length !=8) {
-            message.push(" Le numero de Fax doit être un nombre");
-            this.setState({Fax: this.state.user.Fax})
+       let message = "";
 
-         }
+    if (this.state.username & isNaN(this.state.username) == false) {
+      message = message + " le username ne doit pas être un nombre! \n "
+    }
 
-         if (isNaN(this.state.phone) || this.state.phone.length != 8) {
-            message.push("Le numero de téléphone doit contenir 8 chiffres");
-            this.setState({phone: this.state.user.phone})
+    var test1 = this.state.username.split("", " ")
+    for (let i = 0; i < test1.length; i++) {
+      if (!isNaN(test1[i])) {
+        message = message + "le username ne peut pas contenir un nombre ! \n"
+      }
+    }
 
-         }
+    if ( this.state.nom & !isNaN(this.state.nom)) {
+      message = message + " le nom ne doit pas être un nombre ! \n"
+    }
 
-         if (!isNaN(this.state.username)){
-            message.push(" le username ne doit pas être un nombre!");
-             this.setState({username: this.state.user.username})
-         }
+    var test2 = this.state.nom.split("", " ");
+    for (let i = 0; i < test2.length; i++) {
+      if (!isNaN(test2[i])) {
+        message = message + "le nom ne peut pas contenir un nombre ! \n"
+      }
+    }
 
-         let i=0;
-         while(i<this.state.username.length){
-             if (!(isNaN(this.state.username[i]))){
-                message.push("le username ne doit pas contenir un nombre !")
-             }
-         }
+    if (this.state.prenom & !isNaN(this.state.prenom)) {
+      message = message + " le prenom ne doit pas être un nombre ! \n"
+    }
 
-         for(let i=0;i<this.state.username.length;i++){
-             if (!(this.state.username[i].isNaN)){
-                message.push("le username ne doit pas contenir un nombre !")
-                 this.setState({username: this.state.user.username}) 
-                 break;
-             }
-         }
+    var test3 = this.state.prenom.split("", " ")
+    for (let i = 0; i < test3.length; i++) {
+      if (!isNaN(test3[i])) {
+        message = message + "le prenom ne peut pas contenir un nombre ! \n"
+      }
+    }
 
-        
-
-         if (!isNaN(this.state.nom)){
-            message.push(" le nom ne doit pas être un nombre !") 
-            this.setState({nom: this.state.user.nom})
-        }
-
-        for(let i=0;i<this.state.nom.length;i++){
-            if (!(this.state.nom[i].isNaN)){
-                message.push("le nom ne doit pas contenir un nombre ! ")  
-                this.setState({nom: this.state.user.nom})
-                break;
-            }
-        }
-
-        if (!isNaN(this.state.prenom)){
-            message.push(" le prenom ne doit pas être un nombre !") 
-            this.setState({prenom: this.state.user.prenom})
-        }
-
-        for(let i=0;i<this.state.prenom.length;i++){
-            if (!(this.state.prenom[i].isNaN)){
-                message.push("le prenom ne doit pas contenir un nombre ! ") 
-                this.setState({prenom: this.state.user.prenom})
-                break;
-            }
-        }
-
-        if (this.state.email.indexOf("@")==-1 || this .state.email.indexOf(".") == -1 ) {
-            message.push("mail invalide !") 
-            this.setState({email: this.state.user.email})
-
-        }
-                
-        this.setState({erreur:true, message: message})       
-         return message;
+    return message;
     }
 
     render() {
@@ -223,7 +188,7 @@ class FormProfileUserUpdate extends Component {
                     <Col md>
                         <Form.Group controlId="formNumero">
                             <Form.Label>N°Tel</Form.Label>
-                            <Form.Control type="tel" placeholder="Numero" name="phone" value={this.state.phone} onChange={this.onChange} required />
+                            <Form.Control type="number" placeholder="Numero" min="00000001" max="99999999" name="phone" value={this.state.phone} onChange={this.onChange} required />
                         </Form.Group>
 
                     </Col>
@@ -235,7 +200,7 @@ class FormProfileUserUpdate extends Component {
                     <Col md>
                         <Form.Group controlId="formNumero">
                             <Form.Label>Fax</Form.Label>
-                            <Form.Control type="tel" placeholder="Numero" name="Fax" value={this.state.Fax} onChange={this.onChange} required />
+                            <Form.Control type="number" placeholder="Numero Fax" min="00000001" max="99999999" name="Fax" value={this.state.Fax} onChange={this.onChange} required />
                         </Form.Group>
 
                     </Col>
@@ -255,7 +220,7 @@ class FormProfileUserUpdate extends Component {
                       
             </Form>
             
-            {this.state.erreur ? <Modal className={classes.modal} body={this.state.message}/> : null } 
+            {/* {this.state.erreur ? <Modal className={classes.modal} body={this.state.message}/> : null }  */}
               
             </div>
             

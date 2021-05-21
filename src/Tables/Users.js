@@ -92,7 +92,7 @@ class Users extends Component {
         return (
             <div style={{ marginTop: 70 }}>
                 <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold", position: 'relative' }}>
-                    <h1 className="display-3">La Liste Des utilisateurs</h1>
+                    <h1 className="display-3">Liste Des utilisateurs</h1>
                 </Jumbotron>
 
                 <section className="row-section">

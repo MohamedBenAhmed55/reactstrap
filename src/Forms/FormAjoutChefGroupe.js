@@ -32,15 +32,17 @@ class FormAjoutChefGroupe extends Component {
   }
 
   addChef(uid, gid) {
-    console.log('info', {
-      "company": "/api/companies/" + this.state.company,
-      "name": this.state.userId,
-      "groupes": ["/api/groupes/" + gid],
-      "userId": "/api/users/" + uid,
-      "dateDeb": this.state.dateDeb,
-      "dateFin": this.state.dateFin,
-      "groupname": this.state.groupe
-    })
+    // console.log('info', {
+    //   "company": "/api/companies/" + this.state.company,
+    //   "name": this.state.userId,
+    //   "groupes": ["/api/groupes/" + gid],
+    //   "userId": "/api/users/" + uid,
+    //   "dateDeb": this.state.dateDeb,
+    //   "dateFin": this.state.dateFin,
+    //   "groupname": this.state.groupe
+    // })
+    this.updateuser(uid,gid)
+
     axios.post(`http://localhost:8000/api/chef_groupes`, {
       "company": "/api/companies/" + this.state.company,
       "name": this.state.userId,
@@ -53,6 +55,23 @@ class FormAjoutChefGroupe extends Component {
       alert("Succès !")
     }).catch(err => {
       alert("l'opération a échoué ")
+    })
+  }
+
+  updateuser(id,gid){
+    axios({
+      method: 'patch',
+      url: `http://localhost:8000/api/users/${id}`,
+      data: {
+          "roles": ["ROLE_LEAD"],
+          "groupes": ["/api/groupes/" + gid],
+      },
+      headers: {
+        "Content-Type": 'application/merge-patch+json'
+      }
+    }).catch(err => {
+      alert("Opération user non aboutie")
+      console.log(err);
     })
   }
 
@@ -121,7 +140,7 @@ class FormAjoutChefGroupe extends Component {
     if (this.props.data) {
       this.setState({
         "groupe": this.state.data.groupes,
-        "userId": this.state.data.UserId,
+        "userId": this.state.data.userId,
         "dateDeb": this.state.data.dateDeb.substr(0, 10),
         "dateFin": this.state.data.dateFin.substr(0, 10),
       });

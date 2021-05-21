@@ -44,19 +44,45 @@ class ChefGroupe extends Component {
         })
     }
 
-    deleteChef(id) {
+    deleteChef(id,userId) {
         let confirm = window.confirm("êtes-vous sûr ?")
         if (confirm) {
-            axios.delete(`http://localhost:8000/api/chef_groupes/${id}`).then(res => {
-                alert("chef supprimé!");
-                this.getChefGroupe();
-            }).catch(err => {
-                alert("Echec de l'opération ! ")
-            })
+            // axios.delete(`http://localhost:8000/api/chef_groupes/${id}`).then(res => {
+            //     alert("chef supprimé!");
+            //     this.getChefGroupe();
+            // }).catch(err => {
+            //     alert("Echec de l'opération ! ")
+            // })
+            
+            axios({
+                method: 'patch',
+                url: `http://localhost:8000/api/users/${userId}`,
+                data: {
+                    "roles": ["ROLE_USER"],
+                },
+                headers: {
+                  "Content-Type": 'application/merge-patch+json'
+                }
+              }).catch(err => {
+                alert("Opération user non aboutie")
+                console.log(err);
+              })
         }
 
 
     }
+
+    getUserId() {
+        let uid;
+        for (let i = 0; i < this.state.usersnames.length; i++) {
+          if (this.state.usersnames[i].name.localeCompare(this.state.userId) == 0) {
+            uid = this.state.usersnames[i].id;
+            break;
+          }
+        }
+        return uid;
+      }
+      
 
     handlePageClick = (e) => {
         const selectedPage = e.selected;
@@ -120,7 +146,7 @@ class ChefGroupe extends Component {
                                                     <td>{chef.dateFin.substr(0, 10)}</td>
                                                     <td>{chef.groupname}</td>
                                                     <td><ModalEntity Buttontitle="Modifier" title="Modifier chef" body={<Forms id={chef.id} data={chef} />} /></td>
-                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteChef(chef.id)} >Remove</button></td>
+                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteChef(chef.id, chef.userId)} >Remove</button></td>
                                                 </tr>:null))}
 
                                         </tbody>

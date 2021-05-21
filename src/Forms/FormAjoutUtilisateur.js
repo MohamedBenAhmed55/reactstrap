@@ -110,29 +110,29 @@ class FormAjoutUtilisateur extends Component {
       }
       else {
         
-        // console.log('data', {
-        //   "username": this.state.username,
-        //   "roles": [this.state.roles],
-        //   "password": this.state.password,
-        //   "email": this.state.email,
-        //   "cin": this.state.cin,
-        //   "nom": this.state.nom,
-        //   "prenom": this.state.prenom,
-        //   "dateNai": this.state.dateNai,
-        //   "dateEmbauche": this.state.dateEmbauche,
-        //   "Genre": this.state.Genre,
-        //   "Adresse": this.state.Adresse,
-        //   "Salaire": parseInt(this.state.Salaire),
-        //   "phone": this.state.phone,
-        //   "Fax": this.state.Fax,
-        //   "Pays": this.state.Pays,
-        //   "image": this.state.image,
-        //   "etatPresence": this.state.etatPresence,
-        //   "matricule": this.state.matricule,
-        //   "company": "/api/companies/" + this.state.company,
-        //   "groupe": "/api/groupes/" + gid,
-        //   "poste":"/api/postes/" + pid,
-        // })
+        console.log('data', {
+          "username": this.state.username,
+          "roles": [this.state.roles],
+          "password": this.state.password,
+          "email": this.state.email,
+          "cin": this.state.cin,
+          "nom": this.state.nom,
+          "prenom": this.state.prenom,
+          "dateNai": this.state.dateNai,
+          "dateEmbauche": this.state.dateEmbauche,
+          "Genre": this.state.Genre,
+          "Adresse": this.state.Adresse,
+          "Salaire": parseInt(this.state.Salaire),
+          "phone": this.state.phone,
+          "Fax": this.state.Fax,
+          "Pays": this.state.Pays,
+          "image": this.state.image,
+          "etatPresence": this.state.etatPresence,
+          "matricule": this.state.matricule,
+          "company": "/api/companies/" + this.state.company,
+          "groupe": "/api/groupes/" + gid,
+          "poste":"/api/postes/" + pid,
+        })
 
         axios.post(`http://localhost:8000/api/users`, {
 

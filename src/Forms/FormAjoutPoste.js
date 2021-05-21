@@ -24,7 +24,7 @@ class FormAjoutPoste extends Component {
   componentDidMount() {
     this.setFields();    
     // console.log(jwt_decode(localStorage.getItem('token')).company)
-    this.setState({company: "/api/companies/" + jwt_decode(localStorage.getItem('token')).company})
+    // this.setState({company: "/api/companies/" + jwt_decode(localStorage.getItem('token')).company})
     // console.log("/api/companies/" +jwt_decode(localStorage.getItem('token')).company );
     // console.log(this.state.company)
     console.log(this.state.id);
@@ -53,12 +53,15 @@ class FormAjoutPoste extends Component {
         "name": this.state.name,
         "company": "/api/companies/" + this.state.company,
       })
-        .then(res => {
-          console.log({
-            "name": this.state.name,
-            "company_id": this.state.company_id,
-          });
+        .then(res => {         
           alert("poste created !")
+        }).catch(err=>{
+          alert("échec");
+        })
+
+        console.log('test',{
+          "name": this.state.name,
+        "company": "/api/companies/" + this.state.company,
         })
     }
   }

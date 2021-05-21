@@ -95,9 +95,9 @@ class Login extends Component {
                         </div> */}
                         <button type="submit" className="btn btn-lg btn-primary btn-block btn-signin" >Login</button>
                     </form>
-                    <a href="#" className="forgot-password">
+                    {/* <a href="#" className="forgot-password">
                         Forgot the password?
-            </a>
+            </a> */}
                 </div>
                 {this.state.redirect ? <Redirect exact from="/login" to="/dashboard" /> : null}
             </div>

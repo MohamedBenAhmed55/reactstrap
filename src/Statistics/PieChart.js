@@ -20,6 +20,8 @@ class PieChart extends Component {
       // console.log(response.data.data[0].present)
       this.setState({ statistiques: response.data.data[0] });
       console.log(this.state.statistiques);
+    }).catch(err=>{
+      alert("Erreur serveur");
     })
   }
 

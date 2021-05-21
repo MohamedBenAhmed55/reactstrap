@@ -93,7 +93,7 @@ class Groupes extends Component {
                                         <thead>
                                             <tr>
                                                 <th scope="col">Nom du groupe</th>
-                                                <th scope="col">chef</th>
+                                                {/* <th scope="col">chef</th> */}
                                                 <th scope="col"></th>
                                                 <th scope="col"></th>
                                             </tr>
@@ -103,8 +103,8 @@ class Groupes extends Component {
                                             {this.state.tableData.map((groupe,i) =>
                                                 (groupe.company == this.state.company ? <tr class="table-light" >
                                                     <td>{groupe.name}</td>
-                                                    <td>{groupe.chef}</td>
-                                                    <td>  <ModalEntity Buttontitle="Modifier" title="Modifer un groupe" body={<Forms />} modify={groupe.id} data={groupe} /></td>
+                                                    {/* <td>{groupe.chef}</td> */}
+                                                    <td>  <ModalEntity Buttontitle="Modifier" title="Modifer un groupe" body={<Forms modify={groupe.id} data={groupe} />}  /></td>
                                                     <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteGroup(groupe.id)} >supprimer</button></td>
 
                                                 </tr>:null))}

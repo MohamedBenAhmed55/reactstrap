@@ -80,7 +80,7 @@ class Postes extends Component {
 
             <div style={{ marginTop: 70 }}>
                 <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold" }}>
-                    <h1 className="display-3">La Liste Des postes</h1>
+                    <h1 className="display-3">Liste Des postes</h1>
                 </Jumbotron>
                 <section className="row-section">
 

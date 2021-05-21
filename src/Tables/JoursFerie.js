@@ -81,7 +81,7 @@ class JourFerie extends Component {
         return (
             <div style={{marginTop:70}}>
             <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">La Liste Des Jours fériés</h1>                    
+                    <h1 className="display-3">Liste Des Jours fériés</h1>                    
                 </Jumbotron>
                 <section className="row-section">
 

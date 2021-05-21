@@ -14,6 +14,7 @@ class FormAjoutGroupe extends Component {
       "company_id": jwt_decode(localStorage.getItem('token')).company,
       "id":props.modify,
       "chefsNames":[],
+      "data":props.data,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -29,8 +30,8 @@ class FormAjoutGroupe extends Component {
     let message = this.fieldsControl();
     if(message){
       alert(message)}
-      {
-    if (this.props.data){
+     else {
+    if (this.state.id){
       this.updateGroup(this.state.id);
     }
     else{
@@ -38,15 +39,11 @@ class FormAjoutGroupe extends Component {
 
     axios.post(`http://localhost:8000/api/groupes`, {
       "name": this.state.name,
-      "chef": "/api/chef_groupes/" +this.state.chef,
-      "company_id": "/api/companies/" +this.state.company_id,
+      // "chef": "/api/chef_groupes/" +this.state.chef,
+      "company": "/api/companies/" +this.state.company_id,
     })
       .then(res => {
-        console.log({
-          "name": this.state.name,
-          "chef": "/api/chef_groupes" +this.state.chef,
-          "company_id": "/api/companies" +this.state.company_id,
-        });
+        alert("succès !")
       }).catch(err => {
         alert("l'opération a échoué ")
       })
@@ -60,27 +57,27 @@ class FormAjoutGroupe extends Component {
       url: `http://localhost:8000/api/groupes/${id}`,
       data: {
         "name": this.state.name,
-          "chef": "/api/chef_groupes" +this.state.chef,
-          "company_id": "/api/companies" +this.state.company_id,
       },
       headers: {
         "Content-Type": 'application/merge-patch+json'
       }
+      }).then(res =>{
+        alert("group updated");
     }).catch(err => {
       alert("l'opération a échoué ")
     })
   }
 
   setFields() {
-    if (this.props.data) {
-      this.setState({ name: this.props.data.name, company_id: this.props.data.company_id, chef:this.props.data.chef });
+    if(this.state.data){
+      this.setState({ name: this.state.data.name});}
+      console.log(this.state.data)
 
-    }
   }
 
-  componentDidMount() {
-    this.setFields();
+  componentDidMount() {   
     this.getchefsNames();
+    this.setFields(); 
     // console.log( jwt_decode(localStorage.getItem('token')).company)
   }
 
@@ -116,7 +113,7 @@ class FormAjoutGroupe extends Component {
             </Form.Group>
           </Col>
 
-         <Col md>
+         {/* <Col md>
             <Form.Group as={Col} controlId="formSalleId">
               <Form.Label>Chef</Form.Label>
                <Form.Control as="select" defaultValue="01" value={this.state.chef} name="chef" onChange={this.onChange}>
@@ -126,7 +123,7 @@ class FormAjoutGroupe extends Component {
                </Form.Control>
              </Form.Group> 
           
-            </Col>
+            </Col> */}
 
         </Row>
 
