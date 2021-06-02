@@ -98,13 +98,14 @@ class FormPersonalEvent extends Component {
     formControl() {
         let message = ""
         if (!isNaN(this.state.titre)) {
-            message = message + "le titre du jour férié ne peut pas être un nombre ! \n"
+            message = message + "le titre de l'événement personnel ne peut pas être un nombre ! \n"
         }
 
-        var test = this.state.titre.split("", " ")
+        var test = this.state.titre.split("")
         for (let i = 0; i < test.length; i++) {
             if (!isNaN(test[i])) {
-                message = message + "le titre du jour férié ne peut pas contenir un nombre ! \n"
+                message = message + "le titre de l'événement personnel ne peut pas contenir un nombre ! \n"
+                break;
             }
         }
 

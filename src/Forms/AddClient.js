@@ -3,7 +3,7 @@ import { Row, Col, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 
-class FormAjoutUtilisateur extends Component {
+class AddClient extends Component {
 
   constructor(props) {
     super(props);
@@ -62,7 +62,7 @@ class FormAjoutUtilisateur extends Component {
       url: `http://localhost:8000/api/users/${id}`,
       data: {
         "username": this.state.username,
-          "roles": [this.state.roles],
+          "roles": ["ROLE_LEAD"],
           "password": this.state.password,
           "email": this.state.email,
           "cin": this.state.cin,
@@ -80,7 +80,6 @@ class FormAjoutUtilisateur extends Component {
           "etatPresence": this.state.etatPresence,
           "matricule": this.state.matricule,
           "company": "/api/companies/" + this.state.company,
-          "groupe": "/api/groupes/" + gid,
           "poste":"/api/postes/" + pid,
       },
       headers: {
@@ -110,6 +109,30 @@ class FormAjoutUtilisateur extends Component {
       }
       else {
         
+        console.log('data', {
+          "username": this.state.username,
+          "roles": [this.state.roles],
+          "password": this.state.password,
+          "email": this.state.email,
+          "cin": this.state.cin,
+          "nom": this.state.nom,
+          "prenom": this.state.prenom,
+          "dateNai": this.state.dateNai,
+          "dateEmbauche": this.state.dateEmbauche,
+          "Genre": this.state.Genre,
+          "Adresse": this.state.Adresse,
+          "Salaire": parseInt(this.state.Salaire),
+          "phone": this.state.phone,
+          "Fax": this.state.Fax,
+          "Pays": this.state.Pays,
+          "image": this.state.image,
+          "etatPresence": this.state.etatPresence,
+          "matricule": this.state.matricule,
+          "company": "/api/companies/" + this.state.company,
+          "groupe": "/api/groupes/" + gid,
+          "poste":"/api/postes/" + pid,
+        })
+
         axios.post(`http://localhost:8000/api/users`, {
 
           "username": this.state.username,
@@ -179,64 +202,42 @@ class FormAjoutUtilisateur extends Component {
   fieldsControl() {
     let message = "";
 
-    if (!isNaN(this.state.username)) {
-      message = message + " le username ne doit pas être un nombre! \n"
+    if (this.state.username & isNaN(this.state.username) == false) {
+      message = message + " le username ne doit pas être un nombre! \n "
     }
 
-    var test1 = this.state.username.split("")
+    var test1 = this.state.username.split("", " ")
     for (let i = 0; i < test1.length; i++) {
       if (!isNaN(test1[i])) {
         message = message + "le username ne peut pas contenir un nombre ! \n"
       }
     }
 
-    if (!isNaN(this.state.nom)) {
+    if ( this.state.nom & !isNaN(this.state.nom)) {
       message = message + " le nom ne doit pas être un nombre ! \n"
     }
 
-    var test2 = this.state.nom.split("");
-    console.log(test2);
+    var test2 = this.state.nom.split("", " ");
     for (let i = 0; i < test2.length; i++) {
       if (!isNaN(test2[i])) {
-        message = message + " le nom ne peut pas contenir un nombre ! \n"       
-      break;
+        message = message + "le nom ne peut pas contenir un nombre ! \n"
       }
     }
 
-    if (!isNaN(this.state.prenom)) {
+    if (this.state.prenom & !isNaN(this.state.prenom)) {
       message = message + " le prenom ne doit pas être un nombre ! \n"
     }
 
-    var test3 = this.state.prenom.split("")
-    console.log(test3);
-    for (let i = 0; i<test3.length; i++) {
+    var test3 = this.state.prenom.split("", " ")
+    for (let i = 0; i < test3.length; i++) {
       if (!isNaN(test3[i])) {
-        message = message + " le prenom ne peut pas contenir un nombre ! \n"
-        break;
+        message = message + "le prenom ne peut pas contenir un nombre ! \n"
       }
-      
     }
 
     if (this.state.Adresse & !isNaN(this.state.Adresse)) {
       message = message + " l'adresse ne peux pas être un nombre ! \n"
     }
-
-    var test4 = this.state.cin.split("")
-      if (test4.length != 8) {
-        message = message + " le cin doit contenir 8 chiffres ! \n"
-      }
-
-    var test5 = this.state.phone.split("")
-      if (test5.length != 8) {
-        message = message + " le num tel doit contenir 8 chiffres ! \n"
-      } 
-      
-    var test6 = this.state.Fax.split("")
-      if (test6.length != 8) {
-        message = message + " le Fax doit contenir 8 chiffres ! \n"
-      }  
-      
-      
 
     return message;
   }
@@ -389,15 +390,7 @@ class FormAjoutUtilisateur extends Component {
               <Form.Control type="date" name="dateNai" value={this.state.dateNai} onChange={this.onChange} required />
             </Form.Group>
 
-          </Col>
-
-          <Col md>
-            <Form.Group controlId="formDateEmbauche">
-              <Form.Label>Date embauche</Form.Label>
-              <Form.Control type="date" name="dateEmbauche" value={this.state.dateEmbauche} onChange={this.onChange} required />
-            </Form.Group>
-
-          </Col>
+          </Col>        
         </Row>
         <Row>
           <Col md>
@@ -456,18 +449,19 @@ class FormAjoutUtilisateur extends Component {
           </Form.Group>
 
           <Form.Group as={Col} controlId="formSalleId">
-            <Form.Label>Groupe</Form.Label>
-            <Form.Control as="select" name="groupe" value={this.state.groupe} onChange={this.onChange} required >
-              {this.state.groupes.map(group =>
-                <option >{group.name} </option>)
+            <Form.Label>Company</Form.Label>
+            <Form.Control as="select" name="company" value={this.state.company} onChange={this.onChange} required >
+              {this.state.companies.map(company =>
+                <option >{company.name} </option>)
               }
             </Form.Control>
           </Form.Group>
         </Row>
+
         <Button variant="secondary" type="submit">Confirmer</Button>
       </Form>
     )
   }
 }
 
-export default FormAjoutUtilisateur;
+export default AddClient;

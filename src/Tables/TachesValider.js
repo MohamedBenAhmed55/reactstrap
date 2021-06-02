@@ -46,6 +46,8 @@ class TachesValider extends Component{
     }
 
     Validatetache(id){
+        let del = window.confirm("êtes vous sûr ?");
+        if (del) {
         axios({
             method: 'patch',
             url: `http://localhost:8000/api/taches/${id}`,
@@ -61,15 +63,16 @@ class TachesValider extends Component{
         }).catch(err => {
             alert("L'opération a échoué");
         })}
-
-        deletetache(id) {
+    }
+           
+    deletetache(id){
         let del = window.confirm("êtes vous sûr ?");
         if (del) {
             axios.delete(`http://localhost:8000/api/taches/${id}`).then(res => {
                 alert("élément supprimé!");
                 this.getTaches();
             }
-            );
+            )
         }
     }
 

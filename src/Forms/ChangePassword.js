@@ -26,11 +26,11 @@ class ChangePassword extends Component {
   handleSubmit(e) {
     e.preventDefault();
     if (this.state.password != this.state.password_confirm) {
-      alert("password mismatch");
+      alert("mots de passe non similaires");
     }
     else {
       this.updatepassword(this.state.id);
-      alert("mot de passe modifiée")
+      
     }
   }
 
@@ -44,6 +44,8 @@ class ChangePassword extends Component {
       headers: {
         "Content-Type": 'application/merge-patch+json'
       }
+    }).then(res =>{
+      alert("mot de passe modifiée")
     }).catch(err => {
       alert("Failed operation")
     })
