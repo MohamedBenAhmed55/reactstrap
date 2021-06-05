@@ -59,16 +59,17 @@ class FormConge extends Component {
             this.modifyConge(this.state.id);
         }
         else {
-            // console.log('data',{
-            //     "company": "/api/companies/" + this.state.CompanyId,
-            //         "dateDeb": this.state.dateDeb,
-            //         "dateFin": this.state.dateFin,
-            //         "dateReprise": this.state.dateReprise,
-            //         "Type": this.state.Type,
-            //         "isValidated": this.state.isValidated,
-            //         "isHalfDay": this.state.isHalfDay,
-            //         "user": "/api/users" + this.state.UserId,
-            // })
+            console.log('data',{
+                "company": "/api/companies/" + this.state.CompanyId,
+                    "dateDeb": this.state.dateDeb,
+                    "dateFin": this.state.dateFin,
+                    "dateReprise": this.state.dateReprise,
+                    "Type": this.state.Type,
+                    "isValidated": this.state.isValidated,
+                    "isHalfDay": this.state.isHalfDay,
+                    "user": "/api/users/" + this.state.UserId,
+                    "groupee":this.state.group
+            })
             axios.post(`http://localhost:8000/api/conges`,
                 {
                     "company": "/api/companies/" + this.state.CompanyId,
@@ -79,7 +80,7 @@ class FormConge extends Component {
                     "isValidated": this.state.isValidated,
                     "isHalfDay": this.state.isHalfDay,
                     "user": "/api/users/" + this.state.UserId,
-                    "groupee":this.state.group,
+                    "groupee":this.state.group.toString(),
                 })
                 .then(res => {
                     window.location.reload();

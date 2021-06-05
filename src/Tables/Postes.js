@@ -5,6 +5,8 @@ import Forms from '../Forms/FormAjoutPoste';
 import ModalEntity from '../ModalEntity';
 import jwt_decode from "jwt-decode";
 import ReactPaginate from 'react-paginate';
+import { Redirect } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 class Postes extends Component {
 
@@ -18,6 +20,8 @@ class Postes extends Component {
             orgtableData: [],
             perPage: 5,
             currentPage: 0,
+            redirect: false,
+            company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company,
         };
 
         this.deletePoste = this.deletePoste.bind(this);
@@ -26,6 +30,9 @@ class Postes extends Component {
 
     componentDidMount() {
         this.getPostes();
+        if (this.state.role != "ROLE_ADMIN" ^ this.state.role != "ROLE_CLIENT") {
+            this.setState({ redirect: true })
+        }
     }
 
 
@@ -76,6 +83,11 @@ class Postes extends Component {
 
     render() {
 
+        if (this.state.redirect) {
+            return (<Redirect to={'/dashboard'} />)
+        }
+
+
         return (
 
             <div style={{ marginTop: 70 }}>
@@ -100,13 +112,14 @@ class Postes extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.tableData.map((poste,i) =>
+                                            {this.state.tableData.map((poste, i) =>
+                                                (this.state.company == poste.company ?
                                                 <tr class="table-light" key={poste.id} >
 
                                                     <td>{poste.name}</td>
                                                     <td><ModalEntity Buttontitle="Modifier" title="Modifier poste" body={<Forms modify={poste.id} data={poste} />} /></td>
                                                     <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deletePoste(poste.id)} >Supprimer</button></td>
-                                                </tr>)}
+                                                </tr>:null))}
 
                                         </tbody>
                                     </table>

@@ -3,8 +3,10 @@ import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutSalle'
 import ModalEntity from '../ModalEntity'
 import ReactPaginate from 'react-paginate';
+import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 class Salles extends Component {
 
@@ -17,6 +19,8 @@ class Salles extends Component {
             orgtableData: [],
             perPage: 5,
             currentPage: 0,
+            redirect: false,
+            company: "",
         };
         this.handlePageClick = this.handlePageClick.bind(this);
 
@@ -24,6 +28,11 @@ class Salles extends Component {
 
     componentDidMount() {
         this.getSalles();
+        this.setState({ company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company });
+        if (this.state.role != "ROLE_ADMIN" ^ this.state.role != "ROLE_CLIENT") {
+            this.setState({ redirect: true })
+        }
+        console.log("/api/companies/" + jwtDecode(localStorage.getItem('token')).company)
     }
 
 
@@ -80,6 +89,10 @@ class Salles extends Component {
 
     render() {
 
+        if (this.state.redirect) {
+            return (<Redirect to={'/dashboard'} />)
+        }
+
 
         return (
             <div style={{ marginTop: 70 }}>
@@ -106,12 +119,13 @@ class Salles extends Component {
 
                                         <tbody>
                                             {this.state.tableData.map((Salle, i) =>
+                                                (this.state.company == Salle.company ?
                                                 <tr class="table-light" key={Salle.id}>
                                                     <td>{Salle.nom}</td>
                                                     <td>{Salle.Etage}</td>
                                                     <td><ModalEntity Buttontitle="Modifier" title="Modifier salle" body={<Forms body={Salle} modify={Salle.id} />} /></td>
                                                     <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteSalle(Salle.id)} >Remove</button></td>
-                                                </tr>)}
+                                                </tr>: null))}
 
                                         </tbody>
                                     </table>

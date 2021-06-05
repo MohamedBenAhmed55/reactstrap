@@ -101,14 +101,7 @@ class FormPersonalEvent extends Component {
             message = message + "le titre de l'événement personnel ne peut pas être un nombre ! \n"
         }
 
-        var test = this.state.titre.split("")
-        for (let i = 0; i < test.length; i++) {
-            if (!isNaN(test[i])) {
-                message = message + "le titre de l'événement personnel ne peut pas contenir un nombre ! \n"
-                break;
-            }
-        }
-
+       
         return message;
     }
 

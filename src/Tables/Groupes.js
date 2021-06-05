@@ -5,19 +5,22 @@ import Forms from '../Forms/FomAjoutGroupe'
 import ModalEntity from '../ModalEntity';
 import ReactPaginate from 'react-paginate';
 import jwtDecode from 'jwt-decode';
+import { Redirect } from 'react-router-dom';
 
 class Groupes extends Component {
 
     constructor() {
         super();
-        this.state = { 
+        this.state = {
             Groupes: [],
             offset: 0,
             tableData: [],
             orgtableData: [],
             perPage: 5,
-            currentPage: 0, 
-            company:"",
+            currentPage: 0,
+            company: "",
+            redirect: false,
+            company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company,
         };
         this.handlePageClick = this.handlePageClick.bind(this);
     }
@@ -25,19 +28,22 @@ class Groupes extends Component {
     componentDidMount() {
         this.getGroupes();
         this.setState({ company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company });
+        if (this.state.role != "ROLE_ADMIN" ^ this.state.role != "ROLE_CLIENT") {
+            this.setState({ redirect: true })
+        }
 
     }
 
     getGroupes() {
         axios.get(`http://localhost:8000/api/groupes`).then(response => {
             // this.setState({ Groupes: response.data['hydra:member'] })
-            var tdata=response.data['hydra:member'];
+            var tdata = response.data['hydra:member'];
             var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
             this.setState({
                 pageCount: Math.ceil(tdata.length / this.state.perPage),
                 orgtableData: tdata,
                 tableData: slice
-        })
+            })
         })
     }
 
@@ -62,24 +68,27 @@ class Groupes extends Component {
     };
 
     loadMoreData() {
-		const data = this.state.orgtableData;
-		
-		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
-		this.setState({
-			pageCount: Math.ceil(data.length / this.state.perPage),
-			tableData:slice
-		})
-	
+        const data = this.state.orgtableData;
+
+        const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.setState({
+            pageCount: Math.ceil(data.length / this.state.perPage),
+            tableData: slice
+        })
+
     }
 
 
     render() {
+        if (this.state.redirect) {
+            return (<Redirect to={'/dashboard'} />)
+        }
 
         return (
 
-            <div style={{marginTop:70}}>
-            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">Liste des Groupes</h1>                    
+            <div style={{ marginTop: 70 }}>
+                <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold" }}>
+                    <h1 className="display-3">Liste des Groupes</h1>
                 </Jumbotron>
                 <section className="row-section">
 
@@ -100,29 +109,29 @@ class Groupes extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.tableData.map((groupe,i) =>
-                                                (groupe.company == this.state.company ? <tr class="table-light" >
-                                                    <td>{groupe.name}</td>
-                                                    {/* <td>{groupe.chef}</td> */}
-                                                    <td>  <ModalEntity Buttontitle="Modifier" title="Modifer un groupe" body={<Forms modify={groupe.id} data={groupe} />}  /></td>
-                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteGroup(groupe.id)} >supprimer</button></td>
+                                            {this.state.tableData.map((groupe, i) =>
+                                            (groupe.company == this.state.company ? <tr class="table-light" >
+                                                <td>{groupe.name}</td>
+                                                {/* <td>{groupe.chef}</td> */}
+                                                <td>  <ModalEntity Buttontitle="Modifier" title="Modifer un groupe" body={<Forms modify={groupe.id} data={groupe} />} /></td>
+                                                <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteGroup(groupe.id)} >supprimer</button></td>
 
-                                                </tr>:null))}
+                                            </tr> : null))}
 
                                         </tbody>
                                     </table>
                                     <ReactPaginate
-                                    previousLabel={"🠔"}
-                                    nextLabel={"🠖"}
-                                    breakLabel={"..."}
-                                    breakClassName={"break-me"}
-                                    pageCount={this.state.pageCount}
-                                    marginPagesDisplayed={2}
-                                    pageRangeDisplayed={5}
-                                    onPageChange={this.handlePageClick}
-                                    containerClassName={"pagination"}
-                                    subContainerClassName={"pages pagination"}
-                                    activeClassName={"active"} />
+                                        previousLabel={"🠔"}
+                                        nextLabel={"🠖"}
+                                        breakLabel={"..."}
+                                        breakClassName={"break-me"}
+                                        pageCount={this.state.pageCount}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick}
+                                        containerClassName={"pagination"}
+                                        subContainerClassName={"pages pagination"}
+                                        activeClassName={"active"} />
                                 </div>
 
 

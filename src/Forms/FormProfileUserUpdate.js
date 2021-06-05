@@ -129,14 +129,7 @@ class FormProfileUserUpdate extends Component {
             message = message + " le nom ne doit pas être un nombre ! \n"
         }
 
-        var test2 = this.state.nom.split("");
-        console.log(test2);
-        for (let i = 0; i < test2.length; i++) {
-            if (!isNaN(test2[i])) {
-                message = message + " le nom ne peut pas contenir un nombre ! \n"
-                break;
-            }
-        }
+        
 
         if (!isNaN(this.state.prenom)) {
             message = message + " le prenom ne doit pas être un nombre ! \n"
@@ -145,16 +138,19 @@ class FormProfileUserUpdate extends Component {
         var test3 = this.state.prenom.split("")
         console.log(test3);
         for (let i = 0; i < test3.length; i++) {
-            if (!isNaN(test3[i])) {
+            if (!isNaN(test3[i]) | test3[i]!="") {
                 message = message + " le prenom ne peut pas contenir un nombre ! \n"
                 break;
             }
 
         }
-
-        var test4 = this.state.cin.split("")
-        if (test4.length != 8) {
-            message = message + " le cin doit contenir 8 chiffres ! \n"
+        var test2 = this.state.nom.split("");
+        console.log(test2);
+        for (let i = 0; i < test2.length; i++) {
+            if (!isNaN(test2[i]) | test2[i]!="") {
+                message = message + " le nom ne peut pas contenir un nombre ! \n"
+                break;
+            }
         }
 
         var test5 = this.state.phone.split("")

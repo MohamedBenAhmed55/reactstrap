@@ -19,14 +19,14 @@ class ChefGroupe extends Component {
             orgtableData: [],
             perPage: 5,
             currentPage: 0,
-            company: "",
+            company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company,
         };
         this.handlePageClick = this.handlePageClick.bind(this);
     }
     componentDidMount() {
         // this.setState({redirect: localStorage.getItem("isLoggedout")})
         this.getChefGroupe();
-        this.setState({ company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company });
+        
 
 
     }

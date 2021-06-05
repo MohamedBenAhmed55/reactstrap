@@ -20,6 +20,7 @@ class Users extends Component {
             orgtableData: [],
             perPage: 5,
             currentPage: 0,
+            redirect:false,
         };
         this.handlePageClick = this.handlePageClick.bind(this);
     }
@@ -28,6 +29,9 @@ class Users extends Component {
         this.getUsers();
         this.setState({ company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company });
         console.log("/api/companies/" + jwtDecode(localStorage.getItem('token')).company)
+        if (this.state.role != "ROLE_ADMIN" ^ this.state.role != "ROLE_CLIENT") {
+            this.setState({ redirect: true })
+        }
 
     }
 

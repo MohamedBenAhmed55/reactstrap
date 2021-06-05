@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
-import { Button , Jumbotron} from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 import Forms from '../Forms/FormAjoutHrTravail'
 import axios from 'axios';
 import 'reactjs-popup/dist/index.css';
 import ModalEntity from '../ModalEntity';
 import ReactPaginate from 'react-paginate';
-
+import { Redirect } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 class HeuresTravail extends Component {
 
     constructor() {
         super();
-        this.state = { 
+        this.state = {
             Heures: [],
             offset: 0,
             tableData: [],
             orgtableData: [],
             perPage: 5,
-            currentPage: 0, 
+            currentPage: 0,
+            redirect: false,
+            company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company,
         };
         this.handlePageClick = this.handlePageClick.bind(this);
 
@@ -25,21 +28,24 @@ class HeuresTravail extends Component {
 
     componentDidMount() {
         this.getHeures();
+        if (this.state.role != "ROLE_ADMIN" ^ this.state.role != "ROLE_CLIENT") {
+            this.setState({ redirect: true })
+        }
 
     }
 
     getHeures() {
         axios.get(`http://localhost:8000/api/heures_travails/`).then(response => {
             // this.setState({ Heures: response.data['hydra:member'] })
-            var tdata=response.data['hydra:member'];
+            var tdata = response.data['hydra:member'];
             var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
             this.setState({
                 pageCount: Math.ceil(tdata.length / this.state.perPage),
                 orgtableData: tdata,
                 tableData: slice
-        })
-            
-        console.log(response.data['hydra:member'])
+            })
+
+            console.log(response.data['hydra:member'])
         })
     }
 
@@ -64,21 +70,25 @@ class HeuresTravail extends Component {
     };
 
     loadMoreData() {
-		const data = this.state.orgtableData;
-		
-		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
-		this.setState({
-			pageCount: Math.ceil(data.length / this.state.perPage),
-			tableData:slice
-		})
-	
+        const data = this.state.orgtableData;
+
+        const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.setState({
+            pageCount: Math.ceil(data.length / this.state.perPage),
+            tableData: slice
+        })
+
     }
 
     render() {
+        if (this.state.redirect) {
+            return (<Redirect to={'/dashboard'} />)
+        }
+
         return (
-            <div style={{marginTop:70}}>
-            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">Liste des heures du travail</h1>                    
+            <div style={{ marginTop: 70 }}>
+                <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold" }}>
+                    <h1 className="display-3">Liste des heures du travail</h1>
                 </Jumbotron>
                 <section className="row-section">
 
@@ -102,8 +112,10 @@ class HeuresTravail extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.tableData.map((heure,i) =>
+                                            {this.state.tableData.map((heure, i) =>
+                                                (this.state.company == heure.company ?
                                                 <tr class="table-light" key={heure.id}>
+                                                
 
 
                                                     <td>{heure.heureDeb.substr(11, 8)}</td>
@@ -113,21 +125,21 @@ class HeuresTravail extends Component {
                                                     <td>{heure.isSeanceUnique ? "Oui" : "Non"}</td>
                                                     <td><ModalEntity Buttontitle="Modifier" title="Modifier heures du travail" body={<Forms modify={heure.id} data={heure} />} /></td>
                                                     <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteHeure(heure.id)} >Remove</button></td>
-                                                </tr>)}
+                                                </tr>:null))}
                                         </tbody>
                                     </table>
                                     <ReactPaginate
-                                    previousLabel={"🠔"}
-                                    nextLabel={"🠖"}
-                                    breakLabel={"..."}
-                                    breakClassName={"break-me"}
-                                    pageCount={this.state.pageCount}
-                                    marginPagesDisplayed={2}
-                                    pageRangeDisplayed={5}
-                                    onPageChange={this.handlePageClick}
-                                    containerClassName={"pagination"}
-                                    subContainerClassName={"pages pagination"}
-                                    activeClassName={"active"} />
+                                        previousLabel={"🠔"}
+                                        nextLabel={"🠖"}
+                                        breakLabel={"..."}
+                                        breakClassName={"break-me"}
+                                        pageCount={this.state.pageCount}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick}
+                                        containerClassName={"pagination"}
+                                        subContainerClassName={"pages pagination"}
+                                        activeClassName={"active"} />
                                 </div>
 
 
@@ -140,7 +152,7 @@ class HeuresTravail extends Component {
                 <div className="container">
                     <div className={'row'}>
                         <div className="col-md-10 offset-md-1 row-block" >
-                        <ModalEntity Buttontitle="Ajouter heures du travail" title="Ajouter utilisateur" body={<Forms />} />
+                            <ModalEntity Buttontitle="Ajouter heures du travail" title="Ajouter utilisateur" body={<Forms />} />
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,8 @@ import Forms from '../Forms/FormAjoutJrFer'
 import axios from 'axios';
 import ModalEntity from '../ModalEntity';
 import ReactPaginate from 'react-paginate';
-
+import { Redirect } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 class JourFerie extends Component {
 
@@ -17,26 +18,33 @@ class JourFerie extends Component {
             orgtableData: [],
             perPage: 5,
             currentPage: 0,
+            redirect: false,
+            company: "/api/companies/" + jwtDecode(localStorage.getItem('token')).company,
         };
         this.handlePageClick = this.handlePageClick.bind(this);
     }
 
     componentDidMount() {
         this.getJoursFeries();
+        if (this.state.role != "ROLE_ADMIN" ^ this.state.role != "ROLE_CLIENT") {
+            this.setState({ redirect: true })
+        }
+
+        
 
     }
 
     getJoursFeries() {
         axios.get(`http://localhost:8000/api/jours_feries`).then(response => {
             // this.setState({ jours: response.data['hydra:member'] })
-            var tdata=response.data['hydra:member'];
+            var tdata = response.data['hydra:member'];
             var slice = tdata.slice(this.state.offset, this.state.offset + this.state.perPage)
             this.setState({
                 pageCount: Math.ceil(tdata.length / this.state.perPage),
                 orgtableData: tdata,
                 tableData: slice
-        })
-            
+            })
+
         })
     }
 
@@ -66,22 +74,26 @@ class JourFerie extends Component {
     };
 
     loadMoreData() {
-		const data = this.state.orgtableData;
-		
-		const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
-		this.setState({
-			pageCount: Math.ceil(data.length / this.state.perPage),
-			tableData:slice
-		})
-	
+        const data = this.state.orgtableData;
+
+        const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.setState({
+            pageCount: Math.ceil(data.length / this.state.perPage),
+            tableData: slice
+        })
+
     }
 
 
     render() {
+        if (this.state.redirect) {
+            return (<Redirect to={'/dashboard'} />)
+        }
+
         return (
-            <div style={{marginTop:70}}>
-            <Jumbotron style={{"text-align":"center", "margin-top":"10px", "fontWeight":"bold"}}>
-                    <h1 className="display-3">Liste Des Jours fériés</h1>                    
+            <div style={{ marginTop: 70 }}>
+                <Jumbotron style={{ "text-align": "center", "margin-top": "10px", "fontWeight": "bold" }}>
+                    <h1 className="display-3">Liste Des Jours fériés</h1>
                 </Jumbotron>
                 <section className="row-section">
 
@@ -103,29 +115,30 @@ class JourFerie extends Component {
                                         </thead>
 
                                         <tbody>
-                                            {this.state.tableData.map((jour,i) =>
+                                            {this.state.tableData.map((jour, i) =>
+                                                (this.state.company == jour.company ?
                                                 <tr class="table-light" key={jour.id}>
 
                                                     <td>{jour.titre}</td>
                                                     <td>{jour.date.substr(0, 10)}</td>
                                                     <td><ModalEntity Buttontitle="Modifier" title="Modifier un jour ferié" body={<Forms body={jour} modify={jour.id} />} /></td>
-                                                    <td><button  className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteJour(jour.id)} >Remove</button></td>
-                                                </tr>)}
+                                                    <td><button className="btn btn-danger my-2 my-sm-0" onClick={() => this.deleteJour(jour.id)} >Remove</button></td>
+                                                </tr>:null))}
 
                                         </tbody>
                                     </table>
                                     <ReactPaginate
-                                    previousLabel={"🠔"}
-                                    nextLabel={"🠖"}
-                                    breakLabel={"..."}
-                                    breakClassName={"break-me"}
-                                    pageCount={this.state.pageCount}
-                                    marginPagesDisplayed={2}
-                                    pageRangeDisplayed={5}
-                                    onPageChange={this.handlePageClick}
-                                    containerClassName={"pagination"}
-                                    subContainerClassName={"pages pagination"}
-                                    activeClassName={"active"} />
+                                        previousLabel={"🠔"}
+                                        nextLabel={"🠖"}
+                                        breakLabel={"..."}
+                                        breakClassName={"break-me"}
+                                        pageCount={this.state.pageCount}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick}
+                                        containerClassName={"pagination"}
+                                        subContainerClassName={"pages pagination"}
+                                        activeClassName={"active"} />
                                 </div>
 
 

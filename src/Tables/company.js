@@ -59,7 +59,7 @@ class Company extends Component {
     deleteCompany(id) {
         let confirm = window.confirm("êtes-vous sûr ?")
         if (confirm) {
-            axios.delete(`http://localhost:8000/api/companies/${id}`).then(res => { this.getCompanies() });
+            axios.delete(`http://localhost:8000/api/companies/${id}`).then(res => { alert("compagnie supprimée") ;this.getCompanies() });
         }
 
     }
@@ -112,7 +112,7 @@ class Company extends Component {
                                         <tr>
                                             <th scope="col">Name</th>
                                             <th scope="col">City</th>
-                                            <th scope="col">Code postak</th>
+                                            <th scope="col">Code postal</th>
                                             <th scope="col">email</th>
                                             <th scope="col">Matricule Fiscale</th>
                                             <th scope="col">Secteur d'activité</th>
